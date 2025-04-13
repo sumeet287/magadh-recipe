@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/cart-context";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -10,8 +14,11 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import MobileNavigation from "@/components/MobileNavigation";
+import { Badge } from "@/components/ui/badge";
 
 export function Header() {
+  const { cart } = useCart();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-slate-900/95">
       <div className="container mx-auto px-4">
@@ -164,6 +171,22 @@ export function Header() {
               Shop Now
             </Button>
           </div>
+
+          <nav className="flex items-center">
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/cart" className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                {cart.length > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center"
+                  >
+                    {cart.length}
+                  </Badge>
+                )}
+              </Link>
+            </Button>
+          </nav>
         </div>
       </div>
     </header>

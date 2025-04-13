@@ -11,12 +11,12 @@ export type ProductCategory =
 export interface Product {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   price: number;
   category: ProductCategory;
   images: string[];
-  artisanId: string;
-  inStock: boolean;
+  artisanId?: string;
+  inStock?: boolean;
   dimensions?: {
     length: number;
     width: number;
@@ -28,9 +28,9 @@ export interface Product {
     unit: "g" | "kg";
   };
   materials?: string[];
-  tags: string[];
-  createdAt: string;
-  updatedAt: string;
+  tags?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProductCategoryInfo {
