@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Heart } from "lucide-react";
+import { ShoppingCart, Heart, LogIn, UserPlus } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { Button } from "@/components/ui/button";
 import {
@@ -173,6 +173,20 @@ export function Header() {
                 )}
               </Link>
             </Button>
+            <div className="hidden md:flex items-center gap-2 ml-4">
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/auth/signin">
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/auth/signup">
+                  <UserPlus className="h-4 w-4" />
+                  Sign Up
+                </Link>
+              </Button>
+            </div>
           </nav>
         </div>
       </div>

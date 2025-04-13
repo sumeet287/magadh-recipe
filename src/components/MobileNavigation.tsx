@@ -5,6 +5,7 @@ import {
   BookOpen,
   Calendar,
   FileText,
+  Menu,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -15,7 +16,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
 
 const MobileNavigation = () => {
   return (
@@ -122,10 +122,17 @@ const MobileNavigation = () => {
 
           <div className="flex flex-col gap-3 mt-6 px-2">
             <Button
+              asChild
               variant="outline"
               className="w-full py-5 text-base font-medium border-2 hover:bg-orange-50"
             >
-              Login
+              <Link href="/auth/signin">Login</Link>
+            </Button>
+            <Button
+              asChild
+              className="w-full py-5 text-base font-medium hover:bg-orange-600"
+            >
+              <Link href="/auth/signup">Sign Up</Link>
             </Button>
           </div>
         </nav>
