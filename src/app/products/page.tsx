@@ -1,26 +1,13 @@
 "use client";
 
 import { ProductCard } from "@/components/products/product-card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { products } from "@/data/products";
 import { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ProductFilters } from "@/components/products/product-filters";
+import { ProductPagingInfo } from "@/components/products/product-paging-info";
+import { ProductPagination } from "@/components/products/product-pagination";
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -122,60 +109,20 @@ export default function ProductsPage() {
         <h1 className="text-4xl font-bold mb-4">Our Products</h1>
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
           {/* Left side filters */}
-          <div className="flex gap-4 w-full sm:w-auto">
-            <div className="flex items-center gap-2">
-              <Input
-                placeholder="Search products..."
-                className="w-full sm:w-[250px]"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Select
-                value={sortBy}
-                onValueChange={(value: "newest" | "price-low" | "price-high") =>
-                  setSortBy(value)
-                }
-              >
-                <SelectTrigger className="w-full sm:w-[250px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="newest">Newest First</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <ProductFilters
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+          />
 
           {/* Right side info */}
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              Showing {startIndex + 1}-
-              {Math.min(startIndex + pageSize, filteredProducts.length)} of{" "}
-              {filteredProducts.length} products
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Show</span>
-              <Select
-                value={pageSize.toString()}
-                onValueChange={(value) => handlePageSizeChange(Number(value))}
-              >
-                <SelectTrigger className="w-[70px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5">5</SelectItem>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="15">15</SelectItem>
-                  <SelectItem value="20">20</SelectItem>
-                </SelectContent>
-              </Select>
-              <span className="text-sm text-muted-foreground">per page</span>
-            </div>
-          </div>
+          <ProductPagingInfo
+            startIndex={startIndex}
+            pageSize={pageSize}
+            totalProducts={filteredProducts.length}
+            onPageSizeChange={handlePageSizeChange}
+          />
         </div>
       </div>
 
@@ -210,44 +157,11 @@ export default function ProductsPage() {
 
       {/* Pagination */}
       {filteredProducts.length > 0 && (
-        <div className="mt-8 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                  className={
-                    currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                  }
-                />
-              </PaginationItem>
-
-              {[...Array(totalPages)].map((_, i) => (
-                <PaginationItem key={i + 1}>
-                  <PaginationLink
-                    onClick={() => handlePageChange(i + 1)}
-                    isActive={currentPage === i + 1}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() =>
-                    handlePageChange(Math.min(totalPages, currentPage + 1))
-                  }
-                  className={
-                    currentPage === totalPages
-                      ? "pointer-events-none opacity-50"
-                      : ""
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+        <ProductPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
     </main>
   );
