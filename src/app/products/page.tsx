@@ -1,14 +1,19 @@
 "use client";
 
 import { ProductCard } from "@/components/products/product-card";
-import { Separator } from "@/components/ui/separator";
 import { products } from "@/data/products";
 import { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ProductFilters } from "@/components/products/product-filters";
-import { ProductPagingInfo } from "@/components/products/product-paging-info";
 import { ProductPagination } from "@/components/products/product-pagination";
 import { AddressSelector } from "@/components/products/address-selector";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -20,6 +25,9 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState<"newest" | "price-low" | "price-high">(
     "newest"
   );
+  const [stockFilter, setStockFilter] = useState<
+    "all" | "in-stock" | "out-of-stock"
+  >("all");
   const [currentPage, setCurrentPage] = useState(() => {
     const page = searchParams.get("page");
     const parsedPage = page ? parseInt(page) : 1;
@@ -59,28 +67,39 @@ export default function ProductsPage() {
   };
 
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    let filtered = [...products];
 
+    // Apply search filter
     if (searchQuery) {
-      result = result.filter((product) =>
+      filtered = filtered.filter((product) =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
+    // Apply stock filter
+    if (stockFilter !== "all") {
+      filtered = filtered.filter((product) =>
+        stockFilter === "in-stock" ? product.inStock : !product.inStock
+      );
+    }
+
+    // Apply sort
     switch (sortBy) {
       case "price-low":
-        result.sort((a, b) => a.price - b.price);
+        filtered.sort((a, b) => a.price - b.price);
         break;
       case "price-high":
-        result.sort((a, b) => b.price - a.price);
+        filtered.sort((a, b) => b.price - a.price);
         break;
       case "newest":
-        result.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+      default:
+        // Assuming newer products have higher IDs
+        filtered.sort((a, b) => Number(b.id) - Number(a.id));
         break;
     }
 
-    return result;
-  }, [searchQuery, sortBy]);
+    return filtered;
+  }, [products, searchQuery, sortBy, stockFilter]);
 
   // Calculate pagination with dynamic page size
   const totalPages = Math.ceil(filteredProducts.length / pageSize);
@@ -105,38 +124,57 @@ export default function ProductsPage() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-16">
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-bold">Our Products</h1>
+    <main className="container mx-auto px-4 py-6">
+      <div className="flex flex-col gap-6">
+        <div className="space-y-2">
+          <h1 className="text-2xl sm:text-4xl font-bold">Our Products</h1>
+          <div className="text-sm text-muted-foreground">Delivery Address</div>
           <AddressSelector
             selectedAddressId={selectedAddressId}
             onAddressChange={setSelectedAddressId}
           />
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
+
+        <div className="space-y-4">
           <ProductFilters
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             sortBy={sortBy}
             onSortChange={setSortBy}
+            stockFilter={stockFilter}
+            onStockFilterChange={setStockFilter}
           />
-          <ProductPagingInfo
-            startIndex={startIndex}
-            pageSize={pageSize}
-            totalProducts={filteredProducts.length}
-            onPageSizeChange={handlePageSizeChange}
-          />
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">
+              Showing {startIndex + 1}-
+              {Math.min(startIndex + pageSize, filteredProducts.length)} of{" "}
+              {filteredProducts.length} products
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Show</span>
+              <Select
+                value={pageSize.toString()}
+                onValueChange={(value) => handlePageSizeChange(Number(value))}
+              >
+                <SelectTrigger className="w-[70px] h-8">
+                  <SelectValue placeholder={pageSize.toString()} />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="30">30</SelectItem>
+                  <SelectItem value="40">40</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="text-muted-foreground">per page</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <Separator className="my-6" />
-
-      {/* Products Grid */}
-      <div className="min-h-[400px]">
-        {paginatedProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {paginatedProducts.map((product) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {paginatedProducts.length > 0 ? (
+            paginatedProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 id={product.id}
@@ -145,18 +183,18 @@ export default function ProductsPage() {
                 images={product.images}
                 category={product.category}
               />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-[400px] text-center">
-            <p className="text-xl text-muted-foreground mb-2">
-              No products found
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Try adjusting your search or filters
-            </p>
-          </div>
-        )}
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[400px] text-center">
+              <p className="text-xl text-muted-foreground mb-2">
+                No products found
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Try adjusting your search or filters
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Pagination */}

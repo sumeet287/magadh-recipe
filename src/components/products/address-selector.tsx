@@ -5,7 +5,8 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { MapPin, Plus, ChevronDown } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { MapPin, Plus } from "lucide-react";
 import { useState } from "react";
 import { AddressDialog, AddressFormData } from "./address-dialog";
 
@@ -85,7 +86,7 @@ export function AddressSelector({
     );
 
     if (data.isDefault) {
-      onAddressChange(editingAddress?.id || selectedAddressId);
+      onAddressChange(editingAddress?.id ?? selectedAddressId);
     }
   };
 
@@ -100,73 +101,81 @@ export function AddressSelector({
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Select value={selectedAddressId} onValueChange={onAddressChange}>
-        <SelectTrigger className="w-[400px] h-auto py-2 px-3">
-          <div className="flex items-start gap-2">
-            <MapPin className="h-4 w-4 text-muted-foreground mt-1" />
-            <div className="flex flex-col items-start gap-0.5 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-medium">{selectedAddress?.name}</span>
+    <div className="flex flex-col gap-1.5 w-full lg:w-[500px]">
+      <Label htmlFor="address-select" className="text-sm font-medium">
+        Delivery Address
+      </Label>
+      <div className="flex items-center gap-2">
+        <Select value={selectedAddressId} onValueChange={onAddressChange}>
+          <SelectTrigger
+            id="address-select"
+            className="w-full h-auto py-2 px-2.5 sm:py-2.5 sm:px-3"
+          >
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+                <span className="font-medium text-sm sm:text-base truncate">
+                  {selectedAddress?.name}
+                </span>
                 {selectedAddress?.isDefault && (
-                  <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                  <span className="text-[9px] sm:text-[10px] bg-primary/10 text-primary px-1 sm:px-1.5 py-0.5 rounded-sm whitespace-nowrap">
                     Default
                   </span>
                 )}
               </div>
-              <span className="text-sm text-muted-foreground line-clamp-1">
-                {selectedAddress?.address}
-                {selectedAddress?.landmark &&
-                  `, ${selectedAddress.landmark}`}, {selectedAddress?.city},{" "}
-                {selectedAddress?.state} - {selectedAddress?.pincode}
-              </span>
             </div>
-            <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          {addresses.map((addr) => (
-            <SelectItem key={addr.id} value={addr.id}>
-              <div className="flex items-start gap-2 py-1">
-                <div className="flex flex-col gap-0.5 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{addr.name}</span>
-                    {addr.isDefault && (
-                      <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded">
-                        Default
+          </SelectTrigger>
+          <SelectContent
+            align="end"
+            className="min-w-[250px] max-w-[95vw] w-full"
+          >
+            {addresses.map((addr) => (
+              <SelectItem key={addr.id} value={addr.id} className="px-3 py-2">
+                <div className="flex items-start gap-2 w-full min-w-0">
+                  <div className="flex flex-col gap-1 min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <span className="font-medium text-sm sm:text-base">
+                        {addr.name}
                       </span>
-                    )}
+                      {addr.isDefault && (
+                        <span className="text-[9px] sm:text-[10px] bg-primary/10 text-primary px-1 sm:px-1.5 py-0.5 rounded-sm whitespace-nowrap">
+                          Default
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                      <span className="line-clamp-2">
+                        {addr.address}
+                        {addr.landmark && `, ${addr.landmark}`}, {addr.city},{" "}
+                        {addr.state} - {addr.pincode}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-sm text-muted-foreground line-clamp-1">
-                    {addr.address}
-                    {addr.landmark && `, ${addr.landmark}`}, {addr.city},{" "}
-                    {addr.state} - {addr.pincode}
-                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-5 w-5 sm:h-6 sm:w-6 shrink-0 -mr-1"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleEdit(addr);
+                    }}
+                  >
+                    <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  </Button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6 shrink-0"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleEdit(addr);
-                  }}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-10 w-10 shrink-0"
-        onClick={handleAddNew}
-      >
-        <Plus className="h-4 w-4" />
-      </Button>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+          onClick={handleAddNew}
+        >
+          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+        </Button>
+      </div>
       <AddressDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
