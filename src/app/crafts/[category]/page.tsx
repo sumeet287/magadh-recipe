@@ -4,14 +4,15 @@ import { notFound } from "next/navigation";
 // Define valid categories
 const validCategories = ["madhubani", "tikuli", "wood", "glass"];
 
-type Props = Readonly<{
-  params: { category: string };
-}>;
+type Params = Promise<{ category: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category } = await params;
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
+  const params = await props.params;
   // Capitalize and format category name
-  const title = category.charAt(0).toUpperCase() + category.slice(1);
+  const title =
+    params.category.charAt(0).toUpperCase() + params.category.slice(1);
 
   return {
     title: `${title} Art | Bihar Bazaar`,
@@ -25,14 +26,15 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function CategoryPage({ params }: Props) {
-  const { category } = await params;
+export default async function CategoryPage(props: { params: Params }) {
+  const params = await props.params;
 
-  if (!validCategories.includes(category)) {
+  if (!validCategories.includes(params.category)) {
     notFound();
   }
 
-  const title = category.charAt(0).toUpperCase() + category.slice(1);
+  const title =
+    params.category.charAt(0).toUpperCase() + params.category.slice(1);
 
   return (
     <main className="container mx-auto px-4 py-16">

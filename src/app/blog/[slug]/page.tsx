@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
 import tikuliArt from "@/assets/art/tikuli_art.jpeg";
@@ -69,13 +67,13 @@ const blogPosts = [
   },
 ];
 
-export async function generateMetadata({
-  params,
-}: Readonly<{
-  params: { slug: string };
-}>): Promise<Metadata> {
-  const resolvedParams = await params;
-  const post = blogPosts.find((p) => p.slug === resolvedParams.slug);
+type Params = Promise<{ slug: string }>;
+
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const post = blogPosts.find((p) => p.slug === params.slug);
   if (!post) return notFound();
 
   return {
@@ -84,80 +82,24 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPost({
-  params,
-}: Readonly<{
-  params: { slug: string };
-}>) {
-  const resolvedParams = await params;
-  const post = blogPosts.find((p) => p.slug === resolvedParams.slug);
-  if (!post) return notFound();
+export default async function BlogPostPage(props: { params: Params }) {
+  const params = await props.params;
+  const post = blogPosts.find((p) => p.slug === params.slug);
+
+  if (!post) {
+    notFound();
+  }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-100 dark:from-slate-900 dark:to-slate-800">
-      <article className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <header className="max-w-4xl mx-auto text-center space-y-6 mb-12">
-          <div className="flex items-center justify-center gap-2 text-sm text-orange-600 dark:text-orange-400">
-            <Link
-              href="/blog"
-              className="hover:text-orange-700 dark:hover:text-orange-300"
-            >
-              ← Back to Blog
-            </Link>
-            <span>•</span>
-            <span>{post.category}</span>
-            <span>•</span>
-            <span>{post.readTime}</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
-            {post.title}
-          </h1>
-          <div className="flex items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-            <span>{post.author}</span>
-            <span>•</span>
-            <span>{post.date}</span>
-          </div>
-        </header>
-
-        {/* Featured Image */}
-        <div className="relative h-[400px] md:h-[500px] max-w-4xl mx-auto rounded-lg overflow-hidden mb-12">
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-cover"
-          />
+    <main className="container mx-auto px-4 py-16">
+      <article className="max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+        <div className="flex items-center gap-4 text-slate-600 dark:text-slate-300 mb-8">
+          <span>{post.date}</span>
+          <span>•</span>
+          <span>{post.author}</span>
         </div>
-
-        {/* Content */}
-        <div className="max-w-3xl mx-auto">
-          <div className="prose prose-lg dark:prose-invert prose-orange mx-auto">
-            {post.content.split("\n\n").map((paragraph) => (
-              <p
-                key={`${post.slug}-paragraph-${paragraph.slice(0, 20)}`}
-                className="text-slate-700 dark:text-slate-200"
-              >
-                {paragraph.trim()}
-              </p>
-            ))}
-          </div>
-
-          {/* Share Section */}
-          <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-              Share this article
-            </h2>
-            <div className="flex gap-4">
-              <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                Share on Twitter
-              </button>
-              <button className="px-6 py-2 bg-blue-800 hover:bg-blue-900 text-white rounded-lg transition-colors">
-                Share on Facebook
-              </button>
-            </div>
-          </div>
-        </div>
+        <div className="prose dark:prose-invert max-w-none">{post.content}</div>
       </article>
     </main>
   );

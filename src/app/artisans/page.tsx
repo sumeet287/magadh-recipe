@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { ArtisansClient } from "@/components/artisans/artisans-client";
 
 export const metadata: Metadata = {
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function ArtisansPage() {
-  return <ArtisansClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ArtisansClient />
+    </Suspense>
+  );
 }

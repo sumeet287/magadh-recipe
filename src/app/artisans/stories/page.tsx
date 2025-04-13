@@ -102,7 +102,7 @@ export default function ArtistStoriesPage() {
                   transition={{ delay: 0.5 }}
                   className="flex flex-wrap gap-2"
                 >
-                  {artist.awards.map((award, index) => (
+                  {artist.awards.map((award: string, index: number) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full text-sm"

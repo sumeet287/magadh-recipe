@@ -15,13 +15,14 @@ const validCategories: ProductCategory[] = [
   "lac",
 ];
 
-type Props = Readonly<{
-  params: { category: string };
-}>;
+type Params = Promise<{ category: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category } = params;
-  const title = category.charAt(0).toUpperCase() + category.slice(1);
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const title =
+    params.category.charAt(0).toUpperCase() + params.category.slice(1);
 
   return {
     title: `${title} Products | Bihar Bazaar`,
@@ -35,17 +36,18 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function Page({ params }: Props) {
-  const { category } = params;
+export default async function Page(props: { params: Params }) {
+  const params = await props.params;
 
-  if (!validCategories.includes(category as ProductCategory)) {
+  if (!validCategories.includes(params.category as ProductCategory)) {
     notFound();
   }
 
-  const title = category.charAt(0).toUpperCase() + category.slice(1);
+  const title =
+    params.category.charAt(0).toUpperCase() + params.category.slice(1);
 
   const categoryProducts = products.filter(
-    (product) => product.category === (category as ProductCategory)
+    (product) => product.category === (params.category as ProductCategory)
   );
 
   return (

@@ -1,19 +1,22 @@
 import { Metadata } from "next";
 
-type Props = Readonly<{
-  params: { id: string };
-  children: React.ReactNode;
-}>;
+type Params = Promise<{ id: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await Promise.resolve(params);
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
+  const params = await props.params;
 
   return {
-    title: `Product #${id} | Bihar Bazaar`,
+    title: `Product #${params.id} | Bihar Bazaar`,
     description: `Handmade Madhubani painting depicting Lord Krishna`,
   };
 }
 
-export default function ProductLayout({ children }: Props) {
+export default function ProductLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return children;
 }

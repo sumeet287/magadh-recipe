@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Share2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function WishlistPage() {
   const { wishlist, clearWishlist } = useCart();
@@ -77,7 +78,7 @@ export default function WishlistPage() {
             Start adding items you love to your wishlist
           </p>
           <Button asChild>
-            <a href="/products">Browse Products</a>
+            <Link href="/products">Browse Products</Link>
           </Button>
         </div>
       )}

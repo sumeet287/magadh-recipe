@@ -2,13 +2,16 @@ import { Metadata } from "next";
 import { artisans } from "@/components/artisans/artisans-data";
 
 type Props = {
-  params: {
-    slug: string;
-  };
+  children: React.ReactNode;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const artist = artisans.find((a) => a.slug === params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const artist = artisans.find((a) => a.slug === resolvedParams.slug);
 
   if (!artist) {
     return {
@@ -22,10 +25,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ArtistLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ArtistLayout({ children }: Props) {
   return <>{children}</>;
 }

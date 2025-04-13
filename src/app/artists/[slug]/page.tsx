@@ -6,20 +6,19 @@ import { ProductCard } from "@/components/products/product-card";
 import { products } from "@/data/products";
 
 type Props = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
 export default async function ArtistProfilePage({ params }: Props) {
-  const artist = artisans.find((a) => a.slug === params.slug);
+  const resolvedParams = await params;
+  const artist = artisans.find((a) => a.slug === resolvedParams.slug);
 
   if (!artist) {
     notFound();
   }
 
   const artistProducts = products.filter(
-    (product) => product.category === artist.craftType
+    (product) => product.category === artist.craft
   );
 
   return (
@@ -49,7 +48,7 @@ export default async function ArtistProfilePage({ params }: Props) {
               📍 {artist.location}
             </p>
             <div className="flex flex-wrap gap-2">
-              {artist.awards.map((award, index) => (
+              {artist.awards.map((award: string, index: number) => (
                 <span
                   key={index}
                   className="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full text-sm"
