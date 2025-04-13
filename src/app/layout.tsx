@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://biharbazaar.in"),
   title: "Bihar Bazaar | Authentic Bihari Handicrafts Marketplace",
   description:
     "Discover authentic Bihari handicrafts - Madhubani, Tikuli, Wood Craft, and more. Supporting local artisans and preserving Bihar's rich cultural heritage through digital innovation.",

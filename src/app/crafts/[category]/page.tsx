@@ -4,14 +4,14 @@ import { notFound } from "next/navigation";
 // Define valid categories
 const validCategories = ["madhubani", "tikuli", "wood", "glass"];
 
-type Props = {
+type Props = Readonly<{
   params: { category: string };
-};
+}>;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { category } = await params;
   // Capitalize and format category name
-  const title =
-    params.category.charAt(0).toUpperCase() + params.category.slice(1);
+  const title = category.charAt(0).toUpperCase() + category.slice(1);
 
   return {
     title: `${title} Art | Bihar Bazaar`,
@@ -25,16 +25,18 @@ export function generateStaticParams() {
   }));
 }
 
-export default function CategoryPage({ params }: Props) {
-  if (!validCategories.includes(params.category)) {
+export default async function CategoryPage({ params }: Props) {
+  const { category } = await params;
+
+  if (!validCategories.includes(category)) {
     notFound();
   }
 
+  const title = category.charAt(0).toUpperCase() + category.slice(1);
+
   return (
     <main className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">
-        {params.category.charAt(0).toUpperCase() + params.category.slice(1)} Art
-      </h1>
+      <h1 className="text-4xl font-bold mb-8">{title} Art</h1>
       {/* Add your category-specific content */}
     </main>
   );
