@@ -19,15 +19,55 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { products } from "@/data/products";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ProductsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Initialize state from URL params with proper type checking
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "price-low" | "price-high">(
     "newest"
   );
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const page = searchParams.get("page");
+    const parsedPage = page ? parseInt(page) : 1;
+    return isNaN(parsedPage) ? 1 : parsedPage;
+  });
+  const [pageSize, setPageSize] = useState(() => {
+    const size = searchParams.get("size");
+    const parsedSize = size ? parseInt(size) : 10;
+    return isNaN(parsedSize) ? 10 : parsedSize;
+  });
+
+  // Add effect to sync with URL params when they change
+  useEffect(() => {
+    const page = searchParams.get("page");
+    const size = searchParams.get("size");
+
+    const parsedPage = page ? parseInt(page) : 1;
+    const parsedSize = size ? parseInt(size) : 10;
+
+    if (!isNaN(parsedPage) && parsedPage !== currentPage) {
+      setCurrentPage(parsedPage);
+    }
+
+    if (!isNaN(parsedSize) && parsedSize !== pageSize) {
+      setPageSize(parsedSize);
+    }
+  }, [searchParams]);
+
+  // Function to update URL and state
+  const updatePagination = (page: number, size: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    params.set("size", size.toString());
+    router.push(`/products?${params.toString()}`);
+    setCurrentPage(page);
+    setPageSize(size);
+  };
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -65,6 +105,15 @@ export default function ProductsPage() {
   useMemo(() => {
     setCurrentPage(1);
   }, [searchQuery, sortBy, pageSize]);
+
+  // Update handlers
+  const handlePageChange = (page: number) => {
+    updatePagination(page, pageSize);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    updatePagination(1, size); // Reset to page 1 when changing page size
+  };
 
   return (
     <main className="container mx-auto px-4 py-16">
@@ -112,7 +161,7 @@ export default function ProductsPage() {
               <span className="text-sm text-muted-foreground">Show</span>
               <Select
                 value={pageSize.toString()}
-                onValueChange={(value) => setPageSize(Number(value))}
+                onValueChange={(value) => handlePageSizeChange(Number(value))}
               >
                 <SelectTrigger className="w-[70px]">
                   <SelectValue />
@@ -166,8 +215,7 @@ export default function ProductsPage() {
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
-                  href="#"
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                   className={
                     currentPage === 1 ? "pointer-events-none opacity-50" : ""
                   }
@@ -177,8 +225,7 @@ export default function ProductsPage() {
               {[...Array(totalPages)].map((_, i) => (
                 <PaginationItem key={i + 1}>
                   <PaginationLink
-                    href="#"
-                    onClick={() => setCurrentPage(i + 1)}
+                    onClick={() => handlePageChange(i + 1)}
                     isActive={currentPage === i + 1}
                   >
                     {i + 1}
@@ -188,9 +235,8 @@ export default function ProductsPage() {
 
               <PaginationItem>
                 <PaginationNext
-                  href="#"
                   onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    handlePageChange(Math.min(totalPages, currentPage + 1))
                   }
                   className={
                     currentPage === totalPages
