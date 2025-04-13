@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import madhubani from "@/assets/art/madhubani_art.jpg";
 
 export const metadata: Metadata = {
   title: "All Products | Bihar Bazaar",
@@ -44,7 +45,7 @@ export default function ProductsPage() {
           id="1"
           name="Madhubani Painting - Krishna"
           price={2999}
-          images={["/products/madhubani-1.jpg"]}
+          images={[madhubani.src]}
           category="madhubani"
         />
       </div>

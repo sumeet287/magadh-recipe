@@ -16,17 +16,17 @@ export function PaymentSummary() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Payment Summary</CardTitle>
+      <Card className="border-0">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg">Payment Summary</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex justify-between">
+        <CardContent className="pt-2">
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Subtotal</span>
               <span>₹{subtotal.toLocaleString("en-IN")}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Shipping</span>
               <span>
                 {shipping === 0
@@ -34,8 +34,8 @@ export function PaymentSummary() {
                   : `₹${shipping.toLocaleString("en-IN")}`}
               </span>
             </div>
-            <Separator />
-            <div className="flex justify-between font-semibold text-lg">
+            <Separator className="my-1" />
+            <div className="flex justify-between text-sm font-semibold">
               <span>Total</span>
               <span>₹{total.toLocaleString("en-IN")}</span>
             </div>
