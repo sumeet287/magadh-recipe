@@ -15,8 +15,8 @@ export interface Product {
   price: number;
   category: ProductCategory;
   images: string[];
-  artisanId?: string;
   inStock?: boolean;
+  artisanId?: string;
   dimensions?: {
     length: number;
     width: number;

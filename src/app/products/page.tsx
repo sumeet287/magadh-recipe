@@ -8,10 +8,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ProductFilters } from "@/components/products/product-filters";
 import { ProductPagingInfo } from "@/components/products/product-paging-info";
 import { ProductPagination } from "@/components/products/product-pagination";
+import { AddressSelector } from "@/components/products/address-selector";
 
 export default function ProductsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [selectedAddressId, setSelectedAddressId] = useState("1");
 
   // Initialize state from URL params with proper type checking
   const [searchQuery, setSearchQuery] = useState("");
@@ -104,19 +106,21 @@ export default function ProductsPage() {
 
   return (
     <main className="container mx-auto px-4 py-16">
-      {/* Header Section */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Our Products</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold">Our Products</h1>
+          <AddressSelector
+            selectedAddressId={selectedAddressId}
+            onAddressChange={setSelectedAddressId}
+          />
+        </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
-          {/* Left side filters */}
           <ProductFilters
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             sortBy={sortBy}
             onSortChange={setSortBy}
           />
-
-          {/* Right side info */}
           <ProductPagingInfo
             startIndex={startIndex}
             pageSize={pageSize}

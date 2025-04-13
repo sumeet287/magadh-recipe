@@ -15,6 +15,7 @@ interface CartContextType {
   removeFromWishlist: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
+  clearWishlist: () => void;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -74,6 +75,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setCart([]);
   }, []);
 
+  const clearWishlist = useCallback(() => {
+    setWishlist([]);
+  }, []);
+
   return (
     <CartContext.Provider
       value={{
@@ -85,6 +90,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         removeFromWishlist,
         updateQuantity,
         clearCart,
+        clearWishlist,
       }}
     >
       {children}
