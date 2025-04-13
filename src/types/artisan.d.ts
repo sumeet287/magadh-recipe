@@ -1,9 +1,11 @@
+import { StaticImageData } from "next/image";
+
 declare type CraftType = "all" | "madhubani" | "tikuli" | "wood" | "glass";
 
 declare interface Artisan {
   id: number;
   name: string;
-  image: string;
+  image: StaticImageData;
   craft: string;
   craftType: CraftType;
   awards: string[];

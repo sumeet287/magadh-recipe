@@ -7,14 +7,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type SortOption = "newest" | "price-low" | "price-high";
-type StockFilter = "all" | "in-stock" | "out-of-stock";
+export type StockFilter = "all" | "in-stock" | "out-of-stock";
 
 interface ProductFiltersProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  sortBy: SortOption;
-  onSortChange: (sort: SortOption) => void;
+  sortBy: "newest" | "price-low" | "price-high";
+  onSortChange: (sort: "newest" | "price-low" | "price-high") => void;
   stockFilter: StockFilter;
   onStockFilterChange: (filter: StockFilter) => void;
 }
@@ -26,7 +25,7 @@ export function ProductFilters({
   onSortChange,
   stockFilter,
   onStockFilterChange,
-}: Readonly<ProductFiltersProps>) {
+}: ProductFiltersProps) {
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 w-full">
       <Input
@@ -66,7 +65,9 @@ export function ProductFilters({
         </Select>
         <Select
           value={sortBy}
-          onValueChange={(value: SortOption) => onSortChange(value)}
+          onValueChange={(value: "newest" | "price-low" | "price-high") =>
+            onSortChange(value)
+          }
         >
           <SelectTrigger className="w-[130px] hover:border-orange-200 active:scale-[0.98] transition-all">
             <SelectValue placeholder="Newest First" />

@@ -5,7 +5,10 @@ import { Separator } from "@/components/ui/separator";
 import type { ProductCategory } from "@/types/product";
 import { products } from "@/data/products";
 import { useState, useMemo } from "react";
-import { ProductFilters } from "@/components/products/product-filters";
+import {
+  ProductFilters,
+  type StockFilter,
+} from "@/components/products/product-filters";
 
 const validCategories: ProductCategory[] = [
   "madhubani",
@@ -52,6 +55,7 @@ export default function CategoryProductsPage({ params }: Props) {
   const [sortBy, setSortBy] = useState<"newest" | "price-low" | "price-high">(
     "newest"
   );
+  const [stockFilter, setStockFilter] = useState<StockFilter>("all");
 
   // Filter products by category and search query
   const filteredProducts = useMemo(() => {
@@ -60,9 +64,17 @@ export default function CategoryProductsPage({ params }: Props) {
     );
 
     if (searchQuery) {
-      result = result.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      result = result.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (product.description?.toLowerCase() || "").includes(
+            searchQuery.toLowerCase()
+          )
       );
+    }
+
+    if (stockFilter === "in-stock") {
+      result = result.filter((product) => product.inStock);
     }
 
     switch (sortBy) {
@@ -78,7 +90,7 @@ export default function CategoryProductsPage({ params }: Props) {
     }
 
     return result;
-  }, [category, searchQuery, sortBy]);
+  }, [category, searchQuery, sortBy, stockFilter]);
 
   return (
     <main className="container mx-auto px-4 py-16">
@@ -90,6 +102,8 @@ export default function CategoryProductsPage({ params }: Props) {
           onSearchChange={setSearchQuery}
           sortBy={sortBy}
           onSortChange={setSortBy}
+          stockFilter={stockFilter}
+          onStockFilterChange={setStockFilter}
         />
       </div>
 
