@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -22,10 +21,7 @@ export default function SignInPage() {
         </div>
 
         <div className="space-y-4">
-          <Button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="w-full bg-white text-slate-900 hover:bg-slate-100 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600"
-          >
+          <Button className="w-full bg-white text-slate-900 hover:bg-slate-100 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600">
             <svg
               className="w-5 h-5 mr-2"
               viewBox="0 0 24 24"
@@ -36,10 +32,7 @@ export default function SignInPage() {
             Continue with Google
           </Button>
 
-          <Button
-            onClick={() => signIn("github", { callbackUrl: "/" })}
-            className="w-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600"
-          >
+          <Button className="w-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600">
             <svg
               className="w-5 h-5 mr-2"
               viewBox="0 0 24 24"
