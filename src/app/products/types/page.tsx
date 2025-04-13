@@ -3,6 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import madhubani from "@/assets/art/madhubani_art.jpg";
+import tikuli from "@/assets/art/tikuli_art.jpeg";
+import wood from "@/assets/art/wood_art.jpeg";
+import glass from "@/assets/art/glass_art.png";
 
 export const metadata: Metadata = {
   title: "Craft Categories | Bihar Bazaar",
@@ -16,49 +20,49 @@ const categories = [
     name: "Madhubani Art",
     description:
       "Traditional folk art with intricate patterns and vibrant colors",
-    image: "/categories/madhubani.jpg",
+    image: madhubani,
   },
   {
     id: "tikuli",
     name: "Tikuli Art",
     description: "Traditional glass painting with intricate designs",
-    image: "/categories/tikuli.jpg",
+    image: tikuli,
   },
   {
     id: "wood",
     name: "Wood Craft",
     description: "Handcrafted wooden artifacts and furniture",
-    image: "/categories/wood.jpg",
+    image: wood,
   },
   {
     id: "glass",
     name: "Glass Work",
     description: "Traditional glass bangles and decorative items",
-    image: "/categories/glass.jpg",
+    image: glass,
   },
   {
     id: "bamboo",
     name: "Bamboo Craft",
     description: "Eco-friendly bamboo products and furniture",
-    image: "/categories/bamboo.jpg",
+    image: madhubani,
   },
   {
     id: "sujani",
     name: "Sujani",
     description: "Traditional quilt work with intricate embroidery",
-    image: "/categories/sujani.jpg",
+    image: wood,
   },
   {
     id: "sikki",
     name: "Sikki Craft",
     description: "Traditional grass weaving and basketry",
-    image: "/categories/sikki.jpg",
+    image: tikuli,
   },
   {
     id: "lac",
     name: "Lac Bangles",
     description: "Traditional lacquer work and bangles",
-    image: "/categories/lac.jpg",
+    image: glass,
   },
 ];
 

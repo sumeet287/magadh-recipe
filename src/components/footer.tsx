@@ -77,13 +77,7 @@ export function Footer() {
                 placeholder="Enter your email"
                 className="bg-slate-800 border-slate-700"
               />
-              <Button
-                /* className="bg-orange-600 hover:bg-orange-700" */ variant={
-                  "secondary"
-                }
-              >
-                Subscribe
-              </Button>
+              <Button variant={"secondary"}>Subscribe</Button>
             </div>
           </div>
         </div>

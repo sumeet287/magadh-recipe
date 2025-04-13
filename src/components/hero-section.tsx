@@ -1,11 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
 import tikuliArt from "@/assets/art/tikuli_art.jpeg";
 import woodArt from "@/assets/art/wood_art.jpeg";
 import glassArt from "@/assets/art/glass_art.png";
 
 export function HeroSection() {
+  const router = useRouter();
+
   return (
     <section className="relative min-h-[80vh] bg-gradient-to-b from-amber-50 to-orange-100 dark:from-slate-900 dark:to-slate-800">
       {/* Background Pattern */}
@@ -26,11 +31,21 @@ export function HeroSection() {
               se connect karne ka platform. Madhubani, Tikuli, Glass art aur
               bahut saare authentic handicrafts ek hi jagah par.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-orange-600 hover:bg-orange-700">
+
+            <div className="flex flex-wrap gap-4 relative z-10">
+              <Button
+                size="lg"
+                className="bg-orange-600 hover:bg-orange-700 relative z-10"
+                onClick={() => router.push("/products")}
+              >
                 Shop Now
               </Button>
-              <Button size="lg" variant="outline">
+              <Button
+                size="lg"
+                variant="outline"
+                className="relative z-10"
+                onClick={() => router.push("/products/types")}
+              >
                 Explore Crafts
               </Button>
             </div>
