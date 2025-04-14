@@ -6,6 +6,7 @@ import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { CartProvider } from "@/contexts/cart-context";
 import { AuthProvider } from "@/contexts/auth-context";
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,9 +45,12 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <BackgroundGradient>
-              <Header />
-              {children}
-              <Toaster position="top-center" />
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <Toaster position="top-center" />
+              </div>
             </BackgroundGradient>
           </CartProvider>
         </AuthProvider>

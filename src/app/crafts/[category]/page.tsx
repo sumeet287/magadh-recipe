@@ -1,22 +1,21 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import CategoryContent from "@/components/Category/category-content";
+import { categoryContent, validCategories } from "@/config/category-content";
 
-// Define valid categories
-const validCategories = ["madhubani", "tikuli", "wood", "glass"];
+type Props = Readonly<{
+  params: Promise<{ category: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}>;
 
-type Params = Promise<{ category: string }>;
-
-export async function generateMetadata(props: {
-  params: Params;
-}): Promise<Metadata> {
-  const params = await props.params;
-  // Capitalize and format category name
-  const title =
-    params.category.charAt(0).toUpperCase() + params.category.slice(1);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const category =
+    categoryContent[(await params).category as keyof typeof categoryContent];
+  if (!category) return notFound();
 
   return {
-    title: `${title} Art | Bihar Bazaar`,
-    description: `Explore authentic ${title} art and crafts from Bihar`,
+    title: `${category.title} | Bihar Bazaar`,
+    description: category.description,
   };
 }
 
@@ -26,20 +25,25 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function CategoryPage(props: { params: Params }) {
-  const params = await props.params;
+export default async function CategoryPage({ params }: Props) {
+  const { category } = await params;
 
-  if (!validCategories.includes(params.category)) {
-    notFound();
+  if (!validCategories.includes(category)) {
+    console.log("Invalid category:", category);
+    return notFound();
   }
 
-  const title =
-    params.category.charAt(0).toUpperCase() + params.category.slice(1);
+  const categoryKey = category as keyof typeof categoryContent;
+  const categoryData = categoryContent[categoryKey];
+
+  if (!categoryData) {
+    console.error("Category not found:", category);
+    return notFound();
+  }
 
   return (
-    <main className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">{title} Art</h1>
-      {/* Add your category-specific content */}
-    </main>
+    <div className="min-h-screen">
+      <CategoryContent category={categoryData} params={{ category }} />
+    </div>
   );
 }
