@@ -2,21 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Camera, Loader2, User, MapPin } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ProfileImage } from "@/components/profile/profile-image";
+import { ContactInfo } from "@/components/profile/contact-info";
+import { AddressInfo } from "@/components/profile/address-info";
 
 interface UserProfile {
   phoneNumber: string;
@@ -61,15 +54,6 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.3 },
-  },
-};
-
 export default function ProfilePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +70,6 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    // Check if user is logged in
     const isAuthenticated = localStorage.getItem("isAuthenticated");
     const userPhone = localStorage.getItem("userPhone");
 
@@ -95,7 +78,6 @@ export default function ProfilePage() {
       return;
     }
 
-    // Load profile data from localStorage or API
     const savedProfile = localStorage.getItem("userProfile");
     if (savedProfile) {
       setProfile({ ...JSON.parse(savedProfile), phoneNumber: userPhone });
@@ -119,8 +101,6 @@ export default function ProfilePage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Here you would typically upload to a storage service
-    // For now, we'll use a local URL
     const reader = new FileReader();
     reader.onloadend = () => {
       setProfile((prev) => ({
@@ -147,7 +127,6 @@ export default function ProfilePage() {
     setIsLoading(true);
 
     try {
-      // Here you would typically save to an API
       localStorage.setItem("userProfile", JSON.stringify(profile));
       toast.success("Profile updated successfully! 🎉");
     } catch (error) {
@@ -179,162 +158,41 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col items-center gap-4"
-            >
-              <div className="relative group">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="w-28 h-28 rounded-full overflow-hidden bg-gray-100 relative border-4 border-orange-200"
-                >
-                  {profile.profileImage ? (
-                    <Image
-                      src={profile.profileImage}
-                      alt="Profile"
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <User className="w-14 h-14 text-gray-400" />
-                    </div>
-                  )}
-                </motion.div>
-                <label
-                  htmlFor="profileImage"
-                  className="absolute bottom-0 right-0 p-2 bg-orange-500 rounded-full cursor-pointer hover:bg-orange-600 transition-all duration-300 transform hover:scale-110"
-                >
-                  <Camera className="h-5 w-5 text-white" />
-                  <input
-                    type="file"
-                    id="profileImage"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                  />
-                </label>
-              </div>
-            </motion.div>
+            <ProfileImage
+              profileImage={profile.profileImage}
+              onImageUpload={handleImageUpload}
+            />
 
-            <motion.div variants={itemVariants} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="phoneNumber">Phone Number</Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  value={profile.phoneNumber}
-                  disabled
-                  className="bg-gray-50 font-medium"
-                />
-              </div>
+            <ContactInfo
+              phoneNumber={profile.phoneNumber}
+              name={profile.name}
+              email={profile.email}
+              onInputChange={handleInputChange}
+            />
 
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={profile.name}
-                  onChange={handleInputChange}
-                  placeholder="Enter your full name"
-                  className="focus:border-orange-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={profile.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter your email"
-                  className="focus:border-orange-500"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="space-y-6">
-              <div className="relative space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <div className="relative">
-                  <Input
-                    id="address"
-                    name="address"
-                    value={profile.address}
-                    onChange={handleInputChange}
-                    onFocus={() => setShowSuggestions(true)}
-                    placeholder="Enter your address"
-                    className="focus:border-orange-500"
-                  />
-                  <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                </div>
-                {showSuggestions && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute z-10 w-full mt-1 bg-white border rounded-md shadow-lg"
-                  >
-                    {suggestedAddresses.map((addr, index) => (
-                      <div
-                        key={index}
-                        className="px-4 py-2 hover:bg-orange-50 cursor-pointer"
-                        onClick={() => handleSuggestedAddress(addr)}
-                      >
-                        {addr}
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="city"
-                    name="city"
-                    value={profile.city}
-                    onChange={handleInputChange}
-                    placeholder="City"
-                    className="focus:border-orange-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="state">State</Label>
-                  <Select
-                    value={profile.state}
-                    onValueChange={handleStateChange}
-                  >
-                    <SelectTrigger className="focus:border-orange-500">
-                      <SelectValue placeholder="Select state" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {indianStates.map((state) => (
-                        <SelectItem key={state} value={state}>
-                          {state}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="pincode">PIN Code</Label>
-                  <Input
-                    id="pincode"
-                    name="pincode"
-                    value={profile.pincode}
-                    onChange={handleInputChange}
-                    placeholder="PIN Code"
-                    className="focus:border-orange-500"
-                  />
-                </div>
-              </div>
-            </motion.div>
+            <AddressInfo
+              address={profile.address}
+              city={profile.city}
+              state={profile.state}
+              pincode={profile.pincode}
+              showSuggestions={showSuggestions}
+              suggestedAddresses={suggestedAddresses}
+              indianStates={indianStates}
+              onInputChange={handleInputChange}
+              onStateChange={handleStateChange}
+              onAddressSelect={handleSuggestedAddress}
+              setShowSuggestions={setShowSuggestions}
+            />
 
             <motion.div
-              variants={itemVariants}
+              variants={{
+                hidden: { opacity: 0, x: -20 },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.3 },
+                },
+              }}
               className="pt-4"
               whileHover={{ scale: 1.02 }}
             >
