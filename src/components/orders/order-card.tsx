@@ -31,7 +31,7 @@ export function OrderCard({
   onCancelOrder,
   onReorder,
   isLoading,
-}: OrderCardProps) {
+}: Readonly<OrderCardProps>) {
   if (isLoading) {
     return <Skeleton className="h-[400px] w-full" />;
   }
@@ -161,9 +161,9 @@ export function OrderCard({
                     transition={{ duration: 0.3 }}
                     className="mt-4 space-y-4"
                   >
-                    {order.trackingInfo.map((track, index) => (
+                    {order.trackingInfo.map((track) => (
                       <div
-                        key={index}
+                        key={`${order.id}-${track.timestamp}`}
                         className="flex gap-4 p-3 rounded-lg bg-gray-50"
                       >
                         <div className="flex-1">

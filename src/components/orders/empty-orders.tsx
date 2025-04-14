@@ -5,7 +5,7 @@ interface EmptyOrdersProps {
   hasSearchQuery: boolean;
 }
 
-export function EmptyOrders({ hasSearchQuery }: EmptyOrdersProps) {
+export function EmptyOrders({ hasSearchQuery }: Readonly<EmptyOrdersProps>) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
