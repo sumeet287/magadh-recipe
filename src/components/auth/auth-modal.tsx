@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/dialog";
 import { LoginOptions } from "./login-options";
 import { PhoneLogin } from "./phone-login";
+import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
 
 interface AuthModalProps {
   children: React.ReactNode;
 }
 
 export function AuthModal({ children }: Readonly<AuthModalProps>) {
+  const { login } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isPhoneLogin, setIsPhoneLogin] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -40,8 +43,10 @@ export function AuthModal({ children }: Readonly<AuthModalProps>) {
       // Simulating OTP send
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setConfirmationResult(true);
+      toast.success("OTP sent successfully!");
     } catch (error) {
       console.error("Error sending OTP:", error);
+      toast.error("Failed to send OTP");
     } finally {
       setLoading(false);
     }
@@ -53,12 +58,15 @@ export function AuthModal({ children }: Readonly<AuthModalProps>) {
 
     try {
       if (otp === "123456") {
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("userPhone", phoneNumber);
+        login(phoneNumber);
         setIsOpen(false);
+        toast.success("Login successful!");
+      } else {
+        toast.error("Invalid OTP");
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
+      toast.error("Verification failed");
     } finally {
       setLoading(false);
     }

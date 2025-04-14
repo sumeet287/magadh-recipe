@@ -1,64 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { LogOut, User, Settings } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
+import { toast } from "sonner";
 
 export function ProfileSection() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userPhone, setUserPhone] = useState<string | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const authStatus = localStorage.getItem("isAuthenticated");
-    const phone = localStorage.getItem("userPhone");
-    setIsLoggedIn(authStatus === "true");
-    setUserPhone(phone);
-  }, []);
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("userPhone");
-    setIsLoggedIn(false);
-    setUserPhone(null);
+    logout();
+    toast.success("Logged out successfully!");
     router.push("/");
   };
-
-  if (!isLoggedIn) return null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <Button variant="outline" size="icon">
           <User className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <div className="px-2 py-1.5 text-sm font-medium">
-          {userPhone ? `+91 ${userPhone}` : "User"}
-        </div>
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile" className="cursor-pointer">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>My Profile</span>
-          </Link>
+          <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/orders">Orders</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
+          className="text-red-600 focus:text-red-600"
           onClick={handleLogout}
-          className="text-red-600 cursor-pointer"
         >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Logout</span>
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

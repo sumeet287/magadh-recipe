@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { CartProvider } from "@/contexts/cart-context";
+import { AuthProvider } from "@/contexts/auth-context";
 import { Header } from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -40,13 +41,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CartProvider>
-          <BackgroundGradient>
-            <Header />
-            {children}
-            <Toaster position="top-center" />
-          </BackgroundGradient>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <BackgroundGradient>
+              <Header />
+              {children}
+              <Toaster position="top-center" />
+            </BackgroundGradient>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
