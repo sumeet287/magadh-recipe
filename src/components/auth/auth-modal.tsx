@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/input-otp";
 import { RecaptchaVerifier } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Phone, ArrowLeft, X } from "lucide-react";
 import { toast } from "sonner";
 
@@ -89,22 +88,22 @@ export function AuthModal({ children }: AuthModalProps) {
 
     setLoading(true);
     try {
-      const response = await axios.post("/api/auth/verify-otp", {
-        phoneNumber: phoneNumber,
-        otp: otp,
-      });
-
-      if (response.data.success) {
+      // For demo purposes, accept "123456" as valid OTP
+      if (otp === "123456") {
         toast.success("Login Successful", {
           description: "Welcome to Bihar Bazaar!",
         });
         setIsOpen(false);
         router.push("/dashboard");
-      } else {
-        toast.error("Invalid OTP", {
-          description: "Please check the code and try again",
-        });
+        // Store auth state in localStorage
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("userPhone", phoneNumber);
+        return;
       }
+
+      toast.error("Invalid OTP", {
+        description: "Please check the code and try again",
+      });
     } catch (error) {
       console.error("Error verifying OTP:", error);
       toast.error("Verification Failed", {

@@ -16,9 +16,17 @@ import {
 import MobileNavigation from "@/components/MobileNavigation";
 import { Badge } from "@/components/ui/badge";
 import { AuthModal } from "./auth/auth-modal";
+import { ProfileSection } from "./auth/profile-section";
+import { useState, useEffect } from "react";
 
 export function Header() {
   const { cart, wishlist } = useCart();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const authStatus = localStorage.getItem("isAuthenticated");
+    setIsLoggedIn(authStatus === "true");
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-slate-900/95">
@@ -175,12 +183,16 @@ export function Header() {
               </Link>
             </Button>
             <div className="hidden md:flex items-center gap-2 ml-4">
-              <AuthModal>
-                <Button variant="outline" size="sm">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Login
-                </Button>
-              </AuthModal>
+              {isLoggedIn ? (
+                <ProfileSection />
+              ) : (
+                <AuthModal>
+                  <Button variant="outline" size="sm">
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Login
+                  </Button>
+                </AuthModal>
+              )}
             </div>
           </nav>
         </div>

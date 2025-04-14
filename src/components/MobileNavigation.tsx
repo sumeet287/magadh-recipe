@@ -6,6 +6,8 @@ import {
   Calendar,
   FileText,
   Menu,
+  Settings,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -17,8 +19,25 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { AuthModal } from "./auth/auth-modal";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const MobileNavigation = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const authStatus = localStorage.getItem("isAuthenticated");
+    setIsLoggedIn(authStatus === "true");
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userPhone");
+    setIsLoggedIn(false);
+    router.push("/");
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild className="md:hidden">
@@ -122,20 +141,42 @@ const MobileNavigation = () => {
           </Link>
 
           <div className="flex flex-col gap-3 mt-6 px-2">
-            <AuthModal>
-              <Button
-                variant="outline"
-                className="w-full py-5 text-base font-medium border-2 hover:bg-orange-50"
-              >
-                Login
-              </Button>
-            </AuthModal>
-            <Button
-              asChild
-              className="w-full py-5 text-base font-medium hover:bg-orange-600"
-            >
-              <Link href="/auth/signup">Sign Up</Link>
-            </Button>
+            {isLoggedIn ? (
+              <>
+                <Link
+                  href="/profile"
+                  className="flex items-center px-2 py-3 text-base font-medium hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-all duration-200"
+                >
+                  <Settings className="w-5 h-5 mr-3" />
+                  My Profile
+                </Link>
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="w-full py-5 text-base font-medium border-2 hover:bg-red-50 text-red-600 hover:text-red-700"
+                >
+                  <LogOut className="w-5 h-5 mr-3" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <AuthModal>
+                  <Button
+                    variant="outline"
+                    className="w-full py-5 text-base font-medium border-2 hover:bg-orange-50"
+                  >
+                    Login
+                  </Button>
+                </AuthModal>
+                <Button
+                  asChild
+                  className="w-full py-5 text-base font-medium hover:bg-orange-600"
+                >
+                  <Link href="/auth/signup">Sign Up</Link>
+                </Button>
+              </>
+            )}
           </div>
         </nav>
       </SheetContent>

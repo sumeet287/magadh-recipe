@@ -1,25 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { CartProvider } from "@/contexts/cart-context";
 import { Toaster } from "sonner";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
+import { CartProvider } from "@/contexts/cart-context";
+import { Header } from "@/components/header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://biharbazaar.in"),
-  title: "Bihar Bazaar | Authentic Bihari Handicrafts Marketplace",
+  title: "Bihar Bazaar - Handcrafted Treasures from Bihar",
   description:
-    "Discover authentic Bihari handicrafts - Madhubani, Tikuli, Wood Craft, and more. Supporting local artisans and preserving Bihar's rich cultural heritage through digital innovation.",
+    "Discover authentic handcrafted products from Bihar's skilled artisans",
   keywords:
     "Bihar handicrafts, Madhubani art, Tikuli art, Wood craft, Bihar artisans, Indian handicrafts, traditional art",
   authors: [{ name: "Bihar Bazaar" }],
@@ -38,29 +30,22 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Bihar Bazaar | Authentic Bihari Handicrafts Marketplace",
-    description:
-      "Discover authentic Bihari handicrafts - Madhubani, Tikuli, Wood Craft, and more.",
-    images: ["/logo.png"],
-  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={inter.className}>
         <CartProvider>
-          <Header />
-          {children}
-          <Toaster />
+          <BackgroundGradient>
+            <Header />
+            {children}
+            <Toaster position="top-center" />
+          </BackgroundGradient>
         </CartProvider>
       </body>
     </html>
