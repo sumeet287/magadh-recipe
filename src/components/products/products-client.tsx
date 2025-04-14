@@ -14,11 +14,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
 
 export function ProductsClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedAddressId, setSelectedAddressId] = useState("1");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Initialize state from URL params with proper type checking
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,6 +57,14 @@ export function ProductsClient() {
       setPageSize(parsedSize);
     }
   }, [searchParams, currentPage, pageSize]);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Function to update URL and state
   const updatePagination = (page: number, size: number) => {
@@ -123,6 +133,36 @@ export function ProductsClient() {
     updatePagination(1, size); // Reset to page 1 when changing page size
   };
 
+  const renderProducts = () => {
+    if (isLoading) {
+      return Array(8)
+        .fill(0)
+        .map((_, i) => <ProductCardSkeleton key={`skeleton-${i}`} />);
+    }
+
+    if (paginatedProducts.length > 0) {
+      return paginatedProducts.map((product) => (
+        <ProductCard
+          key={product.id}
+          id={product.id}
+          name={product.name}
+          price={product.price}
+          images={product.images}
+          category={product.category}
+        />
+      ));
+    }
+
+    return (
+      <div className="flex flex-col items-center justify-center h-[400px] text-center">
+        <p className="text-xl text-muted-foreground mb-2">No products found</p>
+        <p className="text-sm text-muted-foreground">
+          Try adjusting your search or filters
+        </p>
+      </div>
+    );
+  };
+
   return (
     <main className="container mx-auto px-4 py-6">
       <div className="flex flex-col gap-6">
@@ -173,27 +213,7 @@ export function ProductsClient() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {paginatedProducts.length > 0 ? (
-            paginatedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                images={product.images}
-                category={product.category}
-              />
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center h-[400px] text-center">
-              <p className="text-xl text-muted-foreground mb-2">
-                No products found
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Try adjusting your search or filters
-              </p>
-            </div>
-          )}
+          {renderProducts()}
         </div>
       </div>
 

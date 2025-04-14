@@ -1,25 +1,46 @@
+"use client";
+
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { useState, useEffect } from "react";
 import { artisans } from "@/components/artisans/artisans-data";
 import { Separator } from "@/components/ui/separator";
 import { ProductCard } from "@/components/products/product-card";
+import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
 import { products } from "@/data/products";
+import type { Product } from "@/types/product";
+import type { Artisan } from "@/types/artisan";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function ArtistProfilePage({ params }: Props) {
-  const resolvedParams = await params;
-  const artist = artisans.find((a) => a.slug === resolvedParams.slug);
+export default function ArtistProfilePage({ params }: Props) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [artist, setArtist] = useState<Artisan | null>(null);
+  const [artistProducts, setArtistProducts] = useState<Product[]>([]);
 
-  if (!artist) {
-    notFound();
-  }
+  useEffect(() => {
+    async function loadData() {
+      const resolvedParams = await params;
+      const foundArtist = artisans.find((a) => a.slug === resolvedParams.slug);
 
-  const artistProducts = products.filter(
-    (product) => product.category === artist.craft
-  );
+      if (!foundArtist) {
+        notFound();
+        return;
+      }
+
+      setArtist(foundArtist);
+      setArtistProducts(
+        products.filter((product) => product.category === foundArtist.craft)
+      );
+      setIsLoading(false);
+    }
+
+    loadData();
+  }, [params]);
+
+  if (!artist) return null;
 
   return (
     <main className="container mx-auto px-4 py-16">
@@ -67,16 +88,20 @@ export default async function ArtistProfilePage({ params }: Props) {
       <div>
         <h2 className="text-2xl font-bold mb-6">Featured Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {artistProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              images={product.images}
-              category={product.category}
-            />
-          ))}
+          {isLoading
+            ? Array(6)
+                .fill(0)
+                .map((_, i) => <ProductCardSkeleton key={`skeleton-${i}`} />)
+            : artistProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  images={product.images}
+                  category={product.category}
+                />
+              ))}
         </div>
       </div>
     </main>

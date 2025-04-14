@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ProductCard } from "@/components/products/product-card";
 import { Separator } from "@/components/ui/separator";
 import type { Product } from "@/types/product";
@@ -8,6 +8,7 @@ import {
   ProductFilters,
   type StockFilter,
 } from "@/components/products/product-filters";
+import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
 
 type ClientProductsPageProps = {
   title: string;
@@ -18,6 +19,7 @@ export function ClientProductsPage({
   title,
   initialProducts,
 }: ClientProductsPageProps) {
+  const [isLoading, setIsLoading] = useState(true);
   // Filter and search state
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "price-low" | "price-high">(
@@ -55,6 +57,44 @@ export function ClientProductsPage({
     }
   }, [initialProducts, searchQuery, sortBy, stockFilter]);
 
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const renderProducts = () => {
+    if (isLoading) {
+      return Array(8)
+        .fill(0)
+        .map((_, i) => <ProductCardSkeleton key={`skeleton-${i}`} />);
+    }
+
+    if (filteredProducts.length > 0) {
+      return filteredProducts.map((product) => (
+        <ProductCard
+          key={product.id}
+          id={product.id}
+          name={product.name}
+          price={product.price}
+          images={product.images}
+          category={product.category}
+        />
+      ));
+    }
+
+    return (
+      <div className="col-span-full text-center py-12">
+        <p className="text-xl text-muted-foreground mb-2">No products found</p>
+        <p className="text-sm text-muted-foreground">
+          Try adjusting your search or filters
+        </p>
+      </div>
+    );
+  };
+
   return (
     <main className="container mx-auto px-4 py-16">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
@@ -73,27 +113,7 @@ export function ClientProductsPage({
       <Separator className="my-6" />
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              images={product.images}
-              category={product.category}
-            />
-          ))
-        ) : (
-          <div className="col-span-full text-center py-12">
-            <p className="text-xl text-muted-foreground mb-2">
-              No products found
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Try adjusting your search or filters
-            </p>
-          </div>
-        )}
+        {renderProducts()}
       </div>
     </main>
   );

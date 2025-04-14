@@ -27,13 +27,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { Product } from "@/types/product";
+import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
 
 export function ClientProductPage({ id }: { id: string }) {
   const { addToCart, addToWishlist, wishlist, removeFromWishlist } = useCart();
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const product = products.find((p) => p.id === id) as Product | undefined;
@@ -91,6 +98,33 @@ export function ClientProductPage({ id }: { id: string }) {
         window.open(`https://wa.me/?text=${text} ${url}`, "_blank");
         break;
     }
+  };
+
+  const renderRelatedProducts = () => {
+    if (isLoading) {
+      return Array(4)
+        .fill(0)
+        .map((_, i) => <ProductCardSkeleton key={`skeleton-${i}`} />);
+    }
+
+    if (relatedProducts.length > 0) {
+      return relatedProducts.map((product) => (
+        <ProductCard
+          key={product.id}
+          id={product.id}
+          name={product.name}
+          price={product.price}
+          images={product.images}
+          category={product.category}
+        />
+      ));
+    }
+
+    return (
+      <div className="col-span-full text-center py-8">
+        <p className="text-muted-foreground">No related products found</p>
+      </div>
+    );
   };
 
   if (!isClient) {
@@ -302,23 +336,12 @@ export function ClientProductPage({ id }: { id: string }) {
       </div>
 
       {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-8">Related Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                images={product.images}
-                category={product.category}
-              />
-            ))}
-          </div>
+      <div className="mt-16">
+        <h2 className="text-2xl font-bold mb-8">Related Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {renderRelatedProducts()}
         </div>
-      )}
+      </div>
     </main>
   );
 }
