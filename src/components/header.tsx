@@ -31,11 +31,11 @@ export function Header() {
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/logo.png"
+                src="/Bihar_Bazaar.png"
                 alt="Bihar Bazaar Logo"
                 width={100}
                 height={100}
-                className="dark:invert"
+                className="dark:invert scale-75"
               />
               <span className="text-xl font-bold text-orange-600">
                 Bihar Bazaar
