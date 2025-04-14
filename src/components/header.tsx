@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Heart, LogIn, UserPlus } from "lucide-react";
+import { ShoppingCart, Heart, LogIn } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import MobileNavigation from "@/components/MobileNavigation";
 import { Badge } from "@/components/ui/badge";
+import { AuthModal } from "./auth/auth-modal";
 
 export function Header() {
   const { cart, wishlist } = useCart();
@@ -174,18 +175,12 @@ export function Header() {
               </Link>
             </Button>
             <div className="hidden md:flex items-center gap-2 ml-4">
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/auth/signin">
-                  <LogIn className="h-4 w-4" />
+              <AuthModal>
+                <Button variant="outline" size="sm">
+                  <LogIn className="h-4 w-4 mr-2" />
                   Login
-                </Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link href="/auth/signup">
-                  <UserPlus className="h-4 w-4" />
-                  Sign Up
-                </Link>
-              </Button>
+                </Button>
+              </AuthModal>
             </div>
           </nav>
         </div>

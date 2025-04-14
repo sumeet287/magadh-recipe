@@ -16,6 +16,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { AuthModal } from "./auth/auth-modal";
 
 const MobileNavigation = () => {
   return (
@@ -121,13 +122,14 @@ const MobileNavigation = () => {
           </Link>
 
           <div className="flex flex-col gap-3 mt-6 px-2">
-            <Button
-              asChild
-              variant="outline"
-              className="w-full py-5 text-base font-medium border-2 hover:bg-orange-50"
-            >
-              <Link href="/auth/signin">Login</Link>
-            </Button>
+            <AuthModal>
+              <Button
+                variant="outline"
+                className="w-full py-5 text-base font-medium border-2 hover:bg-orange-50"
+              >
+                Login
+              </Button>
+            </AuthModal>
             <Button
               asChild
               className="w-full py-5 text-base font-medium hover:bg-orange-600"
