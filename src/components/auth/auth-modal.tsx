@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { LoginOptions } from "./login-options";
 import { PhoneLogin } from "./phone-login";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 interface AuthModalProps {
@@ -21,66 +21,126 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ children }: Readonly<AuthModalProps>) {
-  const { login } = useAuth();
+  const {
+    startAuth,
+    verifyOtpAndProceed,
+    updateUserProfile,
+    authState,
+    isLoading,
+    sendOtp,
+    setAuthState,
+    setIsLoading,
+  } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isPhoneLogin, setIsPhoneLogin] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
-  const [confirmationResult, setConfirmationResult] = useState<boolean | null>(
-    null
-  );
-  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
 
-  const handleGoogleLogin = async () => {
-    // Google login implementation
+  // Reset all states when modal closes
+  const handleModalClose = () => {
+    setIsOpen(false);
+    setIsPhoneLogin(false);
+    setPhoneNumber("");
+    setOtp("");
+    setName("");
+    setAuthState({
+      isNewUser: false,
+      needsOtp: false,
+      needsName: false,
+      phoneNumber: "",
+      name: "",
+    });
   };
 
   const handlePhoneLogin = async () => {
-    if (!phoneNumber) return;
-    setLoading(true);
+    if (!phoneNumber || phoneNumber.length < 10) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
 
     try {
-      // Simulating OTP send
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setConfirmationResult(true);
+      setIsLoading(true);
+
+      // If we haven't checked user status yet
+      if (!authState.phoneNumber) {
+        await startAuth(phoneNumber);
+        setIsLoading(false);
+        return;
+      }
+
+      // At this point, we know if it's a new user or not
+      if (authState.isNewUser) {
+        if (!name || name.trim().length < 2) {
+          toast.error("Please enter your full name");
+          return;
+        }
+        // Now we can send OTP with name
+        await sendOtp({ phoneNumber, name });
+      } else {
+        // For existing users, directly send OTP
+        await sendOtp({ phoneNumber });
+      }
+
+      setAuthState((prev) => ({ ...prev, needsOtp: true }));
       toast.success("OTP sent successfully!");
     } catch (error) {
-      console.error("Error sending OTP:", error);
-      toast.error("Failed to send OTP");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to send OTP"
+      );
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const handleVerifyOTP = async () => {
-    if (!otp) return;
-    setLoading(true);
+    if (!otp || otp.length !== 6) {
+      toast.error("Please enter a valid 6-digit OTP");
+      return;
+    }
 
     try {
-      if (otp === "123456") {
-        login(phoneNumber);
-        setIsOpen(false);
-        toast.success("Login successful!");
-      } else {
-        toast.error("Invalid OTP");
+      setIsLoading(true);
+      await verifyOtpAndProceed(otp);
+
+      // For new users, update profile with name
+      if (authState.isNewUser) {
+        await updateUserProfile(name);
       }
+
+      handleModalClose();
+      toast.success("Login successful!");
     } catch (error) {
-      console.error("Error verifying OTP:", error);
-      toast.error("Verification failed");
+      toast.error(
+        error instanceof Error ? error.message : "OTP verification failed"
+      );
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const handleBack = () => {
     setIsPhoneLogin(false);
-    setConfirmationResult(null);
     setOtp("");
     setPhoneNumber("");
+    setName("");
+    setAuthState({
+      isNewUser: false,
+      needsOtp: false,
+      needsName: false,
+      phoneNumber: "",
+      name: "",
+    });
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) handleModalClose();
+        else setIsOpen(true);
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[400px] p-4 pt-6 sm:pt-8 w-[calc(100%-32px)] mx-auto">
         <AnimatePresence mode="wait">
@@ -101,21 +161,21 @@ export function AuthModal({ children }: Readonly<AuthModalProps>) {
 
             <div className="space-y-6">
               {!isPhoneLogin ? (
-                <LoginOptions
-                  setIsPhoneLogin={setIsPhoneLogin}
-                  handleGoogleLogin={handleGoogleLogin}
-                />
+                <LoginOptions setIsPhoneLogin={setIsPhoneLogin} />
               ) : (
                 <PhoneLogin
                   phoneNumber={phoneNumber}
                   setPhoneNumber={setPhoneNumber}
                   otp={otp}
                   setOtp={setOtp}
-                  confirmationResult={confirmationResult}
-                  loading={loading}
+                  confirmationResult={authState.needsOtp}
+                  loading={isLoading}
                   handlePhoneLogin={handlePhoneLogin}
                   handleVerifyOTP={handleVerifyOTP}
                   handleBack={handleBack}
+                  isNewUser={authState.isNewUser}
+                  name={name}
+                  setName={setName}
                 />
               )}
             </div>

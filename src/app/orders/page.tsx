@@ -17,7 +17,7 @@ import ManishaJha from "@/assets/artist/Smt_Manisha_Devi.png";
 const demoOrders: Order[] = [
   {
     id: "ORD001",
-    date: "2024-03-15",
+    date: "2025-03-15",
     status: "delivered",
     items: [
       {
@@ -41,32 +41,32 @@ const demoOrders: Order[] = [
       {
         status: "Order Placed",
         location: "Patna, Bihar",
-        timestamp: "2024-03-15T10:00:00",
+        timestamp: "2025-03-15T10:00:00",
         description: "Your order has been placed successfully",
       },
       {
         status: "Processing",
         location: "Patna, Bihar",
-        timestamp: "2024-03-15T12:30:00",
+        timestamp: "2025-03-15T12:30:00",
         description: "Your order is being processed",
       },
       {
         status: "Shipped",
         location: "Patna, Bihar",
-        timestamp: "2024-03-16T09:15:00",
+        timestamp: "2025-03-16T09:15:00",
         description: "Your order has been shipped",
       },
       {
         status: "Delivered",
         location: "Patna, Bihar",
-        timestamp: "2024-03-18T14:20:00",
+        timestamp: "2025-03-18T14:20:00",
         description: "Your order has been delivered",
       },
     ],
   },
   {
     id: "ORD002",
-    date: "2024-03-10",
+    date: "2025-03-10",
     status: "shipped",
     items: [
       {
@@ -83,26 +83,26 @@ const demoOrders: Order[] = [
       {
         status: "Order Placed",
         location: "Muzaffarpur, Bihar",
-        timestamp: "2024-03-10T11:00:00",
+        timestamp: "2025-03-10T11:00:00",
         description: "Your order has been placed successfully",
       },
       {
         status: "Processing",
         location: "Muzaffarpur, Bihar",
-        timestamp: "2024-03-10T14:30:00",
+        timestamp: "2025-03-10T14:30:00",
         description: "Your order is being processed",
       },
       {
         status: "Shipped",
         location: "Muzaffarpur, Bihar",
-        timestamp: "2024-03-11T10:15:00",
+        timestamp: "2025-03-11T10:15:00",
         description: "Your order has been shipped",
       },
     ],
   },
   {
     id: "ORD003",
-    date: "2024-03-05",
+    date: "2025-03-05",
     status: "pending",
     items: [
       {
@@ -119,13 +119,13 @@ const demoOrders: Order[] = [
       {
         status: "Order Placed",
         location: "Muzaffarpur, Bihar",
-        timestamp: "2024-03-05T12:00:00",
+        timestamp: "2025-03-05T12:00:00",
         description: "Your order has been placed successfully",
       },
       {
         status: "Processing",
         location: "Muzaffarpur, Bihar",
-        timestamp: "2024-03-05T14:30:00",
+        timestamp: "2025-03-05T14:30:00",
         description: "Your order is being processed",
       },
     ],

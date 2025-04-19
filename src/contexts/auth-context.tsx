@@ -1,53 +1,125 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   userPhone: string | null;
-  login: (phone: string) => void;
+  userName: string | null;
+  login: (
+    phone: string,
+    name?: string,
+    tokens?: { accessToken: string; refreshToken: string }
+  ) => void;
   logout: () => void;
+  updateProfile: (name: string) => void;
+  checkAuth: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   userPhone: null,
+  userName: null,
   login: () => {},
   logout: () => {},
+  updateProfile: () => {},
+  checkAuth: () => false,
 });
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+interface AuthProviderProps {
+  readonly children: React.ReactNode;
+}
+
+export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userPhone, setUserPhone] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Check authentication status on mount
-    const authStatus = localStorage.getItem("isAuthenticated");
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
     const phone = localStorage.getItem("userPhone");
-    setIsAuthenticated(authStatus === "true");
-    setUserPhone(phone);
-  }, []);
+    const name = localStorage.getItem("userName");
 
-  const login = (phone: string) => {
-    localStorage.setItem("isAuthenticated", "true");
+    if (token) {
+      setIsAuthenticated(true);
+      setUserPhone(phone);
+      setUserName(name);
+      return true;
+    } else {
+      setIsAuthenticated(false);
+      setUserPhone(null);
+      setUserName(null);
+      return false;
+    }
+  };
+
+  // Check auth on mount and pathname change
+  useEffect(() => {
+    checkAuth();
+  }, [pathname]);
+
+  const login = (
+    phone: string,
+    name?: string,
+    tokens?: { accessToken: string; refreshToken: string }
+  ) => {
+    if (tokens) {
+      localStorage.setItem("token", tokens.accessToken);
+      localStorage.setItem("refreshToken", tokens.refreshToken);
+    }
+
     localStorage.setItem("userPhone", phone);
+    if (name) {
+      localStorage.setItem("userName", name);
+      setUserName(name);
+    }
+
     setIsAuthenticated(true);
     setUserPhone(phone);
   };
 
-  const logout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("userPhone");
-    localStorage.removeItem("userProfile");
-    setIsAuthenticated(false);
-    setUserPhone(null);
+  const updateProfile = (name: string) => {
+    localStorage.setItem("userName", name);
+    setUserName(name);
   };
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, userPhone, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userPhone");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userProfile");
+
+    setIsAuthenticated(false);
+    setUserPhone(null);
+    setUserName(null);
+
+    router.push("/");
+  };
+
+  const value = useMemo(
+    () => ({
+      isAuthenticated,
+      userPhone,
+      userName,
+      login,
+      logout,
+      updateProfile,
+      checkAuth,
+    }),
+    [isAuthenticated, userPhone, userName]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);

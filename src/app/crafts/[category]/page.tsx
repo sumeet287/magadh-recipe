@@ -8,7 +8,9 @@ type Props = Readonly<{
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: Readonly<Props>): Promise<Metadata> {
   const category =
     categoryContent[(await params).category as keyof typeof categoryContent];
   if (!category) return notFound();
@@ -25,7 +27,7 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function CategoryPage({ params }: Props) {
+export default async function CategoryPage({ params }: Readonly<Props>) {
   const { category } = await params;
 
   if (!validCategories.includes(category)) {

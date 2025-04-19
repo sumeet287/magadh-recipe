@@ -7,6 +7,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { Label } from "@/components/ui/label";
 
 interface PhoneLoginProps {
   phoneNumber: string;
@@ -18,6 +19,9 @@ interface PhoneLoginProps {
   handlePhoneLogin: () => void;
   handleVerifyOTP: () => void;
   handleBack: () => void;
+  isNewUser: boolean;
+  name: string;
+  setName: (value: string) => void;
 }
 
 export function PhoneLogin({
@@ -30,7 +34,18 @@ export function PhoneLogin({
   handlePhoneLogin,
   handleVerifyOTP,
   handleBack,
+  isNewUser,
+  name,
+  setName,
 }: Readonly<PhoneLoginProps>) {
+  const getButtonText = () => {
+    if (loading) return "Please wait...";
+    if (confirmationResult) return "Verify OTP";
+    if (isNewUser && !name) return "Continue with Name";
+    if (isNewUser && name) return "Send OTP";
+    return "Send OTP";
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -46,12 +61,35 @@ export function PhoneLogin({
           type="tel"
           placeholder="9810790293"
           value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value.replace(/\D/g, "").slice(0, 10);
+            setPhoneNumber(value);
+          }}
+          maxLength={10}
           className="h-12 sm:h-14 text-base sm:text-lg px-4 rounded-[14px] border-gray-200 focus:border-orange-500 focus:ring-orange-500"
         />
       </div>
 
-      {confirmationResult && (
+      {isNewUser && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-2"
+        >
+          <Label className="text-sm sm:text-base font-medium text-gray-900">
+            Your Name
+          </Label>
+          <Input
+            type="text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="h-12 sm:h-14 text-base sm:text-lg px-4 rounded-[14px] border-gray-200 focus:border-orange-500 focus:ring-orange-500"
+          />
+        </motion.div>
+      )}
+
+      {confirmationResult && ((isNewUser && name) || !isNewUser) && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,13 +141,14 @@ export function PhoneLogin({
         <Button
           onClick={confirmationResult ? handleVerifyOTP : handlePhoneLogin}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white h-12 sm:h-14 text-sm sm:text-base font-medium rounded-[14px]"
-          disabled={loading || !phoneNumber}
+          disabled={
+            loading ||
+            !phoneNumber ||
+            phoneNumber.length < 10 ||
+            (isNewUser && !name)
+          }
         >
-          {loading
-            ? "Please wait..."
-            : confirmationResult
-            ? "Verify OTP"
-            : "Get OTP"}
+          {getButtonText()}
         </Button>
       </motion.div>
 

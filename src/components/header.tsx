@@ -18,10 +18,16 @@ import MobileNavigation from "@/components/MobileNavigation";
 import { Badge } from "@/components/ui/badge";
 import { AuthModal } from "./auth/auth-modal";
 import { ProfileSection } from "./auth/profile-section";
+import { useEffect } from "react";
 
 export function Header() {
   const { cart, wishlist } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, checkAuth } = useAuth();
+
+  // Check auth on component mount
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-slate-900/95">
