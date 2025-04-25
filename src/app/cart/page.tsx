@@ -9,9 +9,15 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCartActions } from "@/hooks/useCartActions";
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { cart } = useCart();
+  const {
+    removeFromCart,
+    updateCartItem,
+    clearCart: clearCartAction,
+  } = useCartActions();
   const [isLoading, setIsLoading] = useState(false);
   const [removingItemId, setRemovingItemId] = useState<string | null>(null);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -21,7 +27,7 @@ export default function CartPage() {
   const handleClearCart = async () => {
     try {
       setIsLoading(true);
-      await clearCart();
+      await clearCartAction();
       toast.success("Cart cleared successfully");
     } catch (error: unknown) {
       console.error("Error clearing cart:", error);
@@ -35,7 +41,6 @@ export default function CartPage() {
     try {
       setRemovingItemId(id);
       await removeFromCart(id);
-      toast.success("Item removed from cart");
     } catch (error: unknown) {
       console.error("Error removing item:", error);
       toast.error("Failed to remove item");
@@ -46,7 +51,7 @@ export default function CartPage() {
 
   const handleUpdateQuantity = async (id: string, newQuantity: number) => {
     try {
-      await updateQuantity(id, newQuantity);
+      await updateCartItem(id, { quantity: newQuantity });
     } catch (error: unknown) {
       console.error("Error updating quantity:", error);
       toast.error("Failed to update quantity");
@@ -104,13 +109,16 @@ export default function CartPage() {
                   <div className="flex-1">
                     <h3 className="font-medium">{item.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {item.category}
+                      {typeof item.category === "string"
+                        ? item.category
+                        : item.category?.name}
                     </p>
                     <div className="flex items-center gap-4 mt-2">
                       <div className="flex items-center gap-2">
                         <Button
                           variant="outline"
                           size="sm"
+                          className="cursor-pointer"
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity - 1)
                           }
@@ -122,6 +130,7 @@ export default function CartPage() {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="cursor-pointer"
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity + 1)
                           }
@@ -133,7 +142,7 @@ export default function CartPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleRemoveItem(item.id)}
-                        className="text-destructive hover:text-destructive"
+                        className="text-destructive hover:text-destructive cursor-pointer"
                         disabled={removingItemId === item.id}
                       >
                         {removingItemId === item.id ? (

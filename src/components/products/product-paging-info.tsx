@@ -5,13 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-interface ProductPagingInfoProps {
-  startIndex: number;
-  pageSize: number;
-  totalProducts: number;
-  onPageSizeChange: (size: number) => void;
-}
+import { ProductPagingInfoProps } from "@/utils/products.utils";
 
 export function ProductPagingInfo({
   startIndex,

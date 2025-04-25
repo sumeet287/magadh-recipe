@@ -14,8 +14,8 @@ export function useApiQuery<T>(
 ) {
   return useQuery<T>({
     queryKey: key,
-    queryFn: async () => {
-      const { data } = await api.get<T>(url);
+    queryFn: async ({ signal }) => {
+      const { data } = await api.get<T>(url, { signal });
       return data;
     },
     ...options,

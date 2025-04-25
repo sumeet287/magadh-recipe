@@ -6,17 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-export type StockFilter = "all" | "in-stock" | "out-of-stock";
-
-interface ProductFiltersProps {
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
-  sortBy: "newest" | "price-low" | "price-high";
-  onSortChange: (sort: "newest" | "price-low" | "price-high") => void;
-  stockFilter: StockFilter;
-  onStockFilterChange: (filter: StockFilter) => void;
-}
+import { ProductFiltersProps, StockFilter } from "@/utils/products.utils";
+import { useCallback, useState } from "react";
 
 export function ProductFilters({
   searchQuery,
@@ -26,6 +17,35 @@ export function ProductFilters({
   stockFilter,
   onStockFilterChange,
 }: ProductFiltersProps) {
+  const [localStockFilter, setLocalStockFilter] = useState(stockFilter);
+  const [localSortBy, setLocalSortBy] = useState(sortBy);
+
+  const handleStockFilterChange = useCallback(
+    (value: StockFilter) => {
+      setLocalStockFilter(value);
+      onStockFilterChange(value);
+    },
+    [onStockFilterChange]
+  );
+
+  const handleSortChange = useCallback(
+    (value: "newest" | "price-low" | "price-high") => {
+      setLocalSortBy(value);
+      onSortChange(value);
+    },
+    [onSortChange]
+  );
+
+  // Sync local state with props
+  useCallback(() => {
+    if (stockFilter !== localStockFilter) {
+      setLocalStockFilter(stockFilter);
+    }
+    if (sortBy !== localSortBy) {
+      setLocalSortBy(sortBy);
+    }
+  }, [stockFilter, sortBy]);
+
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 w-full">
       <Input
@@ -36,8 +56,8 @@ export function ProductFilters({
       />
       <div className="flex items-center gap-2 w-full sm:w-auto">
         <Select
-          value={stockFilter}
-          onValueChange={(value: StockFilter) => onStockFilterChange(value)}
+          value={localStockFilter}
+          onValueChange={handleStockFilterChange}
         >
           <SelectTrigger className="w-[130px] hover:border-orange-200 active:scale-[0.98] transition-all">
             <SelectValue placeholder="All Items" />
@@ -63,12 +83,7 @@ export function ProductFilters({
             </SelectItem>
           </SelectContent>
         </Select>
-        <Select
-          value={sortBy}
-          onValueChange={(value: "newest" | "price-low" | "price-high") =>
-            onSortChange(value)
-          }
-        >
+        <Select value={localSortBy} onValueChange={handleSortChange}>
           <SelectTrigger className="w-[130px] hover:border-orange-200 active:scale-[0.98] transition-all">
             <SelectValue placeholder="Newest First" />
           </SelectTrigger>

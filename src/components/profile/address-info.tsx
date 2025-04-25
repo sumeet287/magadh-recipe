@@ -96,14 +96,17 @@ export function AddressInfo({
         </div>
         <div className="space-y-2">
           <Label htmlFor="state">State</Label>
-          <Select value={state} onValueChange={onStateChange}>
+          <Select
+            value={indianStates.includes(state) ? state : undefined}
+            onValueChange={onStateChange}
+          >
             <SelectTrigger className="focus:border-orange-500">
               <SelectValue placeholder="Select state" />
             </SelectTrigger>
             <SelectContent>
-              {indianStates.map((state) => (
-                <SelectItem key={state} value={state}>
-                  {state}
+              {indianStates.map((stateOption) => (
+                <SelectItem key={stateOption} value={stateOption}>
+                  {stateOption}
                 </SelectItem>
               ))}
             </SelectContent>

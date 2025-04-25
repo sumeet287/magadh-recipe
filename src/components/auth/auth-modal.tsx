@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { LoginOptions } from "./login-options";
 import { PhoneLogin } from "./phone-login";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 interface AuthModalProps {

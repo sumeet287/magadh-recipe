@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { QueryProvider } from "@/providers/query-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CartInitializer } from "@/components/cart-initializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,6 +47,7 @@ export default function RootLayout({
         <QueryProvider>
           <AuthProvider>
             <CartProvider>
+              <CartInitializer />
               <BackgroundGradient>
                 <div className="flex flex-col min-h-screen">
                   <Header />

@@ -79,14 +79,15 @@ export function AddressSelector({
       );
     }
 
+    const updatedAddressId = editingAddress?.id;
     setAddresses((prev) =>
       prev.map((addr) =>
-        addr.id === editingAddress?.id ? { ...data, id: addr.id } : addr
+        addr.id === updatedAddressId ? { ...data, id: addr.id } : addr
       )
     );
 
-    if (data.isDefault) {
-      onAddressChange(editingAddress?.id ?? selectedAddressId);
+    if (data.isDefault && updatedAddressId) {
+      onAddressChange(updatedAddressId);
     }
   };
 
