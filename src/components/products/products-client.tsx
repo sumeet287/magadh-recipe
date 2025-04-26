@@ -16,6 +16,7 @@ import {
 import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
 import { useProduct } from "@/hooks/useProduct";
 import { toast } from "sonner";
+import { useAddresses } from "@/hooks/useAddresses";
 
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -61,6 +62,7 @@ export function ProductsClient() {
   const [selectedAddressId, setSelectedAddressId] = useState<string>("1");
   const { products, isLoading, fetchFilteredAndSortedProducts, pagination } =
     useProduct();
+  const { addresses } = useAddresses();
 
   // Initialize filter state
   const [filterState, setFilterState] = useState<FilterState>({
@@ -214,7 +216,8 @@ export function ProductsClient() {
               Delivery Address
             </div>
             <AddressSelector
-              selectedAddressId={selectedAddressId}
+              addresses={addresses || []}
+              selectedAddressId={selectedAddressId || ""}
               onAddressChange={setSelectedAddressId}
             />
           </motion.div>

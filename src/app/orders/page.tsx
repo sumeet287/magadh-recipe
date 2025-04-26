@@ -9,145 +9,23 @@ import { OrderCard } from "@/components/orders/order-card";
 import { OrderCardSkeleton } from "@/components/orders/order-card-skeleton";
 import { OrdersHeader } from "@/components/orders/orders-header";
 import { EmptyOrders } from "@/components/orders/empty-orders";
-import SitaDevi from "@/assets/artist/Smt_Sita_Devi.png";
-import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
-import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";
-import ManishaJha from "@/assets/artist/Smt_Manisha_Devi.png";
-// Demo data
-const demoOrders: Order[] = [
-  {
-    id: "ORD001",
-    date: "2025-03-15",
-    status: "delivered",
-    items: [
-      {
-        id: "1",
-        name: "Madhubani Painting - Krishna Theme",
-        price: 2999,
-        quantity: 1,
-        image: SitaDevi.src,
-      },
-      {
-        id: "2",
-        name: "Tikuli Art - Peacock Design",
-        price: 1499,
-        quantity: 2,
-        image: DulariDevi.src,
-      },
-    ],
-    total: 5997,
-    shippingAddress: "123, Gandhi Maidan, Patna, Bihar - 800001",
-    trackingInfo: [
-      {
-        status: "Order Placed",
-        location: "Patna, Bihar",
-        timestamp: "2025-03-15T10:00:00",
-        description: "Your order has been placed successfully",
-      },
-      {
-        status: "Processing",
-        location: "Patna, Bihar",
-        timestamp: "2025-03-15T12:30:00",
-        description: "Your order is being processed",
-      },
-      {
-        status: "Shipped",
-        location: "Patna, Bihar",
-        timestamp: "2025-03-16T09:15:00",
-        description: "Your order has been shipped",
-      },
-      {
-        status: "Delivered",
-        location: "Patna, Bihar",
-        timestamp: "2025-03-18T14:20:00",
-        description: "Your order has been delivered",
-      },
-    ],
-  },
-  {
-    id: "ORD002",
-    date: "2025-03-10",
-    status: "shipped",
-    items: [
-      {
-        id: "3",
-        name: "Wooden Handicraft - Wall Decor",
-        price: 1999,
-        quantity: 1,
-        image: KalpanaDevi.src,
-      },
-    ],
-    total: 1999,
-    shippingAddress: "45, MG Road, Muzaffarpur, Bihar - 842001",
-    trackingInfo: [
-      {
-        status: "Order Placed",
-        location: "Muzaffarpur, Bihar",
-        timestamp: "2025-03-10T11:00:00",
-        description: "Your order has been placed successfully",
-      },
-      {
-        status: "Processing",
-        location: "Muzaffarpur, Bihar",
-        timestamp: "2025-03-10T14:30:00",
-        description: "Your order is being processed",
-      },
-      {
-        status: "Shipped",
-        location: "Muzaffarpur, Bihar",
-        timestamp: "2025-03-11T10:15:00",
-        description: "Your order has been shipped",
-      },
-    ],
-  },
-  {
-    id: "ORD003",
-    date: "2025-03-05",
-    status: "pending",
-    items: [
-      {
-        id: "4",
-        name: "Wooden Handicraft - Wall Decor",
-        price: 1999,
-        quantity: 1,
-        image: ManishaJha.src,
-      },
-    ],
-    total: 1999,
-    shippingAddress: "78, MG Road, Muzaffarpur, Bihar - 842001",
-    trackingInfo: [
-      {
-        status: "Order Placed",
-        location: "Muzaffarpur, Bihar",
-        timestamp: "2025-03-05T12:00:00",
-        description: "Your order has been placed successfully",
-      },
-      {
-        status: "Processing",
-        location: "Muzaffarpur, Bihar",
-        timestamp: "2025-03-05T14:30:00",
-        description: "Your order is being processed",
-      },
-    ],
-  },
-];
+import { useOrder } from "@/hooks/useOrder";
 
 export default function OrdersPage() {
   const router = useRouter();
+  const { getUserOrders } = useOrder();
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     // Check if user is authenticated in localStorage
-    const isUserAuthenticated =
-      localStorage.getItem("isAuthenticated") === "true";
-    const userPhone = localStorage.getItem("userPhone");
-
-    if (!isUserAuthenticated || !userPhone) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       router.push("/");
       return;
     }
@@ -170,25 +48,20 @@ export default function OrdersPage() {
     // Check initial online status
     setIsOffline(!navigator.onLine);
 
-    // Simulate API call
+    // Fetch orders from API
     const fetchOrders = async () => {
       try {
         setIsLoading(true);
-        // Simulate network delay
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Try to get cached orders first
-        const cachedOrders = localStorage.getItem("cachedOrders");
-        if (cachedOrders && isOffline) {
-          setOrders(JSON.parse(cachedOrders));
-          return;
-        }
-
-        // If online, fetch new orders
         if (!isOffline) {
-          setOrders(demoOrders);
-          // Cache the orders
-          localStorage.setItem("cachedOrders", JSON.stringify(demoOrders));
+          const apiOrders = await getUserOrders();
+          setOrders(apiOrders);
+          localStorage.setItem("cachedOrders", JSON.stringify(apiOrders));
+        } else {
+          // Try to get cached orders first
+          const cachedOrders = localStorage.getItem("cachedOrders");
+          if (cachedOrders) {
+            setOrders(JSON.parse(cachedOrders));
+          }
         }
       } catch (error) {
         console.error("Failed to load orders", error);
@@ -209,7 +82,7 @@ export default function OrdersPage() {
       window.removeEventListener("offline", handleOffline);
       window.removeEventListener("online", handleOnline);
     };
-  }, [router, isOffline]);
+  }, [router, isOffline, getUserOrders]);
 
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -229,7 +102,7 @@ export default function OrdersPage() {
       await new Promise((resolve) => setTimeout(resolve, 500));
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "cancelled" } : order
+          order._id === orderId ? { ...order, status: "cancelled" } : order
         )
       );
       toast.success("Order cancelled successfully");
@@ -307,13 +180,13 @@ export default function OrdersPage() {
             <>
               {filteredOrders.map((order) => (
                 <OrderCard
-                  key={order.id}
+                  key={order._id}
                   order={order}
-                  expandedOrder={expandedOrder}
-                  onToggleExpansion={toggleOrderExpansion}
                   onCancelOrder={handleCancelOrder}
+                  onToggleExpansion={toggleOrderExpansion}
                   onReorder={handleReorder}
                   isLoading={isLoading}
+                  expandedOrder={expandedOrder}
                 />
               ))}
               {filteredOrders.length === 0 && (

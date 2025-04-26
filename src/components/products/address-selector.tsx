@@ -7,98 +7,55 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { MapPin, Plus } from "lucide-react";
-import { useState } from "react";
-import { AddressDialog, AddressFormData } from "./address-dialog";
+import { AddressFormData } from "./address-dialog";
+import { useEffect, useState } from "react";
+import { AddressDialog } from "./address-dialog";
 
 interface Address extends AddressFormData {
   id: string;
+  isDefault: boolean;
+  landmark?: string;
+  country: string;
 }
 
-const sampleAddresses: Address[] = [
-  {
-    id: "1",
-    name: "Home",
-    address: "123, Gandhi Maidan",
-    landmark: "Near Golghar",
-    city: "Patna",
-    state: "Bihar",
-    pincode: "800001",
-    isDefault: true,
-  },
-  {
-    id: "2",
-    name: "Office",
-    address: "45, Frazer Road",
-    landmark: "Near Museum",
-    city: "Patna",
-    state: "Bihar",
-    pincode: "800004",
-    isDefault: false,
-  },
-];
-
 interface AddressSelectorProps {
+  addresses: Address[];
   selectedAddressId: string;
   onAddressChange: (addressId: string) => void;
+  onAddNewAddress?: (address: AddressFormData) => Promise<void>;
 }
 
 export function AddressSelector({
+  addresses = [],
   selectedAddressId,
   onAddressChange,
+  onAddNewAddress,
 }: Readonly<AddressSelectorProps>) {
-  const [addresses, setAddresses] = useState<Address[]>(sampleAddresses);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingAddress, setEditingAddress] = useState<Address | undefined>();
+  // Auto-select default address when addresses change
+  useEffect(() => {
+    if (addresses.length > 0) {
+      const defaultAddr = addresses.find((addr) => addr.isDefault);
+      if (!selectedAddressId) {
+        // If nothing is selected, select default or first
+        onAddressChange(defaultAddr ? defaultAddr.id : addresses[0].id);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses, selectedAddressId]);
 
   const selectedAddress = addresses.find(
     (addr) => addr.id === selectedAddressId
   );
 
-  const handleAddAddress = (data: AddressFormData) => {
-    const newAddress: Address = {
-      ...data,
-      id: Date.now().toString(),
-    };
-
-    if (data.isDefault) {
-      setAddresses((prev) =>
-        prev.map((addr) => ({ ...addr, isDefault: false }))
-      );
-    }
-
-    setAddresses((prev) => [...prev, newAddress]);
-    if (data.isDefault) {
-      onAddressChange(newAddress.id);
-    }
-  };
-
-  const handleEditAddress = (data: AddressFormData) => {
-    if (data.isDefault) {
-      setAddresses((prev) =>
-        prev.map((addr) => ({ ...addr, isDefault: false }))
-      );
-    }
-
-    const updatedAddressId = editingAddress?.id;
-    setAddresses((prev) =>
-      prev.map((addr) =>
-        addr.id === updatedAddressId ? { ...data, id: addr.id } : addr
-      )
-    );
-
-    if (data.isDefault && updatedAddressId) {
-      onAddressChange(updatedAddressId);
-    }
-  };
-
-  const handleEdit = (address: Address) => {
-    setEditingAddress(address);
-    setDialogOpen(true);
-  };
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleAddNew = () => {
-    setEditingAddress(undefined);
-    setDialogOpen(true);
+    setIsDialogOpen(true);
+  };
+  const handleSaveNewAddress = async (address: AddressFormData) => {
+    if (onAddNewAddress) {
+      await onAddNewAddress(address);
+    }
+    setIsDialogOpen(false);
   };
 
   return (
@@ -131,7 +88,11 @@ export function AddressSelector({
             className="min-w-[250px] max-w-[95vw] w-full"
           >
             {addresses.map((addr) => (
-              <SelectItem key={addr.id} value={addr.id} className="px-3 py-2">
+              <SelectItem
+                key={String(addr.id)}
+                value={addr.id}
+                className="px-3 py-2"
+              >
                 <div className="flex items-start gap-2 w-full min-w-0">
                   <div className="flex flex-col gap-1 min-w-0 flex-1">
                     <div className="flex items-center gap-1.5 sm:gap-2">
@@ -152,17 +113,6 @@ export function AddressSelector({
                       </span>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-5 w-5 sm:h-6 sm:w-6 shrink-0 -mr-1"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleEdit(addr);
-                    }}
-                  >
-                    <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  </Button>
                 </div>
               </SelectItem>
             ))}
@@ -178,11 +128,10 @@ export function AddressSelector({
         </Button>
       </div>
       <AddressDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSave={editingAddress ? handleEditAddress : handleAddAddress}
-        initialData={editingAddress}
-        mode={editingAddress ? "edit" : "add"}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onSave={handleSaveNewAddress}
+        mode="add"
       />
     </div>
   );

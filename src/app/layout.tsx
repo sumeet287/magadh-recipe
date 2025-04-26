@@ -48,14 +48,14 @@ export default function RootLayout({
           <AuthProvider>
             <CartProvider>
               <CartInitializer />
-              <BackgroundGradient>
-                <div className="flex flex-col min-h-screen">
-                  <Header />
-                  <main className="flex-1">{children}</main>
-                  <Footer />
-                  <Toaster position="top-center" />
-                </div>
-              </BackgroundGradient>
+              {/*  <BackgroundGradient> */}
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <Toaster position="top-center" />
+              </div>
+              {/*  </BackgroundGradient> */}
             </CartProvider>
           </AuthProvider>
         </QueryProvider>

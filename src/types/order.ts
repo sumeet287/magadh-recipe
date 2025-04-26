@@ -1,8 +1,9 @@
 export interface OrderItem {
-  id: string;
-  name: string;
-  price: number;
+  productId: string;
   quantity: number;
+  price: number;
+  name: string;
+  category: string;
   image: string;
 }
 
@@ -13,12 +14,26 @@ export interface TrackingInfo {
   description: string;
 }
 
+export interface ShippingAddress {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
+  landmark: string;
+  isDefault: boolean;
+  _id: string;
+}
+
 export interface Order {
-  id: string;
-  date: string;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  _id: string;
+  status: string;
+  totalAmount: number;
+  totalItems: number;
+  paymentMethod: string;
+  shippingAddress: ShippingAddress;
   items: OrderItem[];
-  total: number;
-  shippingAddress: string;
-  trackingInfo?: TrackingInfo[];
+  userId: string;
+  __v: number;
 }

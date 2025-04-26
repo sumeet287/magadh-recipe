@@ -15,10 +15,11 @@ export interface AddressFormData {
   id?: string;
   name: string;
   address: string;
-  landmark: string;
+  landmark?: string;
   city: string;
   state: string;
   pincode: string;
+  country: string;
   isDefault: boolean;
 }
 
@@ -45,6 +46,7 @@ export function AddressDialog({
       city: "",
       state: "Bihar", // Default state
       pincode: "",
+      country: "India", // Default country
       isDefault: false,
     }
   );
@@ -126,6 +128,18 @@ export function AddressDialog({
                 title="Please enter a valid 6-digit PIN code"
               />
             </div>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="country">Country</Label>
+            <Input
+              id="country"
+              placeholder="Country"
+              value={formData.country}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, country: e.target.value }))
+              }
+              required
+            />
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox

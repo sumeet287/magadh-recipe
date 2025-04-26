@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Package2,
   IndianRupee,
-  Calendar,
   MapPin,
   X,
   RefreshCw,
@@ -46,15 +45,7 @@ export function OrderCard({
         <CardHeader className="pb-4">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-1">
-              <CardTitle className="text-lg">Order #{order.id}</CardTitle>
-              <div className="flex items-center text-sm text-gray-500">
-                <Calendar className="w-4 h-4 mr-1" />
-                {new Date(order.date).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </div>
+              <CardTitle className="text-lg">Order #{order._id}</CardTitle>
             </div>
             <div className="flex items-center gap-2">
               <Badge
@@ -67,7 +58,7 @@ export function OrderCard({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onCancelOrder(order.id)}
+                  onClick={() => onCancelOrder(order._id)}
                   className="text-red-600 hover:text-red-700"
                   disabled={isLoading}
                 >
@@ -93,7 +84,7 @@ export function OrderCard({
           <div className="space-y-4">
             {order.items.map((item) => (
               <div
-                key={item.id}
+                key={item.productId}
                 className="flex items-center gap-4 p-3 rounded-lg bg-gray-50"
               >
                 <div className="relative w-16 h-16 rounded-md overflow-hidden">
@@ -123,7 +114,9 @@ export function OrderCard({
                   Delivery Address:
                 </div>
                 <div className="text-right max-w-[60%]">
-                  {order.shippingAddress}
+                  {order.shippingAddress.name}, {order.shippingAddress.address},{" "}
+                  {order.shippingAddress.city}, {order.shippingAddress.state} -{" "}
+                  {order.shippingAddress.pincode}
                 </div>
               </div>
               <div className="flex items-center justify-between mt-3">
@@ -133,59 +126,29 @@ export function OrderCard({
                 </div>
                 <div className="flex items-center font-medium text-lg text-orange-600">
                   <IndianRupee className="w-4 h-4" />
-                  {order.total.toLocaleString("en-IN")}
+                  {order.totalAmount.toLocaleString("en-IN")}
                 </div>
               </div>
             </div>
-            {order.trackingInfo && (
-              <div className="mt-4">
-                <Button
-                  variant="ghost"
-                  className="w-full flex items-center justify-between"
-                  onClick={() => onToggleExpansion(order.id)}
-                  disabled={isLoading}
-                >
-                  <div className="flex items-center">
-                    <Truck className="w-4 h-4 mr-2" />
-                    Track Order
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    {expandedOrder === order.id ? "Hide" : "Show"} Details
-                  </span>
-                </Button>
-                {expandedOrder === order.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-4 space-y-4"
-                  >
-                    {order.trackingInfo.map((track) => (
-                      <div
-                        key={`${order.id}-${track.timestamp}`}
-                        className="flex gap-4 p-3 rounded-lg bg-gray-50"
-                      >
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-medium">{track.status}</h4>
-                            <span className="text-sm text-gray-500">
-                              {new Date(track.timestamp).toLocaleString(
-                                "en-IN"
-                              )}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {track.description}
-                          </p>
-                          <p className="text-sm text-gray-500 mt-1">
-                            Location: {track.location}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
+            <Button
+              variant="ghost"
+              className="w-full flex items-center justify-between"
+              onClick={() => onToggleExpansion(order._id)}
+              disabled={isLoading}
+            >
+              <div className="flex items-center">
+                <Truck className="w-4 h-4 mr-2" />
+                Track Order
+              </div>
+              <span className="text-sm text-gray-500">
+                {expandedOrder === order._id ? "Hide" : "Show"} Details
+              </span>
+            </Button>
+            {expandedOrder === order._id && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">
+                  Tracking details coming soon...
+                </div>
               </div>
             )}
           </div>
@@ -195,7 +158,7 @@ export function OrderCard({
   );
 }
 
-const statusColors = {
+const statusColors: { [key: string]: string } = {
   pending: "bg-yellow-100 text-yellow-800",
   processing: "bg-blue-100 text-blue-800",
   shipped: "bg-purple-100 text-purple-800",
@@ -203,7 +166,7 @@ const statusColors = {
   cancelled: "bg-red-100 text-red-800",
 };
 
-const statusMessages = {
+const statusMessages: { [key: string]: string } = {
   pending: "Order Placed",
   processing: "Processing",
   shipped: "Shipped",
