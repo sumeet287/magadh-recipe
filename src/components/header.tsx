@@ -2,23 +2,15 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Heart, LogIn } from "lucide-react";
+import { ShoppingCart, Heart, LogIn, Search } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import MobileNavigation from "@/components/MobileNavigation";
 import { Badge } from "@/components/ui/badge";
 import { AuthModal } from "./auth/auth-modal";
 import { ProfileSection } from "./auth/profile-section";
 import { useEffect } from "react";
+import { Input } from "./ui/input";
 
 export function Header() {
   const { cart, wishlist } = useCart();
@@ -30,172 +22,101 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-slate-900/95">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo Section */}
-          <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2">
-              <Image
-                src="/Bihar_Bazaar.png"
-                alt="Bihar Bazaar Logo"
-                width={100}
-                height={100}
-                className="dark:invert scale-75"
-              />
-              <span className="text-xl font-bold text-orange-600">
-                Bihar Bazaar
-              </span>
-            </Link>
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/Bihar_Bazaar.png"
+              alt="Bihar Bazaar Logo"
+              width={40}
+              height={40}
+              className="h-10 w-10"
+            />
+            <span className="text-xl font-bold text-orange-600">
+              Bihar Bazaar
+            </span>
+          </Link>
+        </div>
+        <nav className="hidden md:flex items-center gap-6">
+          <Link
+            href="/crafts"
+            className="text-sm font-medium hover:text-orange-600 transition-colors"
+          >
+            Categories
+          </Link>
+          <Link
+            href="/artisans"
+            className="text-sm font-medium hover:text-orange-600 transition-colors"
+          >
+            Artisans
+          </Link>
+          <Link
+            href="/products"
+            className="text-sm font-medium hover:text-orange-600 transition-colors"
+          >
+            All Products
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium hover:text-orange-600 transition-colors"
+          >
+            Our Story
+          </Link>
+          <Link
+            href="/blog"
+            className="text-sm font-medium hover:text-orange-600 transition-colors"
+          >
+            Blog
+          </Link>
+        </nav>
+        <div className="flex items-center gap-4">
+          <div className="relative hidden md:flex items-center">
+            <Search className="absolute left-2.5 h-4 w-4 text-gray-500" />
+            <Input
+              type="search"
+              placeholder="Search crafts..."
+              className="w-[200px] pl-8 rounded-full bg-gray-100 focus-visible:ring-orange-600"
+            />
           </div>
-
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    <NavigationMenuLink
-                      href="/products/category/madhubani"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm font-medium leading-none">
-                        Madhubani Art
-                      </div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Traditional folk art with intricate patterns
-                      </p>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      href="/products/category/tikuli"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm font-medium leading-none">
-                        Tikuli Art
-                      </div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Traditional glass painting with intricate designs
-                      </p>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      href="/products/category/wood"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm font-medium leading-none">
-                        Wood Craft
-                      </div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Handcrafted wooden artifacts and furniture
-                      </p>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      href="/products/category/glass"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm font-medium leading-none">
-                        Glass Work
-                      </div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Traditional glass bangles and decorative items
-                      </p>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Artisans</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
-                    <NavigationMenuLink
-                      href="/artisans/directory"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm font-medium leading-none">
-                        Artist Directory
-                      </div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Meet our skilled artisans and craftspeople
-                      </p>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      href="/artisans/stories"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm font-medium leading-none">
-                        Artist Stories
-                      </div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Read about our artisans and their journeys
-                      </p>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/products"
-                  className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+          <Button variant="ghost" size="icon" className="text-gray-700">
+            <Heart className="h-5 w-5" />
+            <span className="sr-only">
+              {wishlist.length > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center"
                 >
-                  All Products
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/products/types"
-                  className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                >
-                  Browse by Type
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-
-          {/* Mobile Navigation */}
-          <div className="md:hidden">
-            <MobileNavigation />
-          </div>
-
-          <nav className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/wishlist" className="relative">
-                <Heart className="h-5 w-5" />
-                {wishlist.length > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center"
-                  >
-                    {wishlist.length}
-                  </Badge>
-                )}
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/cart" className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                {cart.length > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center"
-                  >
-                    {cart.length}
-                  </Badge>
-                )}
-              </Link>
-            </Button>
-            <div className="hidden md:flex items-center gap-2 ml-4">
-              {isAuthenticated ? (
-                <ProfileSection />
-              ) : (
-                <AuthModal>
-                  <Button variant="outline" size="sm">
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Login
-                  </Button>
-                </AuthModal>
+                  {wishlist.length}
+                </Badge>
               )}
-            </div>
-          </nav>
+            </span>
+          </Button>
+          <Button variant="ghost" size="icon" className="text-gray-700">
+            <ShoppingCart className="h-5 w-5" />
+            <span className="sr-only">
+              {cart.length > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center"
+                >
+                  {cart.length}
+                </Badge>
+              )}
+            </span>
+          </Button>
+          <div className="hidden md:flex items-center gap-2 ml-4">
+            {isAuthenticated ? (
+              <ProfileSection />
+            ) : (
+              <AuthModal>
+                <Button variant="outline" size="sm">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Login
+                </Button>
+              </AuthModal>
+            )}
+          </div>
         </div>
       </div>
     </header>

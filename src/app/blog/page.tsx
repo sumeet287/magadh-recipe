@@ -4,6 +4,7 @@ import Link from "next/link";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
 import tikuliArt from "@/assets/art/tikuli_art.jpeg";
 import woodArt from "@/assets/art/wood_art.jpeg";
+import Subscribe from "@/components/subscribe/subscribe";
 
 export const metadata: Metadata = {
   title: "Blog | Bihar Bazaar",
@@ -109,32 +110,7 @@ export default function BlogPage() {
               </article>
             ))}
           </div>
-
-          {/* Newsletter Subscription */}
-          <div className="mt-16 bg-white/80 dark:bg-slate-800/80 rounded-lg p-8">
-            <div className="max-w-2xl mx-auto text-center space-y-4">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Subscribe to Our Newsletter
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300">
-                Get the latest stories about Bihar&apos;s artisans and crafts
-                delivered directly to your inbox.
-              </p>
-              <form className="flex gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </div>
+          <Subscribe />
         </div>
       </section>
     </main>
