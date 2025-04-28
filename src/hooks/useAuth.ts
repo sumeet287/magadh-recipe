@@ -11,6 +11,7 @@ import type {
   OtpVerification,
   ProfileUpdate,
 } from "@/types/auth";
+import { useAuth as useAuthContext } from "@/contexts/auth-context";
 
 interface AuthState {
   isNewUser: boolean;
@@ -32,6 +33,8 @@ export function useAuth() {
     name: "",
   });
 
+  const { login } = useAuthContext();
+
   const checkUser = useApiPost<CheckUserResponse, { phoneNumber: string }>(
     authEndpoints.checkUser
   );
@@ -46,16 +49,30 @@ export function useAuth() {
       setIsLoading(true);
       setError(null);
 
+      // Persist phone number for OTP step and refresh safety
+      localStorage.setItem("loginPhoneNumber", phoneNumber);
+
       // Step 1: Check if user exists
       const checkUserData = await checkUser.mutateAsync({ phoneNumber });
-      console.log(checkUserData, "check user data");
-      setAuthState({
-        isNewUser: checkUserData.isNewUser,
-        needsOtp: false,
-        needsName: checkUserData.isNewUser,
-        phoneNumber,
-        name: "",
-      });
+      if (checkUserData.isNewUser) {
+        setAuthState({
+          isNewUser: true,
+          needsOtp: false,
+          needsName: true,
+          phoneNumber,
+          name: "",
+        });
+      } else {
+        // Existing user: send OTP
+        await sendOtp.mutateAsync({ phoneNumber });
+        setAuthState({
+          isNewUser: false,
+          needsOtp: true,
+          needsName: false,
+          phoneNumber,
+          name: "",
+        });
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
       throw err;
@@ -69,8 +86,14 @@ export function useAuth() {
       setIsLoading(true);
       setError(null);
 
+      // Use phoneNumber from state or fallback to localStorage
+      const phoneNumber =
+        authState.phoneNumber || localStorage.getItem("loginPhoneNumber") || "";
+      if (!phoneNumber)
+        throw new Error("Phone number is missing for OTP verification");
+
       const { accessToken, refreshToken } = await verifyOtp.mutateAsync({
-        phoneNumber: authState.phoneNumber,
+        phoneNumber,
         otp,
       });
 
@@ -78,10 +101,15 @@ export function useAuth() {
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      if (!authState.isNewUser) {
-        router.push("/profile");
+      // Sync global auth context
+      login(phoneNumber, authState.name, { accessToken, refreshToken });
+
+      // If new user, now update profile (user is authenticated)
+      if (authState.isNewUser && authState.name) {
+        await updateProfile.mutateAsync({ name: authState.name });
       }
 
+      router.push("/profile");
       setAuthState((prev) => ({ ...prev, needsOtp: false }));
     } catch (err) {
       setError(err instanceof Error ? err.message : "OTP verification failed");
@@ -96,12 +124,34 @@ export function useAuth() {
       setIsLoading(true);
       setError(null);
 
-      await updateProfile.mutateAsync({ name });
-
-      setAuthState((prev) => ({ ...prev, needsName: false }));
-      router.push("/profile");
+      // Send OTP with name for new user
+      await sendOtp.mutateAsync({ phoneNumber: authState.phoneNumber, name });
+      setAuthState((prev) => ({
+        ...prev,
+        name,
+        needsName: false,
+        needsOtp: true,
+      }));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Profile update failed");
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resendOtp = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      await sendOtp.mutateAsync({
+        phoneNumber: authState.phoneNumber,
+        ...(authState.isNewUser && authState.name
+          ? { name: authState.name }
+          : {}),
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to resend OTP");
       throw err;
     } finally {
       setIsLoading(false);
@@ -112,6 +162,7 @@ export function useAuth() {
     startAuth,
     verifyOtpAndProceed,
     updateUserProfile,
+    resendOtp,
     authState,
     isLoading,
     error,

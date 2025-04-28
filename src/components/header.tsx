@@ -2,15 +2,21 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Heart, LogIn, Search } from "lucide-react";
+import { ShoppingCart, Heart, Search } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AuthModal } from "./auth/auth-modal";
 import { ProfileSection } from "./auth/profile-section";
 import { useEffect } from "react";
 import { Input } from "./ui/input";
+import AuthPage from "./auth/auth-modal";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export function Header() {
   const { cart, wishlist } = useCart();
@@ -109,12 +115,15 @@ export function Header() {
             {isAuthenticated ? (
               <ProfileSection />
             ) : (
-              <AuthModal>
-                <Button variant="outline" size="sm">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Login
-                </Button>
-              </AuthModal>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">Login</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-sm p-0 bg-transparent shadow-none">
+                  <DialogTitle className="sr-only">Login</DialogTitle>
+                  <AuthPage />
+                </DialogContent>
+              </Dialog>
             )}
           </div>
         </div>

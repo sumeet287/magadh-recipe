@@ -1,192 +1,105 @@
 "use client";
 
-import { useState } from "react";
-import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PhoneForm } from "@/components/auth/phone-form";
+import { NameForm } from "@/components/auth/name-form";
+import { OtpForm } from "@/components/auth/otp-form";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { LoginOptions } from "./login-options";
-import { PhoneLogin } from "./phone-login";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
-import { toast } from "sonner";
 
-interface AuthModalProps {
-  children: React.ReactNode;
-}
+export default function AuthPage() {
+  const { startAuth, updateUserProfile, authState } = useAuth();
 
-export function AuthModal({ children }: Readonly<AuthModalProps>) {
-  const {
-    startAuth,
-    verifyOtpAndProceed,
-    updateUserProfile,
-    authState,
-    isLoading,
-    sendOtp,
-    setAuthState,
-    setIsLoading,
-  } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isPhoneLogin, setIsPhoneLogin] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOtp] = useState("");
-  const [name, setName] = useState("");
-
-  // Reset all states when modal closes
-  const handleModalClose = () => {
-    setIsOpen(false);
-    setIsPhoneLogin(false);
-    setPhoneNumber("");
-    setOtp("");
-    setName("");
-    setAuthState({
-      isNewUser: false,
-      needsOtp: false,
-      needsName: false,
-      phoneNumber: "",
-      name: "",
-    });
-  };
-
-  const handlePhoneLogin = async () => {
-    if (!phoneNumber || phoneNumber.length < 10) {
-      toast.error("Please enter a valid 10-digit phone number");
-      return;
-    }
-
+  const handlePhoneSubmit = async (phone: string) => {
     try {
-      setIsLoading(true);
-
-      // If we haven't checked user status yet
-      if (!authState.phoneNumber) {
-        await startAuth(phoneNumber);
-        setIsLoading(false);
-        return;
-      }
-
-      // At this point, we know if it's a new user or not
-      if (authState.isNewUser) {
-        if (!name || name.trim().length < 2) {
-          toast.error("Please enter your full name");
-          return;
-        }
-        // Now we can send OTP with name
-        await sendOtp({ phoneNumber, name });
-      } else {
-        // For existing users, directly send OTP
-        await sendOtp({ phoneNumber });
-      }
-
-      setAuthState((prev) => ({ ...prev, needsOtp: true }));
-      toast.success("OTP sent successfully!");
+      await startAuth(phone);
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to send OTP"
-      );
-    } finally {
-      setIsLoading(false);
+      console.error("Error starting auth:", error);
+      // error handled in hook
     }
   };
 
-  const handleVerifyOTP = async () => {
-    if (!otp || otp.length !== 6) {
-      toast.error("Please enter a valid 6-digit OTP");
-      return;
-    }
-
+  const handleNameSubmit = async (name: string) => {
     try {
-      setIsLoading(true);
-      await verifyOtpAndProceed(otp);
-
-      // For new users, update profile with name
-      if (authState.isNewUser) {
-        await updateUserProfile(name);
-      }
-
-      handleModalClose();
-      toast.success("Login successful!");
+      await updateUserProfile(name);
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "OTP verification failed"
-      );
-    } finally {
-      setIsLoading(false);
+      console.error("Error updating user profile:", error);
+      // error handled in hook
     }
   };
 
-  const handleBack = () => {
-    setIsPhoneLogin(false);
-    setOtp("");
-    setPhoneNumber("");
-    setName("");
-    setAuthState({
-      isNewUser: false,
-      needsOtp: false,
-      needsName: false,
-      phoneNumber: "",
-      name: "",
-    });
-  };
+  // Determine step from authState
+  let step: "phone" | "name" | "otp" = "phone";
+  if (authState.needsName) step = "name";
+  else if (authState.needsOtp) step = "otp";
+  console.log(step, "step");
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(open) => {
-        if (!open) handleModalClose();
-        else setIsOpen(true);
-      }}
-    >
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[400px] p-4 pt-6 sm:pt-8 w-[calc(100%-32px)] mx-auto">
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-          >
-            <DialogHeader className="space-y-3 mb-6">
-              <DialogTitle className="text-xl sm:text-2xl font-semibold text-center">
-                Sign in to Bihar Bazaar
-              </DialogTitle>
-              <p className="text-gray-500 text-sm sm:text-base text-center">
-                Handicrafts ka Digital Marketplace
-              </p>
-            </DialogHeader>
+    <div className="flex items-center justify-center min-h-0 p-0">
+      <Card className="w-full max-w-sm rounded-2xl shadow-xl border-0 p-6">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-2xl font-bold text-center">
+            {step === "phone" && "Login to Your Account"}
+            {step === "name" && "Complete Your Profile"}
+            {step === "otp" && "Verify Your Phone"}
+          </CardTitle>
+          <CardDescription className="text-center text-base mt-1 mb-2">
+            {step === "phone" && "Enter your phone number to continue"}
+            {step === "name" && "Please tell us your name"}
+            {step === "otp" &&
+              `We've sent a verification code to ${authState.phoneNumber}`}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <AnimatePresence mode="wait">
+            {step === "phone" && (
+              <motion.div
+                key="phone"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <PhoneForm onSubmit={handlePhoneSubmit} />
+              </motion.div>
+            )}
 
-            <div className="space-y-6">
-              {!isPhoneLogin ? (
-                <LoginOptions setIsPhoneLogin={setIsPhoneLogin} />
-              ) : (
-                <PhoneLogin
-                  phoneNumber={phoneNumber}
-                  setPhoneNumber={setPhoneNumber}
-                  otp={otp}
-                  setOtp={setOtp}
-                  confirmationResult={authState.needsOtp}
-                  loading={isLoading}
-                  handlePhoneLogin={handlePhoneLogin}
-                  handleVerifyOTP={handleVerifyOTP}
-                  handleBack={handleBack}
+            {step === "name" && (
+              <motion.div
+                key="name"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <NameForm onSubmit={handleNameSubmit} onBack={() => {}} />
+              </motion.div>
+            )}
+
+            {step === "otp" && (
+              <motion.div
+                key="otp"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <OtpForm
+                  phoneNumber={authState.phoneNumber}
                   isNewUser={authState.isNewUser}
-                  name={name}
-                  setName={setName}
+                  onBack={() => {}}
                 />
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 dark:ring-offset-gray-950 dark:focus:ring-gray-300 dark:data-[state=open]:bg-gray-800">
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </DialogClose>
-      </DialogContent>
-    </Dialog>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
