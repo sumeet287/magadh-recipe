@@ -8,13 +8,16 @@ import {
   type UpdateAddressRequest,
 } from "@/lib/endpoints/addresses";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/auth-context";
 
 export function useAddresses() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { token } = useAuth();
 
   // Fetch addresses
   const fetchAddresses = useCallback(async () => {
+    if (!token) return;
     try {
       const data = await addressesApi.getAddresses();
       setAddresses(data);
@@ -24,7 +27,7 @@ export function useAddresses() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [token]);
 
   // Create new address
   const createAddress = useCallback(async (request: CreateAddressRequest) => {
@@ -102,8 +105,10 @@ export function useAddresses() {
 
   // Fetch addresses on mount
   useEffect(() => {
-    fetchAddresses();
-  }, [fetchAddresses]);
+    if (token) {
+      fetchAddresses();
+    }
+  }, [fetchAddresses, token]);
 
   return {
     addresses,

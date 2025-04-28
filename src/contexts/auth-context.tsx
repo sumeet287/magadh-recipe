@@ -13,6 +13,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   userPhone: string | null;
   userName: string | null;
+  token: string | null;
   login: (
     phone: string,
     name?: string,
@@ -27,6 +28,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   userPhone: null,
   userName: null,
+  token: null,
   login: () => {},
   logout: () => {},
   updateProfile: () => {},
@@ -43,6 +45,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userPhone, setUserPhone] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const checkAuth = () => {
     const token = localStorage.getItem("token");
@@ -53,11 +56,13 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
       setIsAuthenticated(true);
       setUserPhone(phone);
       setUserName(name);
+      setToken(token);
       return true;
     } else {
       setIsAuthenticated(false);
       setUserPhone(null);
       setUserName(null);
+      setToken(null);
       return false;
     }
   };
@@ -75,6 +80,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
     if (tokens) {
       localStorage.setItem("token", tokens.accessToken);
       localStorage.setItem("refreshToken", tokens.refreshToken);
+      setToken(tokens.accessToken);
     }
 
     localStorage.setItem("userPhone", phone);
@@ -102,6 +108,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
     setIsAuthenticated(false);
     setUserPhone(null);
     setUserName(null);
+    setToken(null);
 
     router.push("/");
   };
@@ -111,12 +118,13 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
       isAuthenticated,
       userPhone,
       userName,
+      token,
       login,
       logout,
       updateProfile,
       checkAuth,
     }),
-    [isAuthenticated, userPhone, userName]
+    [isAuthenticated, userPhone, userName, token]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { CartProvider } from "@/contexts/cart-context";
 import { AuthProvider } from "@/contexts/auth-context";
 import { QueryProvider } from "@/providers/query-provider";
@@ -48,14 +47,12 @@ export default function RootLayout({
           <AuthProvider>
             <CartProvider>
               <CartInitializer />
-              {/*  <BackgroundGradient> */}
               <div className="flex flex-col min-h-screen">
                 <Header />
                 <main className="flex-1">{children}</main>
                 <Footer />
                 <Toaster position="top-center" />
               </div>
-              {/*  </BackgroundGradient> */}
             </CartProvider>
           </AuthProvider>
         </QueryProvider>

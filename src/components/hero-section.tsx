@@ -167,38 +167,57 @@ export function HeroSection() {
           </div>
           <Tabs defaultValue="popular" className="w-full">
             <div className="flex justify-center mb-8">
-              <TabsList>
-                <TabsTrigger value="popular">Popular</TabsTrigger>
-                <TabsTrigger value="new">New Arrivals</TabsTrigger>
-                <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsList className="bg-white rounded-full shadow-md flex gap-2 p-1">
+                <TabsTrigger
+                  value="popular"
+                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50"
+                >
+                  Popular
+                </TabsTrigger>
+                <TabsTrigger
+                  value="new"
+                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50"
+                >
+                  New Arrivals
+                </TabsTrigger>
+                <TabsTrigger
+                  value="trending"
+                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50"
+                >
+                  Trending
+                </TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="popular" className="space-y-8">
+            <TabsContent value="popular" className="space-y-8 animate-fade-in">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <CraftCard
+                  id="1"
                   title="Madhubani Painting - Krishna Leela"
-                  price={2500}
+                  originalPrice={2500}
                   image={SitaDevi.src}
                   artist="Rekha Devi"
                   category="Madhubani Art"
                 />
                 <CraftCard
+                  id="2"
                   title="Handcrafted Bamboo Basket"
-                  price={850}
+                  originalPrice={850}
                   image={DulariDevi.src}
                   artist="Mohan Kumar"
                   category="Bamboo Craft"
                 />
                 <CraftCard
+                  id="3"
                   title="Tikuli Art Wall Hanging"
-                  price={1800}
+                  originalPrice={1800}
                   image={KalpanaDevi.src}
                   artist="Sunita Kumari"
                   category="Tikuli Art"
                 />
                 <CraftCard
+                  id="4"
                   title="Sujini Embroidered Cushion Cover"
-                  price={950}
+                  originalPrice={950}
                   image={ManishaJha.src}
                   artist="Geeta Devi"
                   category="Sujini Embroidery"
@@ -214,13 +233,13 @@ export function HeroSection() {
                 </Button>
               </div>
             </TabsContent>
-            <TabsContent value="new" className="space-y-8">
+            <TabsContent value="new" className="space-y-8 animate-fade-in">
               {/* Similar grid of products for new arrivals */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {/* New arrival products would go here */}
               </div>
             </TabsContent>
-            <TabsContent value="trending" className="space-y-8">
+            <TabsContent value="trending" className="space-y-8 animate-fade-in">
               {/* Similar grid of products for trending items */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {/* Trending products would go here */}
