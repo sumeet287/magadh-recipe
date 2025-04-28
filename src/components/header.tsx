@@ -79,9 +79,9 @@ export function Header() {
               className="w-[200px] pl-8 rounded-full bg-gray-100 focus-visible:ring-orange-600"
             />
           </div>
-          <Button variant="ghost" size="icon" className="text-gray-700">
-            <Heart className="h-5 w-5" />
-            <span className="sr-only">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/wishlist" className="relative">
+              <Heart className="h-5 w-5" />
               {wishlist.length > 0 && (
                 <Badge
                   variant="secondary"
@@ -90,11 +90,11 @@ export function Header() {
                   {wishlist.length}
                 </Badge>
               )}
-            </span>
+            </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="text-gray-700">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="sr-only">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/cart" className="relative">
+              <ShoppingCart className="h-5 w-5" />
               {cart.length > 0 && (
                 <Badge
                   variant="secondary"
@@ -103,7 +103,7 @@ export function Header() {
                   {cart.length}
                 </Badge>
               )}
-            </span>
+            </Link>
           </Button>
           <div className="hidden md:flex items-center gap-2 ml-4">
             {isAuthenticated ? (
