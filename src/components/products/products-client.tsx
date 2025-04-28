@@ -32,6 +32,7 @@ import { ShoppingBag, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { CraftCard } from "../card/craft-card";
+import { useAuth } from "@/contexts/auth-context";
 // Add these animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -60,6 +61,7 @@ const itemVariants = {
 };
 
 export function ProductsClient() {
+  const { token } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedAddressId, setSelectedAddressId] = useState<string>("1");
@@ -281,17 +283,19 @@ export function ProductsClient() {
             className="flex flex-col gap-6"
             variants={containerVariants}
           >
-            <motion.div className="space-y-2" variants={itemVariants}>
-              <h1 className="text-2xl sm:text-4xl font-bold">Our Products</h1>
-              <div className="text-sm text-muted-foreground">
-                Delivery Address
-              </div>
-              <AddressSelector
-                addresses={addresses || []}
-                selectedAddressId={selectedAddressId || ""}
-                onAddressChange={setSelectedAddressId}
-              />
-            </motion.div>
+            {token && (
+              <motion.div className="space-y-2" variants={itemVariants}>
+                <h1 className="text-2xl sm:text-4xl font-bold">Our Products</h1>
+                <div className="text-sm text-muted-foreground">
+                  Delivery Address
+                </div>
+                <AddressSelector
+                  addresses={addresses || []}
+                  selectedAddressId={selectedAddressId || ""}
+                  onAddressChange={setSelectedAddressId}
+                />
+              </motion.div>
+            )}
 
             <motion.div className="space-y-4" variants={itemVariants}>
               <ProductFilters
@@ -370,6 +374,7 @@ export function ProductsClient() {
                       originalPrice={product.price}
                       image={product.productImage}
                       category={product.category}
+                      artist={product.artistName}
                     />
                   </motion.div>
                 ))

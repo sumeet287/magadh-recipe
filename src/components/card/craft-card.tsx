@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Heart, ShoppingCart, CreditCard } from "lucide-react";
+import { Heart, ShoppingCart, CreditCard, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,6 @@ import { useCart } from "@/contexts/cart-context";
 import { useCartActions } from "@/hooks/useCartActions";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useAuth } from "@/contexts/auth-context";
 
 interface CraftCardProps {
   id: string;
@@ -37,7 +36,6 @@ export function CraftCard({
   const { addToCart: addToCartAction } = useCartActions();
   const { addToWishlist, wishlist, removeFromWishlist } = useCart();
   const isInWishlist = wishlist.some((item) => item.id === id);
-  const { token } = useAuth();
   const hasDiscount =
     discountedPrice !== undefined && discountedPrice < originalPrice;
   const discountPercentage = hasDiscount
@@ -80,6 +78,26 @@ export function CraftCard({
     }
   };
 
+  // Share functionality
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/products/${id}`;
+    const shareText = `Check out this product: ${title}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url: shareUrl, text: shareText });
+      } catch {
+        // User cancelled or error
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast.success("Link copied!");
+      } catch {
+        toast.error("Failed to copy link");
+      }
+    }
+  };
+
   return (
     <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
       <div className="relative aspect-square overflow-hidden">
@@ -91,7 +109,7 @@ export function CraftCard({
             className="object-cover transition-transform duration-300 hover:scale-105"
           />
         </Link>
-        {token && (
+        {
           <div className="absolute top-2 right-2 flex gap-2">
             <Button
               variant="secondary"
@@ -102,8 +120,17 @@ export function CraftCard({
               <Heart className="h-4 w-4" />
               <span className="sr-only">Add to wishlist</span>
             </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm cursor-pointer"
+              onClick={handleShare}
+            >
+              <Share2 className="h-4 w-4" />
+              <span className="sr-only">Share</span>
+            </Button>
           </div>
-        )}
+        }
         <div className="absolute bottom-2 left-2 flex gap-2">
           <span className="inline-block bg-white/80 backdrop-blur-sm text-xs font-medium px-2 py-1 rounded-full">
             {category}

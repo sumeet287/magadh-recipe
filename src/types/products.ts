@@ -34,6 +34,8 @@ interface ApiProduct {
   createdAt?: string;
   updatedAt?: string;
   __v?: number;
+  artistName?: string;
+  totalItems?: number;
 }
 
 interface ApiResponse {

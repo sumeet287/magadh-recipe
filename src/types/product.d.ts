@@ -31,8 +31,10 @@ export interface Product {
   };
   materials?: string[];
   tags?: string[];
+  artistName?: string;
   createdAt?: string;
   updatedAt?: string;
+  totalItems?: number;
 }
 
 export interface ProductCategoryInfo {

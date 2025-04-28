@@ -56,19 +56,20 @@ export function useProduct() {
       inStock: apiProduct.inStock ?? true,
       materials: apiProduct.materials || [],
       tags: apiProduct.tags || [],
+      artistName: apiProduct.artistName || "",
       dimensions: {
         length: apiProduct.dimensions?.length || 0,
         width: apiProduct.dimensions?.width || 0,
         height: apiProduct.dimensions?.height || 0,
         unit: apiProduct.dimensions?.unit || "cm",
       },
+      totalItems: apiProduct.totalItems || 0,
       weight: {
         value: apiProduct.weight?.value || 0,
         unit: apiProduct.weight?.unit || "g",
       },
       createdAt: apiProduct.createdAt || new Date().toISOString(),
       updatedAt: apiProduct.updatedAt || new Date().toISOString(),
-      artisanId: undefined,
     };
   }, []);
 
