@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import CategoryContent from "@/components/Category/category-content";
+import CategoryContent from "@/components/category/category-content";
 import { categoryContent, validCategories } from "@/config/category-content";
 
 type Props = Readonly<{

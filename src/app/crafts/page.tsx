@@ -1,5 +1,9 @@
+import CraftHero from "@/components/craft/craft-hero";
 import { Metadata } from "next";
-
+import Crafts from "@/components/craft/craft-explore";
+import CraftCategories from "@/components/craft/craft-featured";
+import CraftTestimonials from "@/components/craft/craft-testimonials";
+import CraftSupport from "@/components/craft/craft-support";
 export const metadata: Metadata = {
   title: "Crafts of Bihar | Bihar Bazaar",
   description:
@@ -8,9 +12,12 @@ export const metadata: Metadata = {
 
 export default function CraftsPage() {
   return (
-    <main className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">Crafts of Bihar</h1>
-      {/* Add your crafts listing content */}
-    </main>
+    <div>
+      <CraftHero />
+      <Crafts />
+      <CraftCategories />
+      <CraftTestimonials />
+      <CraftSupport />
+    </div>
   );
 }

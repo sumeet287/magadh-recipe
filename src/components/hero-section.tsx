@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { ArrowRight } from "lucide-react";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
@@ -13,6 +12,7 @@ import SitaDevi from "@/assets/artist/Smt_Sita_Devi.png";
 import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
 import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";
 import ManishaJha from "@/assets/artist/Smt_Manisha_Devi.png";
+import BiharBazaarBg from "@/assets/intro/Bihar_Bazaar_bg.webp";
 
 import { ArtisanCard } from "./card/artisan-card";
 import { TestimonialCarousel } from "./testimonials/testimonial-carousel";
@@ -20,70 +20,107 @@ import { FeaturedCollection } from "./collection/featured-collection";
 import { CraftCard } from "./card/craft-card";
 import { CategoryCard } from "./card/category-card";
 import Subscribe from "./subscribe/subscribe";
+import "./hero.css";
+import Link from "next/link";
 export function HeroSection() {
-  const router = useRouter();
-
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/hero-bg.jpg')] bg-cover bg-center opacity-20" />
+      <section className="relative overflow-hidden  flex items-center bg-orange-50">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${BiharBazaarBg.src})` }}
+        />
+
+        {/* Light Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/60 to-transparent" />
+
+        {/* Content */}
         <div className="container relative mx-auto px-4 py-20 md:py-32">
-          <div className="grid gap-6 md:grid-cols-2 items-center">
-            <div className="space-y-6">
+          <div className="grid gap-10 md:grid-cols-2 items-center">
+            {/* Left Side: Text Content */}
+            <div className="space-y-8 animate-fadeInUp">
               <div>
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">
+                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-gray-900">
                   Bihar Bazaar
                 </h1>
-                <p className="text-xl md:text-2xl font-medium text-orange-600 mt-2">
+                <p className="text-2xl md:text-3xl font-semibold text-orange-600 mt-4">
                   Handicrafts ka Digital Marketplace
                 </p>
               </div>
-              <p className="text-gray-600 md:text-lg max-w-md">
+              <p className="text-gray-700 md:text-xl max-w-2xl leading-relaxed">
                 Bihar ki rich cultural heritage aur traditional crafts ko duniya
                 se connect karne ka platform. Madhubani, Tikuli, Glass art aur
                 bahut saare authentic handicrafts ek hi jagah par.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+
+              <div className="flex flex-col sm:flex-row gap-6">
                 <Button
                   size="lg"
-                  className="bg-orange-600 hover:bg-orange-700"
-                  onClick={() => router.push("/products")}
+                  className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-4"
                 >
-                  Shop Now
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link href="/products">Shop Now</Link>
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-orange-600 text-orange-600 hover:bg-orange-50"
-                  onClick={() => router.push("/crafts")}
+                  className="border-2 border-orange-600 text-orange-600 hover:bg-orange-50 text-lg px-8 py-4"
                 >
-                  Explore Crafts
+                  <Link href="/crafts">Explore Crafts</Link>
                 </Button>
               </div>
             </div>
-            <div className="relative hidden md:block">
-              <div className="grid grid-cols-2 gap-4">
+
+            {/* Right Side: Floating Image Stack */}
+            <div className="relative w-[400px] h-[400px] hidden md:block group cursor-pointer">
+              <div
+                className="
+                absolute left-0 top-12 w-[400px] z-10 
+                rotate-[-10deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
+                transition-all duration-500
+                group-hover:rotate-[-18deg] group-hover:-translate-x-16 group-hover:-translate-y-8
+              "
+              >
                 <Image
                   src={madhubaniArt}
                   alt="Madhubani Art"
-                  width={300}
+                  width={400}
                   height={400}
-                  className="rounded-lg shadow-lg transform translate-y-6"
                 />
+              </div>
+              <div
+                className="
+                absolute left-28 top-0 w-[400px] z-20 
+                rotate-[8deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
+                transition-all duration-500
+                group-hover:rotate-[0deg] group-hover:translate-x-0 group-hover:-translate-y-12
+              "
+              >
                 <Image
                   src={tikuliArt}
-                  alt="Traditional Sculpture"
-                  width={300}
+                  alt="Tikuli Art"
+                  width={400}
                   height={400}
-                  className="rounded-lg shadow-lg transform -translate-y-6"
                 />
+              </div>
+
+              <div
+                className="
+                absolute left-16 top-40 w-[400px] z-0 
+                rotate-[2deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
+                transition-all duration-500
+                group-hover:rotate-[12deg] group-hover:translate-x-16 group-hover:translate-y-8
+              "
+              >
+                <Image src={woodArt} alt="Wood Art" width={400} height={400} />
               </div>
             </div>
           </div>
         </div>
       </section>
+
       {/* Stats Section */}
       <section className="bg-orange-50 py-12">
         <div className="container mx-auto px-4">

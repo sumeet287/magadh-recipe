@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 
 const Subscribe = () => {
   return (
-    <section className="py-16 bg-orange-600 text-white">
+    <section className="py-16 bg-orange-500 text-white">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h2 className="text-3xl font-bold">Stay Connected</h2>
