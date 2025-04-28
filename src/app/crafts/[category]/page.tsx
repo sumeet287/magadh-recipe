@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import CategoryContent from "@/components/category/category-content";
 import { categoryContent, validCategories } from "@/config/category-content";
-
+import CategoryContentCheck from "@/components/category/category-content-check";
 type Props = Readonly<{
   params: Promise<{ category: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -45,7 +44,7 @@ export default async function CategoryPage({ params }: Readonly<Props>) {
 
   return (
     <div className="min-h-screen">
-      <CategoryContent category={categoryData} params={{ category }} />
+      <CategoryContentCheck category={categoryData} params={{ category }} />
     </div>
   );
 }

@@ -28,7 +28,10 @@ interface CategoryContentProps {
   };
 }
 
-const CategoryContent: FC<CategoryContentProps> = ({ category, params }) => {
+const CategoryContentCheck: FC<CategoryContentProps> = ({
+  category,
+  params,
+}) => {
   const [mounted, setMounted] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
 
@@ -229,4 +232,4 @@ const CategoryContent: FC<CategoryContentProps> = ({ category, params }) => {
   );
 };
 
-export default CategoryContent;
+export default CategoryContentCheck;
