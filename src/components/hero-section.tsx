@@ -42,7 +42,7 @@ export function HeroSection() {
             {/* Left Side: Text Content */}
             <div className="space-y-8 animate-fadeInUp">
               <div>
-                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-gray-900">
+                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-orange-700">
                   Bihar Bazaar
                 </h1>
                 <p className="text-2xl md:text-3xl font-semibold text-orange-600 mt-4">
