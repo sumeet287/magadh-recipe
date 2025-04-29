@@ -2,7 +2,7 @@ import axios from "axios";
 import { authEndpoints } from "./endpoints/auth";
 import { clearAuthAndRedirect } from "../utils/auth";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const baseURL = "http://65.0.97.95:3001";
 
 export const api = axios.create({
   baseURL,
