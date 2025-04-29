@@ -8,6 +8,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CartInitializer } from "@/components/cart-initializer";
+import { RazorpayScript } from "@/components/razorpay-script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <RazorpayScript />
         <QueryProvider>
           <AuthProvider>
             <CartProvider>

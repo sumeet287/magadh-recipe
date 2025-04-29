@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button";
 
 interface PaymentMethodSelectorProps {
-  selectedPayment: "upi" | "whatsapp";
-  onSelect: (method: "upi" | "whatsapp") => void;
+  selectedPayment: "upi" | "whatsapp" | "razorpay";
+  onSelect: (method: "upi" | "whatsapp" | "razorpay") => void;
 }
 
 export function PaymentMethodSelector({
@@ -28,6 +28,14 @@ export function PaymentMethodSelector({
         onClick={() => onSelect("whatsapp")}
       >
         WhatsApp
+      </Button>
+      <Button
+        variant={selectedPayment === "razorpay" ? "default" : "outline"}
+        size="sm"
+        className="flex-1"
+        onClick={() => onSelect("razorpay")}
+      >
+        Razorpay
       </Button>
     </div>
   );

@@ -1,5 +1,11 @@
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,17 +15,21 @@ import {
   X,
   RefreshCw,
   Truck,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
-import { Order } from "@/types/order";
+import { Order as OrderType } from "@/types/order";
 import { Skeleton } from "@/components/ui/skeleton";
+import { usePayment } from "@/hooks/usePayment";
+import { useOrder } from "@/hooks/useOrder";
 
 interface OrderCardProps {
-  order: Order;
+  order: OrderType;
   expandedOrder: string | null;
   onToggleExpansion: (orderId: string) => void;
   onCancelOrder: (orderId: string) => void;
-  onReorder: (order: Order) => void;
+  onReorder: (order: OrderType) => void;
+  onOrderUpdate: (updatedOrder: OrderType) => void;
   isLoading: boolean;
 }
 
@@ -29,11 +39,57 @@ export function OrderCard({
   onToggleExpansion,
   onCancelOrder,
   onReorder,
+  onOrderUpdate,
   isLoading,
 }: Readonly<OrderCardProps>) {
+  const { handlePayment, isProcessing } = usePayment();
+  const { getOrderById } = useOrder();
+
   if (isLoading) {
     return <Skeleton className="h-[400px] w-full" />;
   }
+
+  const handlePayNow = async () => {
+    try {
+      await handlePayment(order._id);
+      // Refresh the order status after successful payment
+      const updatedOrder = await getOrderById(order._id);
+      // Convert the updated order to match the OrderType
+      const convertedOrder: OrderType = {
+        _id: updatedOrder._id,
+        status: updatedOrder.status,
+        totalAmount: updatedOrder.totalAmount,
+        totalItems: updatedOrder.items.length,
+        paymentMethod: updatedOrder.paymentMethod,
+        shippingAddress: {
+          name: updatedOrder.shippingAddress.street,
+          address: updatedOrder.shippingAddress.street,
+          city: updatedOrder.shippingAddress.city,
+          state: updatedOrder.shippingAddress.state,
+          pincode: updatedOrder.shippingAddress.postalCode,
+          country: updatedOrder.shippingAddress.country,
+          landmark: "",
+          isDefault: false,
+          _id: "",
+        },
+        items: updatedOrder.items.map((item) => ({
+          productId: item.product._id,
+          quantity: item.quantity,
+          price: item.price,
+          name: item.product.name,
+          category: "",
+          image: item.product.productImage,
+        })),
+        userId: updatedOrder.userId,
+        __v: 0,
+      };
+      // Update the order in the parent component
+      onOrderUpdate(convertedOrder);
+      onToggleExpansion(order._id);
+    } catch (error) {
+      console.error("Payment failed:", error);
+    }
+  };
 
   return (
     <motion.div
@@ -153,6 +209,32 @@ export function OrderCard({
             )}
           </div>
         </CardContent>
+        {order.status === "pending" && (
+          <CardFooter className="flex gap-2">
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => onCancelOrder(order._id)}
+              disabled={isLoading}
+            >
+              Cancel Order
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={handlePayNow}
+              disabled={isLoading || isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                "Pay Now"
+              )}
+            </Button>
+          </CardFooter>
+        )}
       </Card>
     </motion.div>
   );

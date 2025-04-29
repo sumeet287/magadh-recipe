@@ -7,16 +7,36 @@ import QRCode from "qrcode";
 import { toast } from "sonner";
 import { UPIPayment } from "./payment-options/upi-payment";
 import { WhatsAppPayment } from "./payment-options/whatsapp-payment";
+import { RazorpayPayment } from "./payment-options/razorpay-payment";
 import { PaymentMethodSelector } from "./payment-options/payment-method-selector";
+import { useCart } from "@/contexts/cart-context";
+
+interface RazorpayError {
+  code: string;
+  description: string;
+  source: string;
+  step: string;
+  reason: string;
+  metadata: Record<string, unknown>;
+}
 
 export function PaymentOptions() {
-  const [selectedPayment, setSelectedPayment] = useState<"upi" | "whatsapp">(
-    "upi"
-  );
+  const { cart } = useCart();
+  const [selectedPayment, setSelectedPayment] = useState<
+    "upi" | "whatsapp" | "razorpay"
+  >("upi");
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const upiId = "biharbazaar@upi";
-  const upiLink = `upi://pay?pa=${upiId}&pn=Bihar%20Bazaar&am=${1000}&cu=INR`;
+
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shipping = subtotal > 5000 ? 0 : 200;
+  const total = subtotal + shipping;
+
+  const upiLink = `upi://pay?pa=${upiId}&pn=Bihar%20Bazaar&am=${total}&cu=INR`;
 
   useEffect(() => {
     QRCode.toDataURL(upiLink).then(setQrCodeUrl).catch(console.error);
@@ -27,7 +47,7 @@ export function PaymentOptions() {
       setIsProcessing(true);
       if (selectedPayment === "upi") {
         window.open(upiLink, "_blank");
-      } else {
+      } else if (selectedPayment === "whatsapp") {
         const message = "I want to place an order";
         window.open(
           `https://wa.me/919810790293?text=${encodeURIComponent(message)}`,
@@ -41,6 +61,15 @@ export function PaymentOptions() {
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleRazorpaySuccess = () => {
+    toast.success("Payment successful!");
+  };
+
+  const handleRazorpayError = (error: RazorpayError) => {
+    console.error("Razorpay payment error:", error);
+    toast.error(`Payment failed: ${error.description}`);
   };
 
   return (
@@ -59,25 +88,33 @@ export function PaymentOptions() {
             toast.success("Copied!");
           }}
         />
-      ) : (
+      ) : selectedPayment === "whatsapp" ? (
         <WhatsAppPayment />
+      ) : (
+        <RazorpayPayment
+          orderId="ORDER_ID_FROM_BACKEND" // Replace with actual order ID
+          onSuccess={handleRazorpaySuccess}
+          onError={handleRazorpayError}
+        />
       )}
 
-      <Button
-        className="w-full"
-        size="sm"
-        onClick={handlePayment}
-        disabled={isProcessing}
-      >
-        {isProcessing ? (
-          <>
-            <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-            Processing...
-          </>
-        ) : (
-          `Pay via ${selectedPayment === "upi" ? "UPI" : "WhatsApp"}`
-        )}
-      </Button>
+      {selectedPayment !== "razorpay" && (
+        <Button
+          className="w-full"
+          size="sm"
+          onClick={handlePayment}
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            `Pay via ${selectedPayment === "upi" ? "UPI" : "WhatsApp"}`
+          )}
+        </Button>
+      )}
     </div>
   );
 }
