@@ -22,6 +22,7 @@ import { Order as OrderType } from "@/types/order";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePayment } from "@/hooks/usePayment";
 import { useOrder } from "@/hooks/useOrder";
+import { toast } from "sonner";
 
 interface OrderCardProps {
   order: OrderType;
@@ -52,42 +53,48 @@ export function OrderCard({
   const handlePayNow = async () => {
     try {
       await handlePayment(order._id);
-      // Refresh the order status after successful payment
+      // Payment successful hone ke baad order status refresh karta hai
       const updatedOrder = await getOrderById(order._id);
+      if (!updatedOrder) {
+        throw new Error("Failed to fetch updated order");
+      }
+
       // Convert the updated order to match the OrderType
       const convertedOrder: OrderType = {
         _id: updatedOrder._id,
         status: updatedOrder.status,
         totalAmount: updatedOrder.totalAmount,
-        totalItems: updatedOrder.items.length,
+        totalItems: updatedOrder.items?.length || 0,
         paymentMethod: updatedOrder.paymentMethod,
         shippingAddress: {
-          name: updatedOrder.shippingAddress.street,
-          address: updatedOrder.shippingAddress.street,
-          city: updatedOrder.shippingAddress.city,
-          state: updatedOrder.shippingAddress.state,
-          pincode: updatedOrder.shippingAddress.postalCode,
-          country: updatedOrder.shippingAddress.country,
+          name: updatedOrder.shippingAddress?.street || "",
+          address: updatedOrder.shippingAddress?.street || "",
+          city: updatedOrder.shippingAddress?.city || "",
+          state: updatedOrder.shippingAddress?.state || "",
+          pincode: updatedOrder.shippingAddress?.postalCode || "",
+          country: updatedOrder.shippingAddress?.country || "",
           landmark: "",
           isDefault: false,
           _id: "",
         },
-        items: updatedOrder.items.map((item) => ({
-          productId: item.product._id,
-          quantity: item.quantity,
-          price: item.price,
-          name: item.product.name,
+        items: (updatedOrder.items || []).map((item) => ({
+          productId: item.product?._id || "",
+          quantity: item.quantity || 0,
+          price: item.price || 0,
+          name: item.product?.name || "",
           category: "",
-          image: item.product.productImage,
+          image: item.product?.productImage || "",
         })),
         userId: updatedOrder.userId,
         __v: 0,
       };
+
       // Update the order in the parent component
       onOrderUpdate(convertedOrder);
       onToggleExpansion(order._id);
     } catch (error) {
       console.error("Payment failed:", error);
+      toast.error("Payment failed. Please try again.");
     }
   };
 

@@ -26,8 +26,8 @@ export default function CheckoutPage() {
   );
   const [isAddressDialogOpen, setIsAddressDialogOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
-    "cash_on_delivery" | "razorpay"
-  >("razorpay");
+    "cash_on_delivery" | "online"
+  >("online");
   const router = useRouter();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
       });
 
       // If payment method is Razorpay, handle payment
-      if (paymentMethod === "razorpay") {
+      if (paymentMethod === "online") {
         await handlePayment(order._id);
       } else {
         // For COD, just clear cart and redirect
@@ -121,14 +121,14 @@ export default function CheckoutPage() {
             <RadioGroup
               value={paymentMethod}
               onValueChange={(value) =>
-                setPaymentMethod(value as "cash_on_delivery" | "razorpay")
+                setPaymentMethod(value as "cash_on_delivery" | "online")
               }
               className="space-y-2"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="razorpay" id="razorpay" />
-                <Label htmlFor="razorpay">
-                  Razorpay (Credit/Debit Card, UPI, Netbanking)
+                <RadioGroupItem value="online" id="online" />
+                <Label htmlFor="online">
+                  Online Payment (Credit/Debit Card, UPI, Netbanking)
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -175,9 +175,7 @@ export default function CheckoutPage() {
             disabled={addresses.length === 0 || !selectedAddressId}
             className="w-full"
           >
-            {paymentMethod === "razorpay"
-              ? "Proceed to Payment"
-              : "Place Order"}
+            {paymentMethod === "online" ? "Proceed to Payment" : "Place Order"}
           </Button>
         </div>
       </div>
