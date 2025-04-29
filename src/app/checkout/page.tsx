@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useCart } from "@/contexts/cart-context";
 import { useOrder } from "@/hooks/useOrder";
+import { usePayment } from "@/hooks/usePayment";
 import { useAddresses } from "@/hooks/useAddresses";
 import { AddressSelector } from "@/components/products/address-selector";
 import { Button } from "@/components/ui/button";
@@ -12,15 +13,21 @@ import {
   AddressFormData,
 } from "@/components/products/address-dialog";
 import { useRouter } from "next/navigation";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
-  const { createOrder } = useOrder();
+  const { checkout } = useOrder();
+  const { handlePayment } = usePayment();
   const { addresses, isLoading, createAddress } = useAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     null
   );
   const [isAddressDialogOpen, setIsAddressDialogOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<
+    "cash_on_delivery" | "razorpay"
+  >("razorpay");
   const router = useRouter();
 
   useEffect(() => {
@@ -49,17 +56,26 @@ export default function CheckoutPage() {
         return;
       }
 
-      await createOrder({
+      // Create order
+      const order = await checkout({
         items: orderItems,
         addressId: selectedAddressId,
-        paymentMethod: "cash_on_delivery",
+        paymentMethod,
       });
 
-      clearCart();
-      toast.success("Order placed successfully! Redirecting to your orders...");
-      setTimeout(() => {
-        router.push("/orders");
-      }, 2000);
+      // If payment method is Razorpay, handle payment
+      if (paymentMethod === "razorpay") {
+        await handlePayment(order._id);
+      } else {
+        // For COD, just clear cart and redirect
+        clearCart();
+        toast.success(
+          "Order placed successfully! Redirecting to your orders..."
+        );
+        setTimeout(() => {
+          router.push("/orders");
+        }, 2000);
+      }
     } catch (error) {
       console.error("Failed to place order:", error);
       toast.error("Failed to place order");
@@ -99,6 +115,28 @@ export default function CheckoutPage() {
             onAddressChange={setSelectedAddressId}
             onAddNewAddress={handleAddNewAddress}
           />
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Payment Method</h2>
+            <RadioGroup
+              value={paymentMethod}
+              onValueChange={(value) =>
+                setPaymentMethod(value as "cash_on_delivery" | "razorpay")
+              }
+              className="space-y-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="razorpay" id="razorpay" />
+                <Label htmlFor="razorpay">
+                  Razorpay (Credit/Debit Card, UPI, Netbanking)
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="cash_on_delivery" id="cod" />
+                <Label htmlFor="cod">Cash on Delivery</Label>
+              </div>
+            </RadioGroup>
+          </div>
         </div>
 
         {/* Order Summary */}
@@ -137,7 +175,9 @@ export default function CheckoutPage() {
             disabled={addresses.length === 0 || !selectedAddressId}
             className="w-full"
           >
-            Place Order
+            {paymentMethod === "razorpay"
+              ? "Proceed to Payment"
+              : "Place Order"}
           </Button>
         </div>
       </div>

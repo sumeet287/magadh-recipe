@@ -134,6 +134,14 @@ export default function OrdersPage() {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   };
 
+  const handleOrderUpdate = (updatedOrder: Order) => {
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order._id === updatedOrder._id ? updatedOrder : order
+      )
+    );
+  };
+
   return (
     <div className="container mx-auto py-8 px-4">
       <motion.div
@@ -185,6 +193,7 @@ export default function OrdersPage() {
                   onCancelOrder={handleCancelOrder}
                   onToggleExpansion={toggleOrderExpansion}
                   onReorder={handleReorder}
+                  onOrderUpdate={handleOrderUpdate}
                   isLoading={isLoading}
                   expandedOrder={expandedOrder}
                 />

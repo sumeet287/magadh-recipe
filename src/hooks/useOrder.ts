@@ -60,6 +60,15 @@ interface OrderStats {
   };
 }
 
+interface CheckoutRequest {
+  items: Array<{
+    productId: string;
+    quantity: number;
+  }>;
+  addressId: string;
+  paymentMethod: string;
+}
+
 export function useOrder() {
   // Create a new order
   const createOrder = useCallback(async (request: CreateOrderRequest) => {
@@ -143,6 +152,22 @@ export function useOrder() {
     return { error: message };
   }, []);
 
+  // Complete checkout flow
+  const checkout = useCallback(
+    async (request: CheckoutRequest) => {
+      try {
+        // Step 1: Create order
+        const order = await createOrder(request);
+        return order;
+      } catch (error) {
+        console.error("Checkout failed:", error);
+        toast.error("Checkout failed. Please try again.");
+        throw error;
+      }
+    },
+    [createOrder]
+  );
+
   return {
     createOrder,
     getUserOrders,
@@ -150,5 +175,6 @@ export function useOrder() {
     updateOrderStatus,
     getOrderStats,
     handleOrderError,
+    checkout,
   };
 }
