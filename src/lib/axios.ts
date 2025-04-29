@@ -26,7 +26,7 @@ api.interceptors.request.use(
 );
 
 // Response interceptor
-/* api.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -59,6 +59,7 @@ api.interceptors.request.use(
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
+        console.error("Refresh token error:", refreshError);
         // If refresh fails, clear everything and redirect
         clearAuthAndRedirect();
         return Promise.reject(
@@ -75,6 +76,6 @@ api.interceptors.request.use(
 
     return Promise.reject(error);
   }
-); */
+);
 
 export default api;
