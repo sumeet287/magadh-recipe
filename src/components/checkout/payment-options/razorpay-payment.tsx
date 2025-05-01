@@ -80,7 +80,7 @@ export function RazorpayPayment({
 
       // Step 2: Open Razorpay checkout
       const options: RazorpayOptions = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: "rzp_test_E8disNZaTitkeS",
         amount: paymentData.amount,
         currency: paymentData.currency,
         order_id: paymentData.orderId,

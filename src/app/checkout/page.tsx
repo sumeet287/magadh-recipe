@@ -65,7 +65,7 @@ export default function CheckoutPage() {
 
       // If payment method is Razorpay, handle payment
       if (paymentMethod === "online") {
-        await handlePayment(order._id);
+        await handlePayment(order._id, paymentMethod);
       } else {
         // For COD, just clear cart and redirect
         clearCart();

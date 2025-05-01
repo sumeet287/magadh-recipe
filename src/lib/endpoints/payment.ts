@@ -23,14 +23,20 @@ export interface VerifyPaymentResponse {
 }
 
 export const paymentEndpoints = {
-  createOrder: "/payments/create-order",
+  createOnlineOrder: "/payments/create",
   verifyPayment: "/payments/verify",
+  createCodOrder: "/payments/pay-now",
 };
 
 export const paymentApi = {
-  createOrder: (orderId: string) =>
-    api.post<CreateOrderResponse>(paymentEndpoints.createOrder, { orderId }),
-
+  createOnlineOrder: (orderId: string) =>
+    api.post<CreateOrderResponse>(paymentEndpoints.createOnlineOrder, {
+      orderId,
+    }),
+  createCodOrder: (orderId: string) =>
+    api.post<CreateOrderResponse>(paymentEndpoints.createCodOrder, {
+      orderId,
+    }),
   verifyPayment: (data: VerifyPaymentRequest) =>
     api.post<VerifyPaymentResponse>(paymentEndpoints.verifyPayment, data),
 };
