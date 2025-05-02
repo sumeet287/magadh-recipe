@@ -190,13 +190,22 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Bihar Bazaar. All rights reserved.
           </p>
           <div className="flex justify-center gap-4 mt-4">
-            <Link href="#" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/privacy-policy"
+              className="hover:text-orange-600 transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/terms-condition"
+              className="hover:text-orange-600 transition-colors"
+            >
               Terms of Service
             </Link>
-            <Link href="#" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/shipping-policy"
+              className="hover:text-orange-600 transition-colors"
+            >
               Shipping Policy
             </Link>
           </div>
