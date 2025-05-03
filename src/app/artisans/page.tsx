@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import ArtisansClient from "@/components/artisans/artisans-client";
+import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 
 export const metadata: Metadata = {
   title: "Master Artisans of Bihar | Bihar Bazaar",
@@ -10,8 +11,13 @@ export const metadata: Metadata = {
 
 export default function ArtisansPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ArtisansClient />
-    </Suspense>
+    <div>
+      <div className="container mx-auto px-4 py-4">
+        <SiteBreadcrumb />
+      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ArtisansClient />
+      </Suspense>
+    </div>
   );
 }

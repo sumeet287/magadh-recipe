@@ -1,4 +1,8 @@
+"use client";
+
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -6,14 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, WifiOff } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 interface OrdersHeaderProps {
   searchQuery: string;
-  onSearchChange: (value: string) => void;
+  onSearchChange: (query: string) => void;
   statusFilter: string;
-  onStatusFilterChange: (value: string) => void;
+  onStatusFilterChange: (status: string) => void;
   isLoading: boolean;
   isOffline: boolean;
 }
@@ -25,59 +28,130 @@ export function OrdersHeader({
   onStatusFilterChange,
   isLoading,
   isOffline,
-}: Readonly<OrdersHeaderProps>) {
-  if (isLoading) {
-    return (
-      <div className="space-y-4">
-        <Skeleton className="h-8 w-[200px]" />
-        <div className="flex">
-          <Skeleton className="h-10 w-[300px]" />
-          <Skeleton className="h-10 w-[180px]" />
+}: OrdersHeaderProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="mb-8 space-y-4"
+    >
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-amber-900">My Orders</h1>
+        <div className="hidden md:block">
+          <Select
+            value={statusFilter}
+            onValueChange={onStatusFilterChange}
+            disabled={isLoading || isOffline}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Orders</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="shipped">Shipped</SelectItem>
+              <SelectItem value="delivered">Delivered</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
-    );
-  }
 
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">My Orders</h1>
-        {isOffline && (
-          <div className="flex items-center gap-2 text-yellow-600">
-            <WifiOff className="w-5 h-5" />
-            <span className="text-sm">Offline Mode</span>
-          </div>
-        )}
-      </div>
-      <div className="flex sm:flex-row">
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search orders..."
+            placeholder="Search orders by product name..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10 rounded-r-none focus-visible:ring-0 focus-visible:ring-offset-0"
-            disabled={isOffline}
+            className="pl-10 pr-10"
+            disabled={isLoading || isOffline}
           />
+          {searchQuery && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+              onClick={() => onSearchChange("")}
+              disabled={isLoading || isOffline}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Clear search</span>
+            </Button>
+          )}
         </div>
-        <Select
-          value={statusFilter}
-          onValueChange={onStatusFilterChange}
-          disabled={isOffline}
-        >
-          <SelectTrigger className="w-[180px] rounded-l-none border-l-0 focus:ring-0 focus:ring-offset-0">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Orders</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="processing">Processing</SelectItem>
-            <SelectItem value="shipped">Shipped</SelectItem>
-            <SelectItem value="delivered">Delivered</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="md:hidden">
+          <Select
+            value={statusFilter}
+            onValueChange={onStatusFilterChange}
+            disabled={isLoading || isOffline}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Orders</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="shipped">Shipped</SelectItem>
+              <SelectItem value="delivered">Delivered</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-    </div>
+
+      {(searchQuery || statusFilter !== "all") && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Active filters:</span>
+          <div className="flex flex-wrap gap-2">
+            {searchQuery && (
+              <div className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full flex items-center gap-1">
+                <span>Search: {searchQuery}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-4 w-4 p-0 hover:bg-transparent"
+                  onClick={() => onSearchChange("")}
+                  disabled={isLoading || isOffline}
+                >
+                  <X className="h-3 w-3" />
+                  <span className="sr-only">Clear search filter</span>
+                </Button>
+              </div>
+            )}
+            {statusFilter !== "all" && (
+              <div className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full flex items-center gap-1">
+                <span>Status: {statusFilter}</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-4 w-4 p-0 hover:bg-transparent"
+                  onClick={() => onStatusFilterChange("all")}
+                  disabled={isLoading || isOffline}
+                >
+                  <X className="h-3 w-3" />
+                  <span className="sr-only">Clear status filter</span>
+                </Button>
+              </div>
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 ml-auto"
+            onClick={() => {
+              onSearchChange("");
+              onStatusFilterChange("all");
+            }}
+            disabled={isLoading || isOffline}
+          >
+            Clear all filters
+          </Button>
+        </div>
+      )}
+    </motion.div>
   );
 }

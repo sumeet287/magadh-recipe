@@ -2,14 +2,16 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { Order } from "@/types/order";
+import type { Order } from "@/types/order";
 import { OrderCard } from "@/components/orders/order-card";
 import { OrderCardSkeleton } from "@/components/orders/order-card-skeleton";
 import { OrdersHeader } from "@/components/orders/orders-header";
 import { EmptyOrders } from "@/components/orders/empty-orders";
 import { useOrder } from "@/hooks/useOrder";
+import { WifiOff } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -148,24 +150,20 @@ export default function OrdersPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className="max-w-5xl mx-auto"
       >
         {isOffline && (
-          <div className="mb-4 p-4 bg-yellow-100 text-yellow-800 rounded-lg flex items-center gap-2">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-            <span>You are offline. Showing cached orders.</span>
-          </div>
+          <Alert
+            variant="default"
+            className="mb-6 bg-yellow-50 border-yellow-200"
+          >
+            <WifiOff className="h-4 w-4" />
+            <AlertTitle>You are offline</AlertTitle>
+            <AlertDescription>
+              You&apos;re currently viewing cached orders. Some features may be
+              limited until you reconnect.
+            </AlertDescription>
+          </Alert>
         )}
 
         <OrdersHeader
@@ -178,15 +176,15 @@ export default function OrdersPage() {
         />
 
         <div className="space-y-6">
-          {isLoading ? (
-            <>
-              <OrderCardSkeleton />
-              <OrderCardSkeleton />
-              <OrderCardSkeleton />
-            </>
-          ) : (
-            <>
-              {filteredOrders.map((order) => (
+          <AnimatePresence>
+            {isLoading ? (
+              <>
+                <OrderCardSkeleton />
+                <OrderCardSkeleton />
+                <OrderCardSkeleton />
+              </>
+            ) : filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
                 <OrderCard
                   key={order._id}
                   order={order}
@@ -197,14 +195,13 @@ export default function OrdersPage() {
                   isLoading={isLoading}
                   expandedOrder={expandedOrder}
                 />
-              ))}
-              {filteredOrders.length === 0 && (
-                <EmptyOrders
-                  hasSearchQuery={!!searchQuery || statusFilter !== "all"}
-                />
-              )}
-            </>
-          )}
+              ))
+            ) : (
+              <EmptyOrders
+                hasSearchQuery={!!searchQuery || statusFilter !== "all"}
+              />
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </div>

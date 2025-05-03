@@ -1,14 +1,13 @@
 "use client";
-
 import { useState, useMemo, useEffect } from "react";
 import { ProductCard } from "@/components/products/product-card";
 import { Separator } from "@/components/ui/separator";
 import type { Product } from "@/types/product";
-import {
-  ProductFilters,
-  type StockFilter,
-} from "@/components/products/product-filters";
 import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
+import { ProductFilters } from "@/components/products/product-filters";
+import { StockFilter } from "@/utils/products.utils";
+import { products } from "@/data/products"; // Replace with your actual data
+import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 
 type ClientProductsPageProps = {
   title: string;
@@ -116,5 +115,24 @@ export function ClientProductsPage({
         {renderProducts()}
       </div>
     </main>
+  );
+}
+
+// Default export for Next.js dynamic route
+export default function Page({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+
+  // Filter products by category slug
+  const filteredProducts = products.filter(
+    (product) => product.category.toLowerCase() === slug
+  );
+
+  return (
+    <>
+      <div className="container mx-auto px-4 py-4">
+        <SiteBreadcrumb />
+      </div>
+      <ClientProductsPage title={slug} initialProducts={filteredProducts} />
+    </>
   );
 }

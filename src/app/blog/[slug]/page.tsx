@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
 import tikuliArt from "@/assets/art/tikuli_art.jpeg";
 import woodArt from "@/assets/art/wood_art.jpeg";
+import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 
 const blogPosts = [
   {
@@ -91,16 +92,23 @@ export default async function BlogPostPage(props: { params: Params }) {
   }
 
   return (
-    <main className="container mx-auto px-4 py-16">
-      <article className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-        <div className="flex items-center gap-4 text-slate-600 dark:text-slate-300 mb-8">
-          <span>{post.date}</span>
-          <span>•</span>
-          <span>{post.author}</span>
-        </div>
-        <div className="prose dark:prose-invert max-w-none">{post.content}</div>
-      </article>
-    </main>
+    <>
+      <div className="container mx-auto px-4 py-4">
+        <SiteBreadcrumb />
+      </div>
+      <main className="container mx-auto px-4 py-16">
+        <article className="max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+          <div className="flex items-center gap-4 text-slate-600 dark:text-slate-300 mb-8">
+            <span>{post.date}</span>
+            <span>•</span>
+            <span>{post.author}</span>
+          </div>
+          <div className="prose dark:prose-invert max-w-none">
+            {post.content}
+          </div>
+        </article>
+      </main>
+    </>
   );
 }

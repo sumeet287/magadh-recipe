@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categoryContent, validCategories } from "@/config/category-content";
 import CategoryContentCheck from "@/components/category/category-content-check";
+import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 type Props = Readonly<{
   params: Promise<{ category: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -44,6 +45,9 @@ export default async function CategoryPage({ params }: Readonly<Props>) {
 
   return (
     <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-4">
+        <SiteBreadcrumb />
+      </div>
       <CategoryContentCheck category={categoryData} params={{ category }} />
     </div>
   );

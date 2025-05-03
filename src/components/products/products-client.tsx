@@ -19,13 +19,13 @@ import { useAddresses } from "@/hooks/useAddresses";
 
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FilterState,
+  type FilterState,
   isSortOption,
-  SortOption,
+  type SortOption,
   isStockFilter,
-  StockFilter,
-  PaginationState,
-  URLParamUpdates,
+  type StockFilter,
+  type PaginationState,
+  type URLParamUpdates,
 } from "@/utils/products.utils";
 import { Button } from "../ui/button";
 import { ShoppingBag, ArrowRight } from "lucide-react";
@@ -218,7 +218,7 @@ export function ProductsClient() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="bg-amber-600 hover:bg-amber-700">
-                  Shop All <ShoppingBag className="ml-2 h-5 w-5" />
+                  Explore Our Collection <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
                   variant="outline"
@@ -238,38 +238,50 @@ export function ProductsClient() {
               Browse Categories
             </h2>
             <Link
-              href="/categories"
+              href="/products/category"
               className="text-amber-700 hover:text-amber-800 flex items-center"
             >
               View All <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {["Paintings", "Textiles", "Handicrafts", "Pottery"].map(
-              (category) => (
-                <Link
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {["Madhubani", "Tikul", "bamboo", "sikki"].map(
+              (category, index) => (
+                <motion.div
                   key={category}
-                  href={`/categories/${category.toLowerCase()}`}
-                  className="group relative h-40 rounded-lg overflow-hidden"
+                  variants={itemVariants}
+                  custom={index}
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
                 >
-                  <div className="absolute inset-0 bg-amber-900/40 group-hover:bg-amber-900/60 transition-all duration-300" />
-                  <Image
-                    src="/Bihar_Bazaar.png"
-                    alt="Bihar Bazaar Logo"
-                    width={40}
-                    height={40}
-                    className="h-10 w-10"
-                  />
+                  <Link
+                    href={`/products/category/${category.toLowerCase()}`}
+                    className="group relative h-40 rounded-lg overflow-hidden block"
+                  >
+                    <div className="absolute inset-0 bg-amber-900/40 group-hover:bg-amber-900/60 transition-all duration-300" />
+                    <Image
+                      src="/Bihar_Bazaar.png"
+                      alt="Bihar Bazaar Logo"
+                      width={40}
+                      height={40}
+                      className="absolute top-4 left-4 h-10 w-10 z-10"
+                    />
 
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white text-xl font-medium">
-                      {category}
-                    </span>
-                  </div>
-                </Link>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-white text-xl font-medium group-hover:scale-110 transition-transform duration-300">
+                        {category}
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
               )
             )}
-          </div>
+          </motion.div>
         </section>
 
         <motion.main
@@ -330,16 +342,10 @@ export function ProductsClient() {
                       />
                     </SelectTrigger>
                     <SelectContent align="end">
-                      {addresses.map((addr, idx) => (
-                        <SelectItem
-                          key={`address-${idx}-${addr._id || "no-id"}`}
-                          value={
-                            addr._id ? addr._id.toString() : `address-${idx}`
-                          }
-                        >
-                          {addr._id ? addr._id : `Address ${idx + 1}`}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="20">20</SelectItem>
+                      <SelectItem value="30">30</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
                     </SelectContent>
                   </Select>
                   <span className="text-muted-foreground">per page</span>
@@ -366,7 +372,17 @@ export function ProductsClient() {
                         : `product-${idx}`
                     }
                     variants={itemVariants}
-                    whileHover={{ y: -5 }}
+                    whileHover={{
+                      y: -8,
+                      boxShadow:
+                        "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 15,
+                    }}
+                    className="rounded-lg overflow-hidden"
                   >
                     <CraftCard
                       id={product.id}
@@ -380,15 +396,38 @@ export function ProductsClient() {
                 ))
               ) : (
                 <motion.div
-                  className="col-span-full text-center py-12"
+                  className="col-span-full flex flex-col items-center justify-center py-16 px-4 border border-dashed rounded-lg bg-muted/20"
                   variants={itemVariants}
                 >
-                  <p className="text-xl text-muted-foreground mb-2">
+                  <div className="mb-6 p-6 bg-amber-600/10 rounded-full">
+                    <ShoppingBag className="h-12 w-12 text-amber-600" />
+                  </div>
+                  <h3 className="text-2xl font-semibold mb-2">
                     No products found
+                  </h3>
+                  <p className="text-muted-foreground text-center max-w-md mb-8">
+                    We&apos;re currently updating our collection with new
+                    handcrafted treasures from Bihar&apos;s skilled artisans.
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    Try adjusting your search or filters
-                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild>
+                      <Link href="/products/category">
+                        Browse Categories{" "}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        // Reset filters
+                        handleSearchChange("");
+                        handleSortChange("newest");
+                        handleStockFilterChange("all");
+                      }}
+                    >
+                      Reset Filters
+                    </Button>
+                  </div>
                 </motion.div>
               )}
             </motion.div>
