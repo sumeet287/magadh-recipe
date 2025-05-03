@@ -17,21 +17,18 @@ export function FeaturedCollection({
   return (
     <div className="relative overflow-hidden rounded-xl">
       <div className="absolute inset-0">
-        <Image
-          src={image || "/placeholder.svg"}
-          alt={title}
-          fill
-          className="object-cover"
-        />
+        <Image src={image} alt={title} fill className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
       </div>
       <div className="relative grid md:grid-cols-2 gap-8 p-8 md:p-12">
         <div className="space-y-6 text-white">
           <div>
-            <h2 className="text-3xl font-bold">{title}</h2>
-            <p className="mt-2 text-white/80 max-w-md">{description}</p>
+            <h2 className="text-3xl text-[#fff] font-bold">{title}</h2>
+            <p className="mt-2 text-white/80 max-w-md font-semibold">
+              {description}
+            </p>
           </div>
-          <Button className="bg-white text-orange-600 hover:bg-orange-100">
+          <Button className="bg-white text-orange-600 hover:bg-orange-100 font-semibold cursor-pointer">
             Explore Collection
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

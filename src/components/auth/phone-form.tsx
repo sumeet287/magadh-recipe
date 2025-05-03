@@ -45,7 +45,7 @@ export function PhoneForm({ onSubmit }: PhoneFormProps) {
       let formattedPhone = values.phone;
       if (!formattedPhone.startsWith("+")) {
         // Default to India country code if none provided
-        formattedPhone = "+91" + formattedPhone.replace(/^0/, "");
+        formattedPhone = formattedPhone.replace(/^0/, "");
       }
 
       await onSubmit(formattedPhone);
@@ -68,7 +68,7 @@ export function PhoneForm({ onSubmit }: PhoneFormProps) {
                   <PhoneIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     {...field}
-                    placeholder="+91 9876543210"
+                    placeholder="9876543210"
                     className="pl-10"
                     type="tel"
                     autoComplete="tel"

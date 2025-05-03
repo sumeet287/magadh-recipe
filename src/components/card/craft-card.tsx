@@ -14,6 +14,7 @@ import { useCart } from "@/contexts/cart-context";
 import { useCartActions } from "@/hooks/useCartActions";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface CraftCardProps {
   id: string;
@@ -38,6 +39,7 @@ export function CraftCard({
   artist,
   category,
 }: CraftCardProps) {
+  const router = useRouter();
   const { addToCart: addToCartAction } = useCartActions();
   const { addToWishlist, wishlist, removeFromWishlist } = useCart();
   const isInWishlist = wishlist.some((item) => item.id === id);
@@ -100,6 +102,21 @@ export function CraftCard({
       } catch {
         toast.error("Failed to copy link");
       }
+    }
+  };
+
+  const handleBuyNow = async () => {
+    try {
+      const result = await addToCartAction({
+        productId: id,
+        quantity: 1,
+      });
+      if (result) {
+        console.log("✅ Add to Cart Result:", result);
+        router.push(`/checkout?productId=${id}`);
+      }
+    } catch (error) {
+      console.error("❌ Add to Cart Error:", error);
     }
   };
 
@@ -182,6 +199,7 @@ export function CraftCard({
         <Button
           variant="outline"
           className="w-full gap-1 border-orange-600 text-orange-600 hover:bg-orange-50 cursor-pointer text-xs sm:text-sm"
+          onClick={handleBuyNow}
         >
           <CreditCard className="h-3 w-3 sm:h-4 sm:w-4" />
           Buy Now

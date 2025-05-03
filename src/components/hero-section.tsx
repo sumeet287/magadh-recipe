@@ -7,21 +7,19 @@ import { ArrowRight } from "lucide-react";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
 import tikuliArt from "@/assets/art/tikuli_art.jpeg";
 import woodArt from "@/assets/art/wood_art.jpeg";
-import glassArt from "@/assets/art/glass_art.png";
 import SitaDevi from "@/assets/artist/Smt_Sita_Devi.png";
 import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
 import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";
 import ManishaJha from "@/assets/artist/Smt_Manisha_Devi.png";
 import BiharBazaarBg from "@/assets/intro/Bihar_Bazaar_bg.webp";
-
 import { ArtisanCard } from "./card/artisan-card";
 import { TestimonialCarousel } from "./testimonials/testimonial-carousel";
 import { FeaturedCollection } from "./collection/featured-collection";
 import { CraftCard } from "./card/craft-card";
-import { CategoryCard } from "./card/category-card";
 import Subscribe from "./subscribe/subscribe";
 import "./hero.css";
 import Link from "next/link";
+import TickerSlider from "./tickerslider/ticker-slider";
 export function HeroSection() {
   return (
     <main className="flex-1">
@@ -58,7 +56,7 @@ export function HeroSection() {
               <div className="flex flex-col sm:flex-row gap-6">
                 <Button
                   size="lg"
-                  className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-4"
+                  className="bg-orange-600 hover:bg-orange-500 text-white text-lg px-8 py-4 cursor-pointer"
                 >
                   <Link href="/products">Shop Now</Link>
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -66,7 +64,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 border-orange-600 text-orange-600 hover:bg-orange-50 text-lg px-8 py-4"
+                  className="border-2 border-orange-600 text-orange-600 hover:bg-white hover:text-orange-700 text-lg px-8 py-4 cursor-pointer"
                 >
                   <Link href="/crafts">Explore Crafts</Link>
                 </Button>
@@ -160,36 +158,20 @@ export function HeroSection() {
           </div>
         </div>
       </section>
+
       {/* Featured Categories */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-12">
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-4xl font-bold">
               Explore Bihar&apos;s Rich Heritage
             </h2>
-            <p className="text-gray-600 mt-2 max-w-2xl">
+            <p className="text-gray-600 mt-2 max-w-2xl text-lg font-medium">
               Discover the diverse range of traditional crafts that showcase the
               artistic excellence of Bihar&apos;s skilled artisans
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <CategoryCard
-              title="Madhubani Art"
-              image={madhubaniArt.src}
-              count={42}
-            />
-            <CategoryCard title="Tikuli Art" image={tikuliArt.src} count={28} />
-            <CategoryCard
-              title="Sujini Embroidery"
-              image={glassArt.src}
-              count={35}
-            />
-            <CategoryCard title="Bamboo Craft" image={woodArt.src} count={19} />
-            <CategoryCard title="Sikki Craft" image={woodArt.src} count={24} />
-            <CategoryCard title="Pottery" image={woodArt.src} count={31} />
-            <CategoryCard title="Wood Carving" image={woodArt.src} count={17} />
-            <CategoryCard title="Metal Craft" image={glassArt.src} count={22} />
-          </div>
+          <TickerSlider />
         </div>
       </section>
       {/* Featured Products */}
@@ -263,7 +245,7 @@ export function HeroSection() {
               <div className="flex justify-center">
                 <Button
                   variant="outline"
-                  className="border-orange-600 text-orange-600 hover:bg-orange-50"
+                  className="border-2 border-orange-600 text-amber-600 hover:bg-white  hover:text-orange-700 px-8 py-4 cursor-pointer"
                 >
                   View All Products
                   <ArrowRight className="ml-2 h-4 w-4" />

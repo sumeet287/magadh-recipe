@@ -20,10 +20,24 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
+        sans: [
+          "Inter",
+          "Poppins",
+          "Montserrat",
+          "var(--font-sans)",
+          ...defaultTheme.fontFamily.sans,
+        ],
         mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
+        brand: {
+          DEFAULT: "#ff6f1f",
+          dark: "#e65100",
+          light: "#fff4e6",
+          accent: "#5c3d2e",
+          muted: "#a08d7c",
+          border: "#ffe0c2",
+        },
         background: "oklch(var(--background) / <alpha-value>)",
         foreground: "oklch(var(--foreground) / <alpha-value>)",
         card: "oklch(var(--card) / <alpha-value>)",

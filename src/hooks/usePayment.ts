@@ -57,7 +57,7 @@ export function usePayment() {
 
         // Step 2: Initialize Razorpay checkout
         const options: RazorpayOptions = {
-          key: "rzp_test_E8disNZaTitkeS",
+          key: "rzp_test_i3wlvYKStkUFLU",
           amount: paymentData.amount,
           currency: paymentData.currency,
           order_id: paymentData.orderId || "",

@@ -119,6 +119,63 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: inherit;
+    color: #5c3d2e;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+}
+
+input,
+textarea,
+select {
+  border-radius: 10px;
+  border: 1.5px solid #e6ddd6;
+  font-family: inherit;
+  font-size: 1rem;
+  background: #fff;
+}
+
+button,
+.btn,
+.Button {
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(184, 92, 56, 0.07);
+}
+
+button.bg-\[\#b85c38\]:hover,
+.btn-primary:hover {
+  background: #a04f2f !important;
+}
+
+.text-muted-foreground {
+  color: #a08d7c !important;
+}
+
+.bg-brand {
+  background: #ff6f1f !important;
+  color: #fff !important;
+}
+
+.bg-brand-light {
+  background: #fff4e6 !important;
+}
+
+.text-brand-accent {
+  color: #5c3d2e !important;
+}
+
+.border-brand-border {
+  border-color: #ffe0c2 !important;
 }
 
 @keyframes shimmer {
@@ -132,4 +189,25 @@
 
 .animate-shimmer {
   animation: shimmer 2s infinite;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+.ticker-container:hover .animate-ticker {
+  animation-play-state: paused;
 }

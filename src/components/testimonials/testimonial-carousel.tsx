@@ -3,30 +3,32 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
+import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";
+import ManishaJha from "@/assets/artist/Smt_Manisha_Devi.png";
 
 const testimonials = [
   {
     id: 1,
     name: "Priya Sharma",
     location: "Delhi",
-    image: "/testimonial1.jpg",
+    image: DulariDevi.src,
     text: "The Madhubani painting I purchased is absolutely stunning. The attention to detail and vibrant colors bring so much life to my living room. I'm proud to display such authentic Bihar art in my home.",
   },
   {
     id: 2,
     name: "Rahul Verma",
     location: "Mumbai",
-    image: "/testimonial2.jpg",
+    image: KalpanaDevi.src,
     text: "I bought several pieces of Tikuli art as gifts for my family, and they were all amazed by the craftsmanship. The packaging was excellent, and the items arrived in perfect condition. Will definitely shop again!",
   },
   {
     id: 3,
     name: "Anita Patel",
     location: "Bangalore",
-    image: "/testimonial3.jpg",
+    image: ManishaJha.src,
     text: "The Sujini embroidered bedcover I purchased is not just beautiful but also tells a story. I appreciate how Bihar Bazaar connects us directly with the artisans and helps preserve these traditional art forms.",
   },
 ];

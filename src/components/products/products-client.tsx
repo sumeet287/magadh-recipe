@@ -200,7 +200,12 @@ export function ProductsClient() {
 
   // Calculate total pages from the pagination data
   const totalPages = Math.ceil(pagination.total / pagination.limit);
-
+  const categoryColors = {
+    Madhubani: "bg-orange-500",
+    Tikuli: "bg-yellow-400",
+    Bamboo: "bg-white",
+    Sikki: "bg-red-500",
+  };
   return (
     <AnimatePresence>
       <div>
@@ -208,7 +213,7 @@ export function ProductsClient() {
           <div className="absolute inset-0 opacity-20 bg-[url('/Bihar_Bazaar.png?height=600&width=1200')] bg-cover bg-center" />
           <div className="container mx-auto px-4 py-16 relative z-10">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-amber-500">
                 Bihar&apos;s Finest Crafts
               </h1>
               <p className="text-lg md:text-xl opacity-90 mb-8">
@@ -223,7 +228,7 @@ export function ProductsClient() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="bg-white/10 hover:bg-white/20 border-white"
+                  className="border-2 border-amber-600 text-amber-600 hover:bg-white  hover:text-amber-700 px-8 py-4 cursor-pointer"
                 >
                   Learn About Artisans
                 </Button>
@@ -250,36 +255,41 @@ export function ProductsClient() {
             initial="hidden"
             animate="show"
           >
-            {["Madhubani", "Tikul", "bamboo", "sikki"].map(
-              (category, index) => (
-                <motion.div
-                  key={category}
-                  variants={itemVariants}
-                  custom={index}
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                >
-                  <Link
-                    href={`/products/category/${category.toLowerCase()}`}
-                    className="group relative h-40 rounded-lg overflow-hidden block"
-                  >
-                    <div className="absolute inset-0 bg-amber-900/40 group-hover:bg-amber-900/60 transition-all duration-300" />
-                    <Image
-                      src="/Bihar_Bazaar.png"
-                      alt="Bihar Bazaar Logo"
-                      width={40}
-                      height={40}
-                      className="absolute top-4 left-4 h-10 w-10 z-10"
-                    />
+            {["Madhubani", "Tikuli", "Bamboo", "Sikki"].map(
+              (category, index) => {
+                const bgColor =
+                  categoryColors[category as keyof typeof categoryColors];
 
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-white text-xl font-medium group-hover:scale-110 transition-transform duration-300">
-                        {category}
-                      </span>
-                    </div>
-                  </Link>
-                </motion.div>
-              )
+                return (
+                  <motion.div
+                    key={category}
+                    variants={itemVariants}
+                    custom={index}
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                  >
+                    <Link
+                      href={`/products/category/${category.toLowerCase()}`}
+                      className={`group relative h-40 rounded-lg overflow-hidden block ${bgColor}`}
+                    >
+                      <div className="absolute inset-0 bg-amber-900/40 group-hover:bg-amber-900/60 transition-all duration-300" />
+                      <Image
+                        src="/Bihar_Bazaar.png"
+                        alt="Bihar Bazaar Logo"
+                        width={40}
+                        height={40}
+                        className="absolute top-4 left-4 h-10 w-10 z-10"
+                      />
+
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-white text-xl font-medium group-hover:scale-110 transition-transform duration-300">
+                          {category}
+                        </span>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              }
             )}
           </motion.div>
         </section>

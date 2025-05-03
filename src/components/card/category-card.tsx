@@ -15,7 +15,7 @@ export function CategoryCard({ title, image, count }: CategoryCardProps) {
       <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg">
         <div className="relative aspect-square overflow-hidden">
           <Image
-            src={image || "/placeholder.svg"}
+            src={image}
             alt={title}
             fill
             className="object-cover transition-transform duration-300 hover:scale-105"
