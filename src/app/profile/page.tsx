@@ -70,10 +70,9 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
     const userPhone = localStorage.getItem("userPhone");
 
-    if (!isAuthenticated || !userPhone) {
+    if (!userPhone) {
       router.push("/");
       return;
     }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { authEndpoints } from "./endpoints/auth";
 import { clearAuthAndRedirect } from "../utils/auth";
 
-const baseURL = "http://localhost:3001";
+const baseURL = "https://stage-api.biharbazaar.in";
 
 export const api = axios.create({
   baseURL,
