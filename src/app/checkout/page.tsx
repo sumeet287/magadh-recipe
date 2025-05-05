@@ -12,7 +12,7 @@ import {
 } from "@/components/products/address-dialog";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { ChevronLeft, CreditCard, MapPin, Package } from "lucide-react";
+import { Check, ChevronLeft, CreditCard, MapPin, Package } from "lucide-react";
 import Link from "next/link";
 import ShippingForm from "@/components/checkout/ShippingForm";
 import PaymentMethodForm from "@/components/checkout/PaymentMethodForm";
@@ -35,7 +35,9 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   // Checkout flow state
-  const [activeStep, setActiveStep] = useState<string>("shipping");
+  const [activeStep, setActiveStep] = useState<
+    "shipping" | "payment" | "review"
+  >("shipping");
 
   // Coupon state
   const [couponCode, setCouponCode] = useState("");
@@ -179,183 +181,189 @@ export default function CheckoutPage() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-7xl">
-      <div className="flex items-center mb-10">
-        <Link
-          href="/cart"
-          className="flex items-center gap-2 text-base font-medium text-brand-muted hover:text-brand-dark transition-colors"
-        >
-          <ChevronLeft className="h-5 w-5" />
-          Back to Cart
-        </Link>
-        <h1 className="text-4xl font-extrabold text-center flex-1 text-brand-accent tracking-tight font-sans">
-          Secure Checkout
-        </h1>
-      </div>
+    <div>
+      <div className="container mx-auto px-2 sm:px-4 py-6 sm:py-10 max-w-7xl">
+        <div className="flex flex-col sm:flex-row items-center mb-6 sm:mb-10">
+          <Link
+            href="/cart"
+            className="flex items-center gap-2 text-base font-medium text-brand-muted hover:text-brand-dark transition-colors mb-4 sm:mb-0"
+          >
+            <ChevronLeft className="h-5 w-5" />
+            Back to Cart
+          </Link>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-center flex-1 text-brand-accent tracking-tight font-sans">
+            Secure Checkout
+            <p className="text-brand-muted font-medium text-xs sm:text-sm">
+              Complete your purchase of authentic Bihar handicrafts
+            </p>
+          </h1>
+        </div>
 
-      {/* Checkout Progress */}
-      <div className="mb-10">
-        <div className="flex justify-between items-center max-w-3xl mx-auto px-4">
-          <div className="flex flex-col items-center">
-            <button
-              onClick={() => setActiveStep("shipping")}
-              className={`w-14 h-14 rounded-2xl flex items-center justify-center border-2 border-brand shadow-lg ${
-                activeStep === "shipping"
-                  ? "bg-brand text-white"
-                  : "bg-brand/10 text-brand cursor-pointer"
-              } transition-all duration-300`}
-              aria-label="Go to shipping step"
-            >
-              <MapPin className="h-6 w-6" />
-            </button>
-            <span className="text-base mt-2 font-semibold font-sans">
-              Shipping
-            </span>
-          </div>
-          <div className="h-1 flex-1 bg-brand-border mx-2 md:mx-4 rounded-full">
+        {/* Checkout Progress */}
+        <div className="mb-6 sm:mb-10">
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center">
+              <div
+                className={`group relative flex h-12 sm:h-16 w-12 sm:w-16 items-center justify-center rounded-full border-2 ${
+                  activeStep === "shipping"
+                    ? "border-[#D84315] bg-[#D84315] text-white"
+                    : "border-[#D84315] bg-white text-[#D84315]"
+                } transition-all duration-300`}
+              >
+                {activeStep !== "shipping" && (
+                  <div className="absolute -right-1 -top-1 flex h-4 sm:h-6 w-4 sm:w-6 items-center justify-center rounded-full bg-[#4CAF50] text-white">
+                    <Check className="h-3 sm:h-4 w-3 sm:w-4" />
+                  </div>
+                )}
+                <MapPin className="h-5 sm:h-7 w-5 sm:w-7" />
+                <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#D84315]"></div>
+              </div>
+              <span className="mt-2 sm:mt-3 text-sm sm:text-base font-medium text-[#5D3A1E]">
+                Shipping
+              </span>
+            </div>
             <div
-              className={`h-full bg-brand rounded-full ${
+              className={`relative h-0.5 w-12 sm:w-20 md:w-40 ${
                 activeStep === "shipping"
-                  ? "w-0"
-                  : activeStep === "payment"
-                  ? "w-1/2"
-                  : "w-full"
-              } transition-all duration-300`}
-            ></div>
-          </div>
-          <div className="flex flex-col items-center">
-            <button
-              onClick={() =>
-                activeStep === "review" || activeStep === "payment"
-                  ? setActiveStep("payment")
-                  : null
-              }
-              className={`w-14 h-14 rounded-2xl flex items-center justify-center border-2 border-brand shadow-lg ${
-                activeStep === "payment"
-                  ? "bg-brand text-white"
-                  : activeStep === "review"
-                  ? "bg-brand/10 text-brand cursor-pointer"
-                  : "bg-brand-border text-brand-muted"
-              } transition-all duration-300`}
-              disabled={activeStep === "shipping"}
-              aria-label="Go to payment step"
+                  ? "bg-[#E8D0B0]"
+                  : "bg-gradient-to-r from-[#D84315] to-[#F4511E]"
+              }`}
             >
-              <CreditCard className="h-6 w-6" />
-            </button>
-            <span className="text-base mt-2 font-semibold font-sans">
-              Payment
-            </span>
-          </div>
-          <div className="h-1 flex-1 bg-brand-border mx-2 md:mx-4 rounded-full">
+              {activeStep !== "shipping" && (
+                <div className="absolute -top-1 h-2 w-full bg-[url('/dotted-line.png')] bg-repeat-x opacity-50 transition-all duration-300"></div>
+              )}
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className={`group relative flex h-12 sm:h-16 w-12 sm:w-16 items-center justify-center rounded-full border-2 ${
+                  activeStep === "payment"
+                    ? "border-[#D84315] bg-[#D84315] text-white"
+                    : activeStep === "review"
+                    ? "border-[#D84315] bg-white text-[#D84315]"
+                    : "border-[#8C6239] bg-white text-[#8C6239]"
+                } transition-all duration-300`}
+              >
+                {activeStep === "review" && (
+                  <div className="absolute -right-1 -top-1 flex h-4 sm:h-6 w-4 sm:w-6 items-center justify-center rounded-full bg-[#4CAF50] text-white">
+                    <Check className="h-3 sm:h-4 w-3 sm:w-4" />
+                  </div>
+                )}
+                <CreditCard className="h-5 sm:h-7 w-5 sm:w-7" />
+                {activeStep !== "shipping" && (
+                  <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#D84315]"></div>
+                )}
+              </div>
+              <span
+                className={`mt-2 sm:mt-3 text-sm sm:text-base font-medium ${
+                  activeStep === "shipping"
+                    ? "text-[#8C6239]"
+                    : "text-[#5D3A1E]"
+                }`}
+              >
+                Payment
+              </span>
+            </div>
             <div
-              className={`h-full bg-brand rounded-full ${
-                activeStep === "review" ? "w-full" : "w-0"
-              } transition-all duration-300`}
-            ></div>
-          </div>
-          <div className="flex flex-col items-center">
-            <button
-              onClick={() =>
-                activeStep === "review" ? setActiveStep("review") : null
-              }
-              className={`w-14 h-14 rounded-2xl flex items-center justify-center border-2 border-brand shadow-lg ${
+              className={`relative h-0.5 w-12 sm:w-20 md:w-40 ${
                 activeStep === "review"
-                  ? "bg-brand text-white"
-                  : "bg-brand-border text-brand-muted"
-              } transition-all duration-300`}
-              disabled={activeStep === "shipping" || activeStep === "payment"}
-              aria-label="Go to review step"
+                  ? "bg-gradient-to-r from-[#F4511E] to-[#D84315]"
+                  : "bg-[#E8D0B0]"
+              }`}
             >
-              <Package className="h-6 w-6" />
-            </button>
-            <span className="text-base mt-2 font-semibold font-sans">
-              Review
-            </span>
+              {activeStep === "review" && (
+                <div className="absolute -top-1 h-2 w-full bg-[url('/dotted-line.png')] bg-repeat-x opacity-50"></div>
+              )}
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className={`group relative flex h-12 sm:h-16 w-12 sm:w-16 items-center justify-center rounded-full border-2 ${
+                  activeStep === "review"
+                    ? "border-[#D84315] bg-[#D84315] text-white"
+                    : "border-[#8C6239] bg-white text-[#8C6239]"
+                }`}
+              >
+                <Package className="h-5 sm:h-7 w-5 sm:w-7" />
+                {activeStep === "review" && (
+                  <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#D84315]"></div>
+                )}
+              </div>
+              <span
+                className={`mt-2 sm:mt-3 text-sm sm:text-base font-medium ${
+                  activeStep === "review" ? "text-[#5D3A1E]" : "text-[#8C6239]"
+                }`}
+              >
+                Review
+              </span>
+            </div>
           </div>
         </div>
-        {/* Mobile step indicator */}
-        <div className="mt-6 text-center md:hidden">
-          <p className="text-base font-semibold font-sans">
-            Step{" "}
-            {activeStep === "shipping"
-              ? "1"
-              : activeStep === "payment"
-              ? "2"
-              : "3"}{" "}
-            of 3:
-            <span className="ml-1 text-brand">
-              {activeStep === "shipping"
-                ? "Shipping Information"
-                : activeStep === "payment"
-                ? "Payment Method"
-                : "Review Order"}
-            </span>
-          </p>
+
+        <div className="grid gap-4 sm:gap-8 grid-cols-1 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <Tabs value={activeStep} className="w-full">
+              <TabsContent value="shipping" className="mt-0">
+                <ShippingForm
+                  addresses={addresses.map((addr) => ({
+                    ...addr,
+                    id: addr._id,
+                  }))}
+                  selectedAddressId={selectedAddressId}
+                  setSelectedAddressId={setSelectedAddressId}
+                  handleAddNewAddress={handleAddNewAddress}
+                  deliveryNotes={deliveryNotes}
+                  setDeliveryNotes={setDeliveryNotes}
+                  handleNextStep={handleNextStep}
+                  isAddressDialogOpen={isAddressDialogOpen}
+                  setIsAddressDialogOpen={setIsAddressDialogOpen}
+                />
+              </TabsContent>
+
+              <TabsContent value="payment" className="mt-0">
+                <PaymentMethodForm
+                  paymentMethod={paymentMethod}
+                  setPaymentMethod={setPaymentMethod}
+                  handleNextStep={handleNextStep}
+                  handlePreviousStep={handlePreviousStep}
+                />
+              </TabsContent>
+
+              <TabsContent value="review" className="mt-0">
+                <ReviewOrder
+                  cart={cart}
+                  cartTotal={cartTotal}
+                  selectedAddress={selectedAddress}
+                  deliveryNotes={deliveryNotes}
+                  paymentMethod={paymentMethod}
+                  handlePlaceOrder={handlePlaceOrder}
+                  handlePreviousStep={handlePreviousStep}
+                />
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          <div className="lg:col-span-1">
+            <OrderSummarySidebar
+              cart={cart}
+              cartTotal={cartTotal}
+              appliedCoupon={appliedCoupon}
+              discountAmount={discountAmount}
+              finalTotal={finalTotal}
+              couponCode={couponCode}
+              setCouponCode={setCouponCode}
+              handleApplyCoupon={handleApplyCoupon}
+              couponError={couponError}
+              isApplyingCoupon={isApplyingCoupon}
+            />
+          </div>
         </div>
+
+        <AddressDialog
+          open={isAddressDialogOpen}
+          onOpenChange={setIsAddressDialogOpen}
+          onSave={handleAddNewAddress}
+          mode="add"
+        />
       </div>
-
-      <div className="grid md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          <Tabs value={activeStep} className="w-full">
-            <TabsContent value="shipping" className="mt-0">
-              <ShippingForm
-                addresses={addresses.map((addr) => ({ ...addr, id: addr._id }))}
-                selectedAddressId={selectedAddressId}
-                setSelectedAddressId={setSelectedAddressId}
-                handleAddNewAddress={handleAddNewAddress}
-                deliveryNotes={deliveryNotes}
-                setDeliveryNotes={setDeliveryNotes}
-                handleNextStep={handleNextStep}
-                isAddressDialogOpen={isAddressDialogOpen}
-                setIsAddressDialogOpen={setIsAddressDialogOpen}
-              />
-            </TabsContent>
-
-            <TabsContent value="payment" className="mt-0">
-              <PaymentMethodForm
-                paymentMethod={paymentMethod}
-                setPaymentMethod={setPaymentMethod}
-                handleNextStep={handleNextStep}
-                handlePreviousStep={handlePreviousStep}
-              />
-            </TabsContent>
-
-            <TabsContent value="review" className="mt-0">
-              <ReviewOrder
-                cart={cart}
-                cartTotal={cartTotal}
-                selectedAddress={selectedAddress}
-                deliveryNotes={deliveryNotes}
-                paymentMethod={paymentMethod}
-                handlePlaceOrder={handlePlaceOrder}
-                handlePreviousStep={handlePreviousStep}
-              />
-            </TabsContent>
-          </Tabs>
-        </div>
-
-        <div className="md:col-span-1">
-          <OrderSummarySidebar
-            cart={cart}
-            cartTotal={cartTotal}
-            appliedCoupon={appliedCoupon}
-            discountAmount={discountAmount}
-            finalTotal={finalTotal}
-            couponCode={couponCode}
-            setCouponCode={setCouponCode}
-            handleApplyCoupon={handleApplyCoupon}
-            couponError={couponError}
-            isApplyingCoupon={isApplyingCoupon}
-          />
-        </div>
-      </div>
-
-      <AddressDialog
-        open={isAddressDialogOpen}
-        onOpenChange={setIsAddressDialogOpen}
-        onSave={handleAddNewAddress}
-        mode="add"
-      />
     </div>
   );
 }
