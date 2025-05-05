@@ -13,14 +13,13 @@ const crafts: Craft[] = [
     id: 1,
     title: "Madhubani Art",
     productCount: 42,
-    imageUrl: "/lovable-uploads/44fd88c3-0a31-441a-a134-de8b0c33b6c0.png",
+    imageUrl: "https://picsum.photos/300?random=5&auto=format&fit=crop",
   },
   {
     id: 2,
     title: "Tikuli Art",
     productCount: 28,
-    imageUrl:
-      "https://images.unsplash.com/photo-1582561424760-0321d75e81fa?q=80&w=1000&auto=format&fit=crop",
+    imageUrl: "https://picsum.photos/300?random=8&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -33,36 +32,31 @@ const crafts: Craft[] = [
     id: 4,
     title: "Bamboo Craft",
     productCount: 19,
-    imageUrl:
-      "https://images.unsplash.com/photo-1605490500023-3651ca3ff7f6?q=80&w=1000&auto=format&fit=crop",
+    imageUrl: "https://picsum.photos/300?random=1&auto=format&fit=crop",
   },
   {
     id: 5,
     title: "Sikki Craft",
     productCount: 24,
-    imageUrl:
-      "https://images.unsplash.com/photo-1555685812-4b8f286e7f30?q=80&w=1000&auto=format&fit=crop",
+    imageUrl: "https://picsum.photos/300?random=2&auto=format&fit=crop",
   },
   {
     id: 6,
     title: "Pottery",
     productCount: 31,
-    imageUrl:
-      "https://images.unsplash.com/photo-1565193298357-cea62a70c693?q=80&w=1000&auto=format&fit=crop",
+    imageUrl: "https://picsum.photos/300?random=3&auto=format&fit=crop",
   },
   {
     id: 7,
     title: "Wood Carving",
     productCount: 17,
-    imageUrl:
-      "https://images.unsplash.com/photo-1503839769273-6186083f8686?q=80&w=1000&auto=format&fit=crop",
+    imageUrl: "https://picsum.photos/300?random=9&auto=format&fit=crop",
   },
   {
     id: 8,
     title: "Metal Craft",
     productCount: 22,
-    imageUrl:
-      "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=1000&auto=format&fit=crop",
+    imageUrl: "https://picsum.photos/300?random=10&auto=format&fit=crop",
   },
 ];
 

@@ -186,22 +186,22 @@ export function HeroSection() {
           </div>
           <Tabs defaultValue="popular" className="w-full">
             <div className="flex justify-center mb-8">
-              <TabsList className="bg-white rounded-full shadow-md flex gap-2 p-1">
+              <TabsList className="bg-white rounded-xl shadow-md flex gap-2 p-1">
                 <TabsTrigger
                   value="popular"
-                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50"
+                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50 cursor-pointer"
                 >
                   Popular
                 </TabsTrigger>
                 <TabsTrigger
                   value="new"
-                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50"
+                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50 cursor-pointer"
                 >
                   New Arrivals
                 </TabsTrigger>
                 <TabsTrigger
                   value="trending"
-                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50"
+                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600 rounded-full px-6 py-2 font-semibold transition-all duration-200 hover:bg-orange-50 cursor-pointer"
                 >
                   Trending
                 </TabsTrigger>
@@ -320,7 +320,7 @@ export function HeroSection() {
           <div className="flex justify-center mt-8">
             <Button
               variant="outline"
-              className="border-orange-600 text-orange-600 hover:bg-orange-50"
+              className="border-orange-600 text-orange-600 hover:bg-orange-50 cursor-pointer"
             >
               Meet All Artisans
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -367,7 +367,7 @@ export function HeroSection() {
                 preserve their ancestral crafts while adapting to contemporary
                 tastes.
               </p>
-              <Button className="bg-orange-600 hover:bg-orange-700">
+              <Button className="bg-orange-600 hover:bg-orange-700 cursor-pointer">
                 Read More About Us
               </Button>
             </div>
