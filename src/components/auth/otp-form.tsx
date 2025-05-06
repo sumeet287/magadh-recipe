@@ -14,11 +14,12 @@ type OtpFormProps = {
   onBack: () => void;
 };
 
-export function OtpForm({ onBack }: OtpFormProps) {
+export function OtpForm({ phoneNumber, onBack }: OtpFormProps) {
   const { verifyOtpAndProceed, resendOtp, isLoading, error } = useAuth();
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [localError, setLocalError] = useState("");
   const [countdown, setCountdown] = useState(30);
+  const [isResending, setIsResending] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -67,6 +68,16 @@ export function OtpForm({ onBack }: OtpFormProps) {
         inputRefs?.current[index - 1]?.focus();
       }
     }
+
+    // Handle left arrow key
+    if (e.key === "ArrowLeft" && index > 0) {
+      inputRefs?.current[index - 1]?.focus();
+    }
+
+    // Handle right arrow key
+    if (e.key === "ArrowRight" && index < 5) {
+      inputRefs?.current[index + 1]?.focus();
+    }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -89,23 +100,68 @@ export function OtpForm({ onBack }: OtpFormProps) {
   };
 
   const handleVerify = async (otpValue: string) => {
+    if (isLoading) return;
+
     try {
       await verifyOtpAndProceed(otpValue);
       // Success: useAuth handles redirect
-    } catch {
+    } catch (err) {
+      console.error(err);
       setLocalError("Invalid verification code. Please try again.");
+
+      // Clear OTP fields on error
+      setOtp(Array(6).fill(""));
+      if (inputRefs?.current?.[0]) {
+        inputRefs?.current?.[0]?.focus();
+      }
     }
   };
 
   const handleResend = async () => {
+    if (countdown > 0 || isResending) return;
+
+    setIsResending(true);
     try {
       await resendOtp();
       setCountdown(30);
       setLocalError("");
-    } catch {
+      setOtp(Array(6).fill(""));
+
+      // Focus the first input after resend
+      if (inputRefs.current[0]) {
+        inputRefs.current[0].focus();
+      }
+    } catch (err) {
+      console.error(err);
       setLocalError("Failed to resend code. Please try again.");
+    } finally {
+      setIsResending(false);
     }
   };
+
+  // Format phone number for display
+  const formatPhoneNumber = (phone: string) => {
+    if (!phone) return "";
+
+    // If it has country code, try to format it
+    if (phone.startsWith("+")) {
+      return phone;
+    }
+
+    // If it's just 10 digits, format as Indian number
+    if (phone.length === 10) {
+      return phone;
+    }
+
+    // If it has 91 prefix (India), format it
+    if (phone.startsWith("91") && phone.length === 12) {
+      return phone.slice(2);
+    }
+
+    return phone;
+  };
+
+  const displayPhone = formatPhoneNumber(phoneNumber);
 
   return (
     <div className="space-y-6">
@@ -129,15 +185,16 @@ export function OtpForm({ onBack }: OtpFormProps) {
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onPaste={index === 0 ? handlePaste : undefined}
-                className="h-12 w-full rounded-md border border-input bg-background px-0 text-center text-lg shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                className="h-12 w-full rounded-md border border-gray-300 bg-white px-0 text-center text-lg shadow-sm transition-colors focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-200 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={isLoading}
+                aria-label={`OTP digit ${index + 1}`}
               />
             </motion.div>
           ))}
         </div>
 
         {(error || localError) && (
-          <p className="text-sm font-medium text-destructive">
+          <p className="text-sm font-medium text-red-500 text-center mt-2">
             {error || localError}
           </p>
         )}
@@ -148,7 +205,7 @@ export function OtpForm({ onBack }: OtpFormProps) {
           type="button"
           onClick={() => handleVerify(otp.join(""))}
           disabled={otp.includes("") || isLoading}
-          className="w-full"
+          className="w-full bg-orange-600 hover:bg-orange-700 text-white py-6"
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isLoading ? "Verifying..." : "Verify"}
@@ -159,7 +216,7 @@ export function OtpForm({ onBack }: OtpFormProps) {
           variant="outline"
           onClick={onBack}
           disabled={isLoading}
-          className="w-full"
+          className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
@@ -167,7 +224,7 @@ export function OtpForm({ onBack }: OtpFormProps) {
       </div>
 
       <div className="text-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-600">
           Didn&apos;t receive the code?{" "}
           {countdown > 0 ? (
             <span>Resend in {countdown}s</span>
@@ -175,12 +232,26 @@ export function OtpForm({ onBack }: OtpFormProps) {
             <button
               type="button"
               onClick={handleResend}
-              className="text-primary hover:underline focus:outline-none"
-              disabled={isLoading}
+              className="text-orange-600 hover:underline focus:outline-none"
+              disabled={isLoading || isResending}
             >
-              Resend Code
+              {isResending ? (
+                <>
+                  <Loader2 className="inline-block mr-1 h-3 w-3 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                "Resend Code"
+              )}
             </button>
           )}
+        </p>
+      </div>
+
+      <div className="text-center text-xs text-gray-500">
+        <p>
+          We sent a verification code to{" "}
+          <span className="font-medium">{displayPhone}</span>
         </p>
       </div>
     </div>

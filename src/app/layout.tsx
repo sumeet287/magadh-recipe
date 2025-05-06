@@ -9,6 +9,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CartInitializer } from "@/components/cart-initializer";
 import { RazorpayScript } from "@/components/razorpay-script";
+import { SplashScreen } from "@/components/SplashScreen";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <SplashScreen />
         <RazorpayScript />
         <QueryProvider>
           <AuthProvider>
