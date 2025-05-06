@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
-import { CartProvider } from "@/contexts/cart-context";
-import { AuthProvider } from "@/contexts/auth-context";
-import { QueryProvider } from "@/providers/query-provider";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { CartInitializer } from "@/components/cart-initializer";
-import { RazorpayScript } from "@/components/razorpay-script";
-import { SplashScreen } from "@/components/SplashScreen";
+import ClientRoot from "@/components/ClientRoot";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,21 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SplashScreen />
-        <RazorpayScript />
-        <QueryProvider>
-          <AuthProvider>
-            <CartProvider>
-              <CartInitializer />
-              <div className="flex flex-col min-h-screen">
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-                <Toaster position="top-center" />
-              </div>
-            </CartProvider>
-          </AuthProvider>
-        </QueryProvider>
+        <ClientRoot>{children}</ClientRoot>
       </body>
     </html>
   );

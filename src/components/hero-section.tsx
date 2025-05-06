@@ -20,9 +20,16 @@ import Subscribe from "./subscribe/subscribe";
 import "./hero.css";
 import Link from "next/link";
 import TickerSlider from "./tickerslider/ticker-slider";
+import { motion } from "framer-motion";
+
 export function HeroSection() {
   return (
-    <main className="flex-1">
+    <motion.main
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="flex-1"
+    >
       {/* Hero Section */}
       <section className="relative overflow-hidden  flex items-center bg-orange-50">
         {/* Background Image */}
@@ -389,6 +396,6 @@ export function HeroSection() {
       </section>
       {/* Newsletter */}
       <Subscribe />
-    </main>
+    </motion.main>
   );
 }
