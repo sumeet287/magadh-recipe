@@ -15,11 +15,21 @@ export interface VerifyPaymentRequest {
   razorpaySignature: string;
 }
 
+export interface PaymentDetails {
+  id: string;
+  orderId: string;
+  amount: number;
+  currency: string;
+  status: string;
+  paymentMethod: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface VerifyPaymentResponse {
-  success: boolean;
-  message?: string;
-  orderId?: string;
-  paymentId?: string;
+  status: string;
+  message: string;
+  payment: PaymentDetails;
 }
 
 export const paymentEndpoints = {

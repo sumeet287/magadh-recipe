@@ -62,7 +62,7 @@ export function usePayment() {
           currency: paymentData.currency,
           order_id: paymentData.orderId || "",
           name: "Craft Bihar",
-          description: "Payment for your order",
+          description: `Payment for your order ${paymentData.orderId} of ${paymentData.amount}`,
           handler: async (response) => {
             try {
               // Step 3: Verify payment
@@ -71,8 +71,8 @@ export function usePayment() {
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
               });
-
-              if (verifyData.success) {
+              console.log("🚀 ~ handlePayment ~ verifyData:", verifyData);
+              if (verifyData.status === "success") {
                 toast.success("Payment successful!");
               } else {
                 throw new Error(

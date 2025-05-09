@@ -4,4 +4,5 @@ export const authEndpoints = {
   verifyOtp: "/auth/verify-otp",
   profile: "/auth/profile",
   refreshToken: "/auth/refresh",
+  getUser: "/auth/me",
 } as const;
