@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { paymentApi } from "@/lib/endpoints/payment";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -21,7 +22,7 @@ interface RazorpayError {
 }
 
 interface RazorpayOptions {
-  key: string | undefined;
+  key: string;
   amount: number;
   currency: string;
   order_id: string;
@@ -80,12 +81,12 @@ export function RazorpayPayment({
 
       // Step 2: Open Razorpay checkout
       const options: RazorpayOptions = {
-        key: "rzp_test_E8disNZaTitkeS",
+        key: "rzp_test_i3wlvYKStkUFLU",
         amount: paymentData.amount,
         currency: paymentData.currency,
         order_id: paymentData.orderId,
-        name: "Bihar Bazaar",
-        description: "Order Payment",
+        name: "Craft Bihar",
+        description: `Payment for your order ${paymentData.orderId} of ${paymentData.amount}`,
         handler: async function (response: RazorpayResponse) {
           try {
             // Step 3: Verify payment
@@ -104,14 +105,35 @@ export function RazorpayPayment({
             }
 
             const verifyData = await verifyResponse.json();
-            if (verifyData.success) {
+            if (verifyData.status === "success") {
+              const { data: updateData } = await paymentApi.updateOrderPayment(
+                orderId || "",
+                {
+                  paymentId: response.razorpay_payment_id,
+                  transactionId: response.razorpay_order_id,
+                }
+              );
+
+              if (updateData.status !== "success") {
+                throw new Error(
+                  updateData.message || "Failed to update order payment status"
+                );
+              }
+
               toast.success("Payment successful!");
               onSuccess();
             } else {
-              throw new Error("Payment verification failed");
+              throw new Error(
+                verifyData.message || "Payment verification failed"
+              );
             }
           } catch (error) {
             console.error("Payment verification error:", error);
+            toast.error(
+              error instanceof Error
+                ? error.message
+                : "Payment verification failed"
+            );
             onError(error as RazorpayError);
           }
         },

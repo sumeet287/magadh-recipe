@@ -32,10 +32,30 @@ export interface VerifyPaymentResponse {
   payment: PaymentDetails;
 }
 
+export interface UpdateOrderPaymentRequest {
+  paymentId: string;
+  transactionId: string;
+}
+
+export interface UpdateOrderPaymentResponse {
+  status: string;
+  message: string;
+  order: {
+    id: string;
+    status: string;
+    paymentDetails: {
+      status: string;
+      paymentMethod: string;
+      amount: number;
+    };
+  };
+}
+
 export const paymentEndpoints = {
   createOnlineOrder: "/payments/create",
   verifyPayment: "/payments/verify",
   createCodOrder: "/payments/pay-now",
+  updateOrderPayment: (orderId: string) => `/orders/${orderId}/payment`,
 };
 
 export const paymentApi = {
@@ -49,4 +69,9 @@ export const paymentApi = {
     }),
   verifyPayment: (data: VerifyPaymentRequest) =>
     api.post<VerifyPaymentResponse>(paymentEndpoints.verifyPayment, data),
+  updateOrderPayment: (orderId: string, data: UpdateOrderPaymentRequest) =>
+    api.patch<UpdateOrderPaymentResponse>(
+      paymentEndpoints.updateOrderPayment(orderId),
+      data
+    ),
 };

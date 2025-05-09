@@ -4,93 +4,16 @@ import { useCallback } from "react";
 import { api } from "@/lib/axios";
 import { orderEndpoints } from "@/lib/endpoints/orders";
 import { toast } from "sonner";
-
-interface OrderItem {
-  product: {
-    _id: string;
-    name: string;
-    price: number;
-    productImage: string;
-  };
-  quantity: number;
-  price: number;
-}
-
-interface Order {
-  _id: string;
-  userId: string;
-  items: OrderItem[];
-  totalAmount: number;
-  status:
-    | "pending"
-    | "confirmed"
-    | "processing"
-    | "ready_for_pickup"
-    | "shipped"
-    | "out_for_delivery"
-    | "delivered"
-    | "cancelled"
-    | "returned"
-    | "refunded";
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-  };
-  paymentMethod: string;
-  trackingNumber?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface CreateOrderRequest {
-  items: Array<{
-    productId: string;
-    quantity: number;
-  }>;
-  addressId: string;
-  paymentMethod: string;
-}
-
-interface UpdateOrderStatusRequest {
-  status:
-    | "pending"
-    | "confirmed"
-    | "processing"
-    | "ready_for_pickup"
-    | "shipped"
-    | "out_for_delivery"
-    | "delivered"
-    | "cancelled"
-    | "returned"
-    | "refunded";
-  trackingNumber?: string;
-}
-
-interface OrderStats {
-  totalOrders: number;
-  totalRevenue: number;
-  ordersByStatus: {
-    processing: number;
-    shipped: number;
-    delivered: number;
-    cancelled: number;
-  };
-}
-
-interface CheckoutRequest {
-  items: Array<{
-    productId: string;
-    quantity: number;
-  }>;
-  addressId: string;
-  paymentMethod: string;
-}
+import {
+  Order,
+  CreateOrderRequest,
+  CheckoutRequest,
+  UpdateOrderStatusRequest,
+  UpdatePaymentStatusRequest,
+  OrderStats,
+} from "@/types/order";
 
 export function useOrder() {
-  // Create a new order
   const createOrder = useCallback(async (request: CreateOrderRequest) => {
     try {
       const { data } = await api.post<Order>(
@@ -106,34 +29,26 @@ export function useOrder() {
     }
   }, []);
 
-  // Get all orders for the current user
-  const getUserOrders = useCallback(async () => {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data } = await api.get<any[]>(orderEndpoints.getUserOrders);
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch orders:", error);
-      toast.error("Failed to fetch orders");
-      throw error;
-    }
-  }, []);
+  // New function to update payment status
+  const updatePaymentStatus = useCallback(
+    async (orderId: string, request: UpdatePaymentStatusRequest) => {
+      try {
+        const { data } = await api.patch<Order>(
+          orderEndpoints.updatePaymentStatus.replace(":id", orderId),
+          request
+        );
+        toast.success("Payment status updated successfully");
+        return data;
+      } catch (error) {
+        console.error("Failed to update payment status:", error);
+        toast.error("Failed to update payment status");
+        throw error;
+      }
+    },
+    []
+  );
 
-  // Get a specific order by ID
-  const getOrderById = useCallback(async (orderId: string) => {
-    try {
-      const { data } = await api.get<Order>(
-        orderEndpoints.getOrderById.replace(":id", orderId)
-      );
-      return data;
-    } catch (error) {
-      console.error("Failed to fetch order:", error);
-      toast.error("Failed to fetch order details");
-      throw error;
-    }
-  }, []);
-
-  // Update order status (Admin only)
+  // Updated updateOrderStatus function with tracking info
   const updateOrderStatus = useCallback(
     async (orderId: string, request: UpdateOrderStatusRequest) => {
       try {
@@ -152,7 +67,7 @@ export function useOrder() {
     []
   );
 
-  // Get order statistics (Admin only)
+  // Updated checkout flow with payment handling
   const getOrderStats = useCallback(async () => {
     try {
       const { data } = await api.get<OrderStats>(orderEndpoints.getOrderStats);
@@ -163,15 +78,6 @@ export function useOrder() {
       throw error;
     }
   }, []);
-
-  // Error handler utility
-  const handleOrderError = useCallback((error: unknown) => {
-    const message =
-      error instanceof Error ? error.message : "An error occurred";
-    toast.error(message);
-    return { error: message };
-  }, []);
-
   // Complete checkout flow
   const checkout = useCallback(
     async (request: CheckoutRequest) => {
@@ -188,7 +94,31 @@ export function useOrder() {
     [createOrder]
   );
 
-  // Cancel an order
+  // Rest of the functions remain same
+  const getUserOrders = useCallback(async () => {
+    try {
+      const { data } = await api.get<Order[]>(orderEndpoints.getUserOrders);
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
+      toast.error("Failed to fetch orders");
+      throw error;
+    }
+  }, []);
+
+  const getOrderById = useCallback(async (orderId: string) => {
+    try {
+      const { data } = await api.get<Order>(
+        orderEndpoints.getOrderById.replace(":id", orderId)
+      );
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch order:", error);
+      toast.error("Failed to fetch order details");
+      throw error;
+    }
+  }, []);
+
   const cancelOrder = useCallback(async (orderId: string, note?: string) => {
     try {
       const { data } = await api.patch<Order>(
@@ -204,11 +134,33 @@ export function useOrder() {
     }
   }, []);
 
+  const handleOrderError = useCallback((error: unknown) => {
+    if (error instanceof Error) {
+      toast.error(error.message);
+      return { error: error.message };
+    }
+
+    // Handle API error responses
+    if (error && typeof error === "object" && "response" in error) {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const errorMessage =
+        apiError.response?.data?.message || "An error occurred";
+      toast.error(errorMessage);
+      return { error: errorMessage };
+    }
+
+    // Default error
+    const defaultMessage = "An unexpected error occurred";
+    toast.error(defaultMessage);
+    return { error: defaultMessage };
+  }, []);
+
   return {
     createOrder,
     getUserOrders,
     getOrderById,
     updateOrderStatus,
+    updatePaymentStatus,
     getOrderStats,
     handleOrderError,
     checkout,

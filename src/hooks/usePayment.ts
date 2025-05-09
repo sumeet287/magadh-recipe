@@ -74,6 +74,20 @@ export function usePayment() {
               });
               console.log("🚀 ~ handlePayment ~ verifyData:", verifyData);
               if (verifyData.status === "success") {
+                // Update order payment status
+                const { data: updateData } =
+                  await paymentApi.updateOrderPayment(orderId || "", {
+                    paymentId: response.razorpay_payment_id,
+                    transactionId: response.razorpay_order_id,
+                  });
+
+                if (updateData.status !== "success") {
+                  throw new Error(
+                    updateData.message ||
+                      "Failed to update order payment status"
+                  );
+                }
+
                 toast.success("Payment successful!");
                 setShowSuccessAnimation(true);
                 // Navigate to order page after 2 seconds

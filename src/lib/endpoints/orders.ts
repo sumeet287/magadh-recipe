@@ -5,4 +5,5 @@ export const orderEndpoints = {
   updateOrderStatus: "/orders/:id/status",
   getOrderStats: "/orders/stats",
   cancelOrder: "/orders/:id/cancel",
+  updatePaymentStatus: "/orders/:id/payment",
 } as const;

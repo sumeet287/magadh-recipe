@@ -1,15 +1,12 @@
+"use client";
+
+import type React from "react";
+
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Package2,
   IndianRupee,
   MapPin,
   RefreshCw,
@@ -19,9 +16,12 @@ import {
   ChevronUp,
   Calendar,
   Clock,
+  CheckCircle2,
+  AlertCircle,
+  ShoppingBag,
 } from "lucide-react";
 import Image from "next/image";
-import { Order as OrderType } from "@/types/order";
+import type { Order as OrderType } from "@/types/order";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePayment } from "@/hooks/usePayment";
 import { useOrder } from "@/hooks/useOrder";
@@ -32,6 +32,7 @@ import {
   ORDER_STATUS_DESCRIPTIONS,
   ORDER_STATUS_STEPS,
 } from "@/utils/order.utils";
+import { cn } from "@/lib/utils";
 
 interface OrderCardProps {
   order: OrderType;
@@ -52,20 +53,27 @@ export function OrderCard({
   onOrderUpdate,
   isLoading,
 }: Readonly<OrderCardProps>) {
+  console.log("🚀 ~ OrderCard ~ order:", order);
   const { handlePayment, isProcessing } = usePayment();
   const { getOrderById } = useOrder();
   const statusConfig = getOrderStatusConfig(order.status);
   const canCancel = isOrderCancellable(order.status);
 
   if (isLoading) {
-    return <Skeleton className="h-[400px] w-full" />;
+    return (
+      <div className="space-y-3">
+        <Skeleton className="h-12 w-full" />
+        <Skeleton className="h-[300px] w-full" />
+      </div>
+    );
   }
 
   const handlePayNow = async () => {
     try {
       await handlePayment(order._id, "online");
-      // Payment successful hone ke baad order status refresh karta hai
+      // Refresh order status after successful payment
       const updatedOrder = await getOrderById(order._id);
+      console.log("🚀 ~ handlePayNow ~ updatedOrder:", updatedOrder);
       if (!updatedOrder) {
         throw new Error("Failed to fetch updated order");
       }
@@ -102,6 +110,7 @@ export function OrderCard({
 
       // Update the order in the parent component
       onOrderUpdate(convertedOrder);
+      toast.success("Payment successful! Your order is being processed.");
       onToggleExpansion(order._id);
     } catch (error) {
       console.error("Payment failed:", error);
@@ -137,6 +146,11 @@ export function OrderCard({
     }
   };
 
+  // Format order ID for better readability
+  const formatOrderId = (id: string) => {
+    return id.substring(0, 8).toUpperCase();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -147,61 +161,107 @@ export function OrderCard({
       <Card className="overflow-hidden border-amber-100 transition-all duration-300 hover:border-amber-200 hover:shadow-md">
         <CardHeader className="pb-4 bg-gradient-to-r from-amber-50 to-amber-100/30">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-lg">
-                  Order #{order._id.substring(0, 8)}...
+                <CardTitle className="text-lg font-bold">
+                  Order #{formatOrderId(order._id)}
                 </CardTitle>
-                <Badge className={statusConfig.color}>
+                <Badge
+                  className={cn("text-xs font-medium", statusConfig.color)}
+                >
                   {statusConfig.label}
                 </Badge>
               </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Calendar className="w-3.5 h-3.5 mr-1" />
-                <span>
-                  Ordered on: {new Date().toLocaleDateString("en-IN")}
-                </span>
-                <span className="mx-2">•</span>
-                <Clock className="w-3.5 h-3.5 mr-1" />
-                <span>Est. Delivery: {getEstimatedDelivery()}</span>
+              <div className="flex flex-wrap items-center gap-y-1 text-sm text-muted-foreground">
+                <div className="flex items-center mr-3">
+                  <Calendar className="w-3.5 h-3.5 mr-1 text-amber-600" />
+                  <span>
+                    Ordered on: {new Date().toLocaleDateString("en-IN")}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="w-3.5 h-3.5 mr-1 text-amber-600" />
+                  <span>Est. Delivery: {getEstimatedDelivery()}</span>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               {canCancel && (
                 <Button
-                  variant="destructive"
+                  variant="outline"
+                  size="sm"
                   onClick={() => onCancelOrder(order._id)}
                   disabled={isLoading}
+                  className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
                 >
+                  <AlertCircle className="w-3.5 h-3.5 mr-1.5" />
                   Cancel Order
                 </Button>
               )}
+              {order.status === "pending" &&
+                (!order.paymentDetails ||
+                  order.paymentDetails.status !== "completed") && (
+                  <Button
+                    size="sm"
+                    onClick={handlePayNow}
+                    disabled={isLoading || isProcessing}
+                    className="bg-amber-600 hover:bg-amber-700 text-white"
+                  >
+                    {isProcessing ? (
+                      <>
+                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
+                        Pay Now
+                      </>
+                    )}
+                  </Button>
+                )}
               {order.status === "delivered" && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => onReorder(order)}
                   disabled={isLoading}
-                  className="hover:bg-amber-50"
+                  className="border-amber-200 text-amber-600 hover:bg-amber-50 hover:text-amber-700"
                 >
-                  <RefreshCw className="w-4 h-4 mr-1" />
+                  <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
                   Reorder
                 </Button>
               )}
             </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-6">
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+
+        <CardContent className="pt-5">
+          <div className="space-y-5">
+            {/* Order Summary */}
+            <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50/50 border border-amber-100">
+              <div className="flex items-center">
+                <ShoppingBag className="w-5 h-5 mr-2 text-amber-600" />
+                <span className="font-medium">
+                  {order.totalItems} {order.totalItems === 1 ? "item" : "items"}
+                </span>
+              </div>
+              <div className="flex items-center font-medium text-lg text-amber-700">
+                <IndianRupee className="w-4 h-4" />
+                {order.totalAmount.toLocaleString("en-IN")}
+              </div>
+            </div>
+
+            {/* Product Items */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {order.items.slice(0, 3).map((item) => (
                 <div
                   key={item.productId}
-                  className="flex items-center gap-4 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-100"
                 >
-                  <div className="relative w-16 h-16 rounded-md overflow-hidden border">
+                  <div className="relative w-16 h-16 rounded-md overflow-hidden border bg-white flex-shrink-0">
                     <Image
-                      src={item.image || "/placeholder.svg?height=64&width=64"}
+                      src={item.image}
                       alt={item.name}
                       fill
                       className="object-cover"
@@ -211,72 +271,69 @@ export function OrderCard({
                     <h3 className="text-sm font-medium truncate">
                       {item.name}
                     </h3>
-                    <p className="text-xs text-gray-500">
-                      Quantity: {item.quantity}
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      Qty: {item.quantity}
                     </p>
-                    <div className="flex items-center text-sm font-medium text-amber-600">
-                      <IndianRupee className="w-3.5 h-3.5 mr-1" />
+                    <div className="flex items-center text-sm font-medium text-amber-700 mt-1">
+                      <IndianRupee className="w-3.5 h-3.5 mr-0.5" />
                       {item.price.toLocaleString("en-IN")}
                     </div>
                   </div>
                 </div>
               ))}
               {order.items.length > 3 && (
-                <div className="flex items-center justify-center p-3 rounded-lg bg-gray-50 border border-dashed">
-                  <span className="text-sm text-gray-500">
+                <div
+                  className="flex items-center justify-center p-3 rounded-lg bg-gray-50 border border-dashed border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
+                  onClick={() => onToggleExpansion(order._id)}
+                >
+                  <span className="text-sm text-gray-600 font-medium">
                     +{order.items.length - 3} more items
                   </span>
                 </div>
               )}
             </div>
 
-            <div className="pt-4 border-t">
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center text-gray-600">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  Delivery Address:
-                </div>
-                <div className="text-right max-w-[60%] text-sm">
-                  {order.shippingAddress.name}, {order.shippingAddress.address},{" "}
-                  {order.shippingAddress.city}, {order.shippingAddress.state} -{" "}
-                  {order.shippingAddress.pincode}
-                </div>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center text-gray-600">
-                  <Package2 className="w-4 h-4 mr-1" />
-                  Order Total:
-                </div>
-                <div className="flex items-center font-medium text-lg text-amber-600">
-                  <IndianRupee className="w-4 h-4" />
-                  {order.totalAmount.toLocaleString("en-IN")}
+            {/* Delivery Address */}
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-100">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 mt-0.5 text-amber-600 flex-shrink-0" />
+                <div>
+                  <div className="text-sm font-medium text-gray-700">
+                    Delivery Address
+                  </div>
+                  <div className="text-sm text-gray-600 mt-0.5">
+                    {order.shippingAddress.name},{" "}
+                    {order.shippingAddress.address},{" "}
+                    {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
+                    - {order.shippingAddress.pinCode}
+                  </div>
                 </div>
               </div>
             </div>
 
+            {/* Track Order Button */}
             <Button
-              variant="ghost"
-              className="w-full flex items-center justify-between hover:bg-amber-50"
+              variant="outline"
+              className="w-full flex items-center justify-between border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-800"
               onClick={() => onToggleExpansion(order._id)}
               disabled={isLoading}
             >
               <div className="flex items-center">
                 <Truck className="w-4 h-4 mr-2" />
-                Track Order
+                {expandedOrder === order._id
+                  ? "Hide Tracking Details"
+                  : "Track Order"}
               </div>
-              <span className="flex items-center text-sm text-amber-600">
+              <span>
                 {expandedOrder === order._id ? (
-                  <>
-                    Hide Details <ChevronUp className="ml-1 w-4 h-4" />
-                  </>
+                  <ChevronUp className="w-4 h-4" />
                 ) : (
-                  <>
-                    Show Details <ChevronDown className="ml-1 w-4 h-4" />
-                  </>
+                  <ChevronDown className="w-4 h-4" />
                 )}
               </span>
             </Button>
 
+            {/* Order Tracking Details (Expanded) */}
             {expandedOrder === order._id && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
@@ -285,48 +342,88 @@ export function OrderCard({
                 transition={{ duration: 0.3 }}
                 className="mt-4 p-4 bg-gray-50 rounded-lg border"
               >
-                <h4 className="font-medium mb-4">Order Tracking</h4>
+                <h4 className="font-medium mb-4 flex items-center text-amber-800">
+                  <Truck className="w-4 h-4 mr-2" />
+                  Order Tracking Status
+                </h4>
+
+                {/* Progress Bar */}
                 <div className="mb-6">
-                  <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="relative w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="absolute h-2 bg-black rounded-full transition-all"
+                      className={cn(
+                        "absolute h-2.5 rounded-full transition-all duration-500",
+                        order.status === "cancelled"
+                          ? "bg-red-500"
+                          : "bg-amber-600"
+                      )}
                       style={{ width: `${progressPercent}%` }}
                     />
                   </div>
-                  <div className="flex justify-between mt-2 text-xs text-gray-500">
+
+                  {/* Status Labels */}
+                  <div className="flex justify-between mt-2 text-xs">
                     {ORDER_STATUS_STEPS.map((step, idx) => (
-                      <span
+                      <div
                         key={step.key}
-                        className={
+                        className={cn(
+                          "text-center px-1",
                           idx <= currentStepIndex
-                            ? "font-semibold text-black"
+                            ? order.status === "cancelled"
+                              ? "font-semibold text-red-600"
+                              : "font-semibold text-amber-700"
                             : "text-gray-400"
-                        }
+                        )}
                       >
                         {step.label}
-                      </span>
+                      </div>
                     ))}
                   </div>
                 </div>
-                <div className="space-y-3">
+
+                {/* Status Timeline */}
+                <div className="space-y-4 pl-1">
                   {ORDER_STATUS_STEPS.slice(0, currentStepIndex + 1).map(
                     (step) => {
                       const Icon = step.icon;
                       return (
                         <div className="flex items-start gap-3" key={step.key}>
-                          <Icon
-                            className={`w-5 h-5 mt-1.5 ${
+                          <div
+                            className={cn(
+                              "rounded-full p-1.5",
                               step.key === "cancelled"
-                                ? "text-red-500"
+                                ? "bg-red-100 text-red-500"
                                 : step.key === order.status
-                                ? "text-green-600"
-                                : "text-gray-400"
-                            }`}
-                          />
+                                ? "bg-green-100 text-green-600"
+                                : "bg-gray-100 text-gray-500"
+                            )}
+                          >
+                            <Icon className="w-4 h-4" />
+                          </div>
                           <div>
-                            <p className="text-sm font-medium">{step.label}</p>
-                            <p className="text-xs text-gray-500">
+                            <p
+                              className={cn(
+                                "text-sm font-medium",
+                                step.key === "cancelled"
+                                  ? "text-red-600"
+                                  : step.key === order.status
+                                  ? "text-green-700"
+                                  : "text-gray-700"
+                              )}
+                            >
+                              {step.label}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-0.5">
                               {ORDER_STATUS_DESCRIPTIONS[step.key]}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              {new Date().toLocaleString("en-IN", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
                             </p>
                           </div>
                         </div>
@@ -334,38 +431,44 @@ export function OrderCard({
                     }
                   )}
                 </div>
+
+                {/* Help Text */}
+                {order.status !== "cancelled" &&
+                  order.status !== "delivered" && (
+                    <div className="mt-4 p-3 bg-amber-50 rounded border border-amber-100 text-sm text-amber-700">
+                      <p className="flex items-start">
+                        <InfoIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                        Your order is on its way! You&apos;ll receive updates as
+                        your order progresses.
+                      </p>
+                    </div>
+                  )}
               </motion.div>
             )}
           </div>
         </CardContent>
-
-        {order.status === "pending" && (
-          <CardFooter className="flex gap-2 bg-gradient-to-r from-amber-50 to-amber-100/30 border-t">
-            <Button
-              variant="outline"
-              className="flex-1 hover:bg-white"
-              onClick={() => onCancelOrder(order._id)}
-              disabled={isLoading}
-            >
-              Cancel Order
-            </Button>
-            <Button
-              className="flex-1 bg-amber-600 hover:bg-amber-700"
-              onClick={handlePayNow}
-              disabled={isLoading || isProcessing}
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                "Pay Now"
-              )}
-            </Button>
-          </CardFooter>
-        )}
       </Card>
     </motion.div>
+  );
+}
+
+function InfoIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4" />
+      <path d="M12 8h.01" />
+    </svg>
   );
 }
