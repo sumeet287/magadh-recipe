@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { paymentApi } from "@/lib/endpoints/payment";
-
+import { useRouter } from "next/navigation";
 interface RazorpayOptions {
   key: string;
   amount: number;
@@ -36,7 +36,8 @@ declare global {
 
 export function usePayment() {
   const [isProcessing, setIsProcessing] = useState(false);
-
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const router = useRouter();
   const handlePayment = async (
     orderId: string,
     paymentMethod: "online" | "cash_on_delivery"
@@ -74,6 +75,11 @@ export function usePayment() {
               console.log("🚀 ~ handlePayment ~ verifyData:", verifyData);
               if (verifyData.status === "success") {
                 toast.success("Payment successful!");
+                setShowSuccessAnimation(true);
+                // Navigate to order page after 2 seconds
+                setTimeout(() => {
+                  router.push("/orders");
+                }, 2000);
               } else {
                 throw new Error(
                   verifyData.message || "Payment verification failed"
@@ -103,6 +109,11 @@ export function usePayment() {
       } else {
         // For cash on delivery, just show success message
         toast.success("Order placed successfully!");
+        setShowSuccessAnimation(true);
+        // Navigate to order page after 2 seconds
+        setTimeout(() => {
+          router.push("/orders");
+        }, 2000);
       }
     } catch (error) {
       console.error("Payment error:", error);
@@ -113,7 +124,8 @@ export function usePayment() {
   };
 
   return {
-    handlePayment,
     isProcessing,
+    showSuccessAnimation,
+    handlePayment,
   };
 }

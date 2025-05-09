@@ -18,11 +18,12 @@ import ShippingForm from "@/components/checkout/ShippingForm";
 import PaymentMethodForm from "@/components/checkout/PaymentMethodForm";
 import ReviewOrder from "@/components/checkout/ReviewOrder";
 import OrderSummarySidebar from "@/components/checkout/OrderSummarySidebar";
+import { OrderSuccessAnimation } from "@/components/oder-success-animation/OrderSuccessAnimation";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const { checkout } = useOrder();
-  const { handlePayment } = usePayment();
+  const { handlePayment, showSuccessAnimation } = usePayment();
   const { addresses, isLoading, createAddress } = useAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     null
@@ -164,6 +165,10 @@ export default function CheckoutPage() {
       setIsApplyingCoupon(false);
     }, 800);
   };
+
+  if (showSuccessAnimation) {
+    return <OrderSuccessAnimation />;
+  }
 
   if (isLoading) {
     return (
