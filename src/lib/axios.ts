@@ -70,6 +70,21 @@ api.interceptors.response.use(
 
     // If it's a 401 but we already tried refresh, just logout
     if (error.response?.status === 401) {
+      // Don't logout if it's the OTP verify endpoint
+      if (
+        originalRequest.url &&
+        originalRequest.url.includes(authEndpoints.verifyOtp)
+      ) {
+        // Check if error message from backend is about OTP or session
+        const backendMsg = error.response?.data?.message || "";
+        if (backendMsg.toLowerCase().includes("otp")) {
+          return Promise.reject(new Error("Invalid OTP. Please try again."));
+        }
+        // Default to session expired
+        return Promise.reject(
+          new Error("Session expired. Please login again.")
+        );
+      }
       clearAuthAndRedirect();
       return Promise.reject(new Error("Session expired. Please login again."));
     }

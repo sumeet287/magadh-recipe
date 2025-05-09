@@ -107,7 +107,11 @@ export function OtpForm({ phoneNumber, onBack }: OtpFormProps) {
       // Success: useAuth handles redirect
     } catch (err) {
       console.error(err);
-      setLocalError("Invalid verification code. Please try again.");
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Invalid verification code. Please try again.";
+      setLocalError(errorMessage);
 
       // Clear OTP fields on error
       setOtp(Array(6).fill(""));

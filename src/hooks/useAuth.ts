@@ -89,8 +89,10 @@ export function useAuth() {
       // Use phoneNumber from state or fallback to localStorage
       const phoneNumber =
         authState.phoneNumber || localStorage.getItem("loginPhoneNumber") || "";
-      if (!phoneNumber)
-        throw new Error("Phone number is missing for OTP verification");
+      if (!phoneNumber) {
+        setError("Phone number is missing for OTP verification");
+        return;
+      }
 
       const { accessToken, refreshToken } = await verifyOtp.mutateAsync({
         phoneNumber,
@@ -109,11 +111,15 @@ export function useAuth() {
         await updateProfile.mutateAsync({ name: authState.name });
       }
 
-      router.push("/profile");
+      // Only on success:
       setAuthState((prev) => ({ ...prev, needsOtp: false }));
+      router.push("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "OTP verification failed");
-      throw err;
+      const errorMessage =
+        err instanceof Error ? err.message : "Invalid OTP. Please try again.";
+      setError(errorMessage);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
     } finally {
       setIsLoading(false);
     }

@@ -104,6 +104,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
     localStorage.removeItem("userPhone");
     localStorage.removeItem("userName");
     localStorage.removeItem("userProfile");
+    localStorage.removeItem("loginPhoneNumber");
 
     setIsAuthenticated(false);
     setUserPhone(null);
