@@ -21,7 +21,17 @@ interface Order {
   userId: string;
   items: OrderItem[];
   totalAmount: number;
-  status: "processing" | "shipped" | "delivered" | "cancelled";
+  status:
+    | "pending"
+    | "confirmed"
+    | "processing"
+    | "ready_for_pickup"
+    | "shipped"
+    | "out_for_delivery"
+    | "delivered"
+    | "cancelled"
+    | "returned"
+    | "refunded";
   shippingAddress: {
     street: string;
     city: string;
@@ -45,7 +55,17 @@ interface CreateOrderRequest {
 }
 
 interface UpdateOrderStatusRequest {
-  status: "processing" | "shipped" | "delivered" | "cancelled";
+  status:
+    | "pending"
+    | "confirmed"
+    | "processing"
+    | "ready_for_pickup"
+    | "shipped"
+    | "out_for_delivery"
+    | "delivered"
+    | "cancelled"
+    | "returned"
+    | "refunded";
   trackingNumber?: string;
 }
 
@@ -168,6 +188,22 @@ export function useOrder() {
     [createOrder]
   );
 
+  // Cancel an order
+  const cancelOrder = useCallback(async (orderId: string, note?: string) => {
+    try {
+      const { data } = await api.patch<Order>(
+        orderEndpoints.cancelOrder.replace(":id", orderId),
+        { note }
+      );
+      toast.success("Order cancelled successfully");
+      return data;
+    } catch (error) {
+      console.error("Failed to cancel order:", error);
+      toast.error("Failed to cancel order");
+      throw error;
+    }
+  }, []);
+
   return {
     createOrder,
     getUserOrders,
@@ -176,5 +212,6 @@ export function useOrder() {
     getOrderStats,
     handleOrderError,
     checkout,
+    cancelOrder,
   };
 }

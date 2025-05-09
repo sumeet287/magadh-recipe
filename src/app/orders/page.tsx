@@ -12,10 +12,19 @@ import { EmptyOrders } from "@/components/orders/empty-orders";
 import { useOrder } from "@/hooks/useOrder";
 import { WifiOff } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { getUserOrders } = useOrder();
+  const { getUserOrders, cancelOrder } = useOrder();
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -23,6 +32,11 @@ export default function OrdersPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isOffline, setIsOffline] = useState(false);
+
+  // Cancel modal state
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [cancellationReason, setCancellationReason] = useState("");
+  const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user is authenticated in localStorage
@@ -97,20 +111,35 @@ export default function OrdersPage() {
     });
   }, [orders, searchQuery, statusFilter]);
 
-  const handleCancelOrder = async (orderId: string) => {
+  const handleCancelClick = (orderId: string) => {
+    setOrderToCancel(orderId);
+    setIsCancelModalOpen(true);
+  };
+
+  const handleCancelConfirm = async () => {
+    if (!orderToCancel) return;
+
     try {
       setIsLoading(true);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const updatedOrder = await cancelOrder(orderToCancel, cancellationReason);
+      console.log("Updated order:", updatedOrder);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order._id === orderId ? { ...order, status: "cancelled" } : order
+          order._id === orderToCancel
+            ? {
+                ...order,
+                status: updatedOrder.status,
+                totalAmount: updatedOrder.totalAmount,
+                updatedAt: updatedOrder.updatedAt,
+              }
+            : order
         )
       );
-      toast.success("Order cancelled successfully");
+      setIsCancelModalOpen(false);
+      setCancellationReason("");
+      setOrderToCancel(null);
     } catch (error) {
       console.error("Failed to cancel order", error);
-      toast.error("Failed to cancel order");
     } finally {
       setIsLoading(false);
     }
@@ -188,7 +217,7 @@ export default function OrdersPage() {
                 <OrderCard
                   key={order._id}
                   order={order}
-                  onCancelOrder={handleCancelOrder}
+                  onCancelOrder={handleCancelClick}
                   onToggleExpansion={toggleOrderExpansion}
                   onReorder={handleReorder}
                   onOrderUpdate={handleOrderUpdate}
@@ -203,6 +232,41 @@ export default function OrdersPage() {
             )}
           </AnimatePresence>
         </div>
+
+        <Dialog open={isCancelModalOpen} onOpenChange={setIsCancelModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancel Order</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <Textarea
+                placeholder="Please provide a reason for cancellation..."
+                value={cancellationReason}
+                onChange={(e) => setCancellationReason(e.target.value)}
+                className="min-h-[100px]"
+              />
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsCancelModalOpen(false);
+                  setCancellationReason("");
+                  setOrderToCancel(null);
+                }}
+              >
+                Close
+              </Button>
+              <Button
+                onClick={handleCancelConfirm}
+                disabled={isLoading}
+                className="bg-red-500 hover:bg-red-600"
+              >
+                {isLoading ? "Cancelling..." : "Confirm Cancellation"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </motion.div>
     </div>
   );

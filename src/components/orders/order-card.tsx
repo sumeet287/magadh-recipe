@@ -12,7 +12,6 @@ import {
   Package2,
   IndianRupee,
   MapPin,
-  X,
   RefreshCw,
   Truck,
   Loader2,
@@ -27,7 +26,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { usePayment } from "@/hooks/usePayment";
 import { useOrder } from "@/hooks/useOrder";
 import { toast } from "sonner";
-import { Progress } from "@/components/ui/progress";
+import {
+  getOrderStatusConfig,
+  isOrderCancellable,
+  ORDER_STATUS_DESCRIPTIONS,
+  ORDER_STATUS_STEPS,
+} from "@/utils/order.utils";
 
 interface OrderCardProps {
   order: OrderType;
@@ -50,6 +54,8 @@ export function OrderCard({
 }: Readonly<OrderCardProps>) {
   const { handlePayment, isProcessing } = usePayment();
   const { getOrderById } = useOrder();
+  const statusConfig = getOrderStatusConfig(order.status);
+  const canCancel = isOrderCancellable(order.status);
 
   if (isLoading) {
     return <Skeleton className="h-[400px] w-full" />;
@@ -103,23 +109,13 @@ export function OrderCard({
     }
   };
 
-  // Get tracking progress based on status
-  const getTrackingProgress = () => {
-    switch (order.status) {
-      case "pending":
-        return 10;
-      case "processing":
-        return 35;
-      case "shipped":
-        return 70;
-      case "delivered":
-        return 100;
-      case "cancelled":
-        return 100;
-      default:
-        return 0;
-    }
-  };
+  const currentStepIndex = ORDER_STATUS_STEPS.findIndex(
+    (step) => step.key === order.status
+  );
+  const progressPercent =
+    currentStepIndex === -1
+      ? 0
+      : ((currentStepIndex + 1) / ORDER_STATUS_STEPS.length) * 100;
 
   // Get estimated delivery date (mock data)
   const getEstimatedDelivery = () => {
@@ -156,11 +152,8 @@ export function OrderCard({
                 <CardTitle className="text-lg">
                   Order #{order._id.substring(0, 8)}...
                 </CardTitle>
-                <Badge
-                  variant="secondary"
-                  className={`${statusColors[order.status]} px-3 py-1`}
-                >
-                  {statusMessages[order.status]}
+                <Badge className={statusConfig.color}>
+                  {statusConfig.label}
                 </Badge>
               </div>
               <div className="flex items-center text-sm text-muted-foreground">
@@ -174,16 +167,13 @@ export function OrderCard({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {order.status !== "cancelled" && order.status !== "delivered" && (
+              {canCancel && (
                 <Button
-                  variant="outline"
-                  size="sm"
+                  variant="destructive"
                   onClick={() => onCancelOrder(order._id)}
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
                   disabled={isLoading}
                 >
-                  <X className="w-4 h-4 mr-1" />
-                  Cancel
+                  Cancel Order
                 </Button>
               )}
               {order.status === "delivered" && (
@@ -297,82 +287,51 @@ export function OrderCard({
               >
                 <h4 className="font-medium mb-4">Order Tracking</h4>
                 <div className="mb-6">
-                  <Progress value={getTrackingProgress()} className="h-2" />
+                  <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="absolute h-2 bg-black rounded-full transition-all"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
                   <div className="flex justify-between mt-2 text-xs text-gray-500">
-                    <span>Order Placed</span>
-                    <span>Processing</span>
-                    <span>Shipped</span>
-                    <span>Delivered</span>
+                    {ORDER_STATUS_STEPS.map((step, idx) => (
+                      <span
+                        key={step.key}
+                        className={
+                          idx <= currentStepIndex
+                            ? "font-semibold text-black"
+                            : "text-gray-400"
+                        }
+                      >
+                        {step.label}
+                      </span>
+                    ))}
                   </div>
                 </div>
-
                 <div className="space-y-3">
-                  {order.status !== "cancelled" && (
-                    <>
-                      <div className="flex items-start gap-3">
-                        <div className="w-2 h-2 mt-1.5 rounded-full bg-green-500"></div>
-                        <div>
-                          <p className="text-sm font-medium">Order Placed</p>
-                          <p className="text-xs text-gray-500">
-                            Your order has been placed successfully
-                          </p>
-                        </div>
-                      </div>
-
-                      {["processing", "shipped", "delivered"].includes(
-                        order.status
-                      ) && (
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 mt-1.5 rounded-full bg-green-500"></div>
+                  {ORDER_STATUS_STEPS.slice(0, currentStepIndex + 1).map(
+                    (step) => {
+                      const Icon = step.icon;
+                      return (
+                        <div className="flex items-start gap-3" key={step.key}>
+                          <Icon
+                            className={`w-5 h-5 mt-1.5 ${
+                              step.key === "cancelled"
+                                ? "text-red-500"
+                                : step.key === order.status
+                                ? "text-green-600"
+                                : "text-gray-400"
+                            }`}
+                          />
                           <div>
-                            <p className="text-sm font-medium">
-                              Order Processing
-                            </p>
+                            <p className="text-sm font-medium">{step.label}</p>
                             <p className="text-xs text-gray-500">
-                              Your order is being processed
+                              {ORDER_STATUS_DESCRIPTIONS[step.key]}
                             </p>
                           </div>
                         </div>
-                      )}
-
-                      {["shipped", "delivered"].includes(order.status) && (
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 mt-1.5 rounded-full bg-green-500"></div>
-                          <div>
-                            <p className="text-sm font-medium">Order Shipped</p>
-                            <p className="text-xs text-gray-500">
-                              Your order has been shipped
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      {order.status === "delivered" && (
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 mt-1.5 rounded-full bg-green-500"></div>
-                          <div>
-                            <p className="text-sm font-medium">
-                              Order Delivered
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Your order has been delivered successfully
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )}
-
-                  {order.status === "cancelled" && (
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 mt-1.5 rounded-full bg-red-500"></div>
-                      <div>
-                        <p className="text-sm font-medium">Order Cancelled</p>
-                        <p className="text-xs text-gray-500">
-                          Your order has been cancelled
-                        </p>
-                      </div>
-                    </div>
+                      );
+                    }
                   )}
                 </div>
               </motion.div>
@@ -410,19 +369,3 @@ export function OrderCard({
     </motion.div>
   );
 }
-
-const statusColors: { [key: string]: string } = {
-  pending: "bg-yellow-100 text-yellow-800",
-  processing: "bg-blue-100 text-blue-800",
-  shipped: "bg-purple-100 text-purple-800",
-  delivered: "bg-green-100 text-green-800",
-  cancelled: "bg-red-100 text-red-800",
-};
-
-const statusMessages: { [key: string]: string } = {
-  pending: "Order Placed",
-  processing: "Processing",
-  shipped: "Shipped",
-  delivered: "Delivered",
-  cancelled: "Cancelled",
-};

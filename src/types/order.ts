@@ -28,7 +28,17 @@ export interface ShippingAddress {
 
 export interface Order {
   _id: string;
-  status: string;
+  status:
+    | "pending"
+    | "confirmed"
+    | "processing"
+    | "ready_for_pickup"
+    | "shipped"
+    | "out_for_delivery"
+    | "delivered"
+    | "cancelled"
+    | "returned"
+    | "refunded";
   totalAmount: number;
   totalItems: number;
   paymentMethod: string;
