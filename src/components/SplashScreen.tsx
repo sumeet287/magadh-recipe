@@ -36,7 +36,6 @@ export const SplashScreen = ({ onFinish }: { onFinish?: () => void }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  console.log("using deploy.sh");
   return (
     <AnimatePresence>
       {isVisible && (
