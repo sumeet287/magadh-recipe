@@ -59,7 +59,8 @@ export interface Order {
     isDefault: boolean;
     landmark: string;
     name: string;
-    pinCode: string;
+    pincode: string;
+    _id: string;
   };
   paymentMethod: string;
   createdAt: string;

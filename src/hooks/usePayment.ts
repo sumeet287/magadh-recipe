@@ -81,11 +81,8 @@ export function usePayment() {
                     transactionId: response.razorpay_order_id,
                   });
 
-                if (updateData.status !== "success") {
-                  throw new Error(
-                    updateData.message ||
-                      "Failed to update order payment status"
-                  );
+                if (!updateData) {
+                  toast.error("Failed to update order payment status");
                 }
 
                 toast.success("Payment successful!");

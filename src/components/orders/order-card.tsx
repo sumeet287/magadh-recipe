@@ -53,7 +53,6 @@ export function OrderCard({
   onOrderUpdate,
   isLoading,
 }: Readonly<OrderCardProps>) {
-  console.log("🚀 ~ OrderCard ~ order:", order);
   const { handlePayment, isProcessing } = usePayment();
   const { getOrderById } = useOrder();
   const statusConfig = getOrderStatusConfig(order.status);
@@ -92,9 +91,9 @@ export function OrderCard({
           state: updatedOrder.shippingAddress?.state || "",
           pincode: updatedOrder.shippingAddress?.postalCode || "",
           country: updatedOrder.shippingAddress?.country || "",
-          landmark: "",
-          isDefault: false,
-          _id: "",
+          landmark: updatedOrder.shippingAddress?.landmark || "",
+          isDefault: updatedOrder.shippingAddress?.isDefault || false,
+          _id: updatedOrder.shippingAddress?._id || "",
         },
         items: (updatedOrder.items || []).map((item) => ({
           productId: item.product?._id || "",
