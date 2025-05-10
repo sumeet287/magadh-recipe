@@ -59,6 +59,11 @@ export default function ShippingForm({
         </div>
       </CardHeader>
       <CardContent className="space-y-4 px-3 sm:px-6 pt-4 sm:pt-6 bg-[#FFFCF7]">
+        {!selectedAddressId && (
+          <div className="text-sm text-[#D84315] font-medium mb-2">
+            Please select or add a delivery address to continue.
+          </div>
+        )}
         <AddressSelector
           addresses={addresses}
           selectedAddressId={selectedAddressId || ""}

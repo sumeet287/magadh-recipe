@@ -10,6 +10,7 @@ export type ProductCategory =
 
 export interface Product {
   _id: string;
+  id?: string;
   name: string;
   description?: string;
   price: number;

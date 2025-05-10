@@ -75,23 +75,25 @@ export default function CartPage() {
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
-        <h1 className="text-4xl font-bold">Your Cart</h1>
+        <h1 className="text-4xl font-bold text-[#D84315]">Your Cart</h1>
       </div>
 
       {cart.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center py-12"
+          className="text-center py-12 bg-orange-50 rounded-lg border border-orange-100"
         >
           <div className="flex justify-center mb-6">
-            <ShoppingBag className="h-16 w-16 text-muted-foreground" />
+            <ShoppingBag className="h-16 w-16 text-[#D84315]" />
           </div>
-          <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-[#D84315]">
+            Your cart is empty
+          </h2>
           <p className="text-muted-foreground mb-6">
-            Add some products to your cart to see them here
+            Add some beautiful handcrafted items to your cart
           </p>
-          <Button asChild>
+          <Button asChild className="bg-[#D84315] hover:bg-[#D84315]/90">
             <Link href="/products">Continue Shopping</Link>
           </Button>
         </motion.div>
@@ -103,41 +105,45 @@ export default function CartPage() {
               {cart.map((item, index) => (
                 <div
                   key={index}
-                  className="rounded-lg border shadow-sm bg-card"
+                  className="rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 hover:shadow-md transition-shadow"
                 >
                   <div className="p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="relative h-24 w-24 sm:h-32 sm:w-32 rounded-md overflow-hidden flex-shrink-0">
+                      <div className="relative h-24 w-24 sm:h-32 sm:w-32 rounded-md overflow-hidden flex-shrink-0 border-2 border-orange-200">
                         <Image
                           src={item.productImage}
-                          alt={item.name}
+                          alt={item.name || "Unnamed Product"}
                           fill
                           className="object-cover"
                         />
-                        <Badge className="absolute top-2 left-2 bg-amber-500 hover:bg-amber-600">
+                        <Badge className="absolute top-2 left-2 bg-[#D84315] hover:bg-[#D84315]/90">
                           Handcrafted
                         </Badge>
                       </div>
                       <div className="flex-1 flex flex-col">
                         <div className="flex justify-between">
                           <div>
-                            <h3 className="font-semibold text-lg">
-                              {item.name}
+                            <h3 className="font-semibold text-lg text-[#D84315]">
+                              {item.name || "Unnamed Product"}
                             </h3>
                             <p className="text-muted-foreground text-sm">
-                              {item.category}
+                              {item.category || "Uncategorized"}
                             </p>
                             <p className="text-sm mt-1">
-                              <span className="font-medium">Artisan:</span>{" "}
-                              {item.artistName}
+                              <span className="font-medium text-[#D84315]">
+                                Artisan:
+                              </span>{" "}
+                              {item.artistName || "Unknown Artisan"}
                             </p>
                             <p className="text-sm mt-1">
-                              <span className="font-medium">Material:</span>
-                              will update
+                              <span className="font-medium text-[#D84315]">
+                                Material:
+                              </span>{" "}
+                              {item.materials?.join(", ") || "Not specified"}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold">
+                            <p className="font-semibold text-[#D84315]">
                               ₹{item.price.toLocaleString("en-IN")}
                             </p>
                             <p className="text-sm text-muted-foreground">
@@ -146,11 +152,11 @@ export default function CartPage() {
                           </div>
                         </div>
                         <div className="flex items-center justify-between mt-auto pt-4">
-                          <div className="flex items-center border rounded-md">
+                          <div className="flex items-center border border-orange-200 rounded-md bg-white">
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="cursor-pointer p-2 hover:bg-muted transition-colors"
+                              className="cursor-pointer p-2 hover:bg-orange-50 transition-colors"
                               aria-label="Decrease quantity"
                               onClick={() =>
                                 handleUpdateQuantity(item.id, item.quantity - 1)
@@ -165,7 +171,7 @@ export default function CartPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="cursor-pointer p-2 hover:bg-muted transition-colors"
+                              className="cursor-pointer p-2 hover:bg-orange-50 transition-colors"
                               aria-label="Increase quantity"
                               onClick={() =>
                                 handleUpdateQuantity(item.id, item.quantity + 1)
@@ -177,7 +183,7 @@ export default function CartPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-destructive hover:text-destructive/80 transition-colors flex items-center gap-1 cursor-pointer"
+                            className="text-[#D84315] hover:text-[#D84315]/80 transition-colors flex items-center gap-1 cursor-pointer"
                             aria-label="Remove item"
                             onClick={() => handleRemoveItem(item.id)}
                             disabled={removingItemId === item.id}
@@ -197,12 +203,14 @@ export default function CartPage() {
               ))}
 
               {/* Related items - displayed once */}
-              <div className="rounded-lg border shadow-sm bg-card p-6">
-                <h3 className="font-semibold mb-4">You might also like</h3>
+              <div className="rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 p-6">
+                <h3 className="font-semibold mb-4 text-[#D84315]">
+                  You might also like
+                </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {[1, 2, 3].map((item, index) => (
                     <div key={item} className="group cursor-pointer">
-                      <div className="relative aspect-square rounded-md overflow-hidden mb-2">
+                      <div className="relative aspect-square rounded-md overflow-hidden mb-2 border-2 border-orange-200">
                         <Image
                           src={`https://picsum.photos/300?random=${index}`}
                           alt={`Related item ${item}`}
@@ -210,7 +218,7 @@ export default function CartPage() {
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
-                      <h4 className="text-sm font-medium truncate">
+                      <h4 className="text-sm font-medium truncate text-[#D84315]">
                         Handcrafted Item {item}
                       </h4>
                       <p className="text-sm text-muted-foreground">
@@ -224,17 +232,21 @@ export default function CartPage() {
 
             {/* Order summary */}
             <div className="lg:col-span-1">
-              <div className="rounded-lg border shadow-sm bg-card sticky top-18">
+              <div className="rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 sticky top-18">
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+                  <h2 className="text-xl font-semibold mb-4 text-[#D84315]">
+                    Order Summary
+                  </h2>
                   <div className="space-y-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Subtotal</span>
-                      <span>₹{total.toLocaleString("en-IN")}</span>
+                      <span className="font-medium">
+                        ₹{total.toLocaleString("en-IN")}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
-                      <span>
+                      <span className="font-medium">
                         {shipping === 0
                           ? "Free"
                           : `₹${shipping.toLocaleString("en-IN")}`}
@@ -244,14 +256,22 @@ export default function CartPage() {
                     {/* Coupon code */}
                     <div className="pt-2">
                       <div className="flex gap-2">
-                        <Input placeholder="Coupon code" className="flex-1" />
-                        <Button variant="outline">Apply</Button>
+                        <Input
+                          placeholder="Coupon code"
+                          className="flex-1 border-orange-200 focus:border-[#D84315]"
+                        />
+                        <Button
+                          variant="outline"
+                          className="border-[#D84315] text-[#D84315] hover:bg-orange-50"
+                        >
+                          Apply
+                        </Button>
                       </div>
                     </div>
 
-                    <Separator />
+                    <Separator className="bg-orange-200" />
 
-                    <div className="flex justify-between font-semibold text-lg">
+                    <div className="flex justify-between font-semibold text-lg text-[#D84315]">
                       <span>Total</span>
                       <span>₹{finalTotal.toLocaleString("en-IN")}</span>
                     </div>
@@ -261,9 +281,8 @@ export default function CartPage() {
                     </div>
 
                     <Button
-                      className="w-full"
+                      className="w-full bg-[#D84315] hover:bg-[#D84315]/90"
                       size="lg"
-                      variant={"default"}
                       asChild
                     >
                       <Link href="/checkout">Proceed to Checkout</Link>
@@ -271,7 +290,7 @@ export default function CartPage() {
 
                     <div className="flex justify-center">
                       <button
-                        className="text-sm text-muted-foreground hover:text-destructive transition-colors"
+                        className="text-sm text-muted-foreground hover:text-[#D84315] transition-colors"
                         onClick={handleClearCart}
                         disabled={isLoading}
                       >
@@ -296,7 +315,7 @@ export default function CartPage() {
                           (method) => (
                             <div
                               key={method}
-                              className="px-2 py-1 border rounded text-xs bg-muted"
+                              className="px-2 py-1 border border-orange-200 rounded text-xs bg-white"
                             >
                               {method}
                             </div>
@@ -311,17 +330,29 @@ export default function CartPage() {
           </div>
 
           {/* Customer support */}
-          <div className="mt-12 rounded-lg border shadow-sm bg-card p-6">
+          <div className="mt-12 rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 p-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <h3 className="font-semibold">Need help with your order?</h3>
+                <h3 className="font-semibold text-[#D84315]">
+                  Need help with your order?
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   Our customer support team is here to help
                 </p>
               </div>
               <div className="flex gap-4">
-                <Button variant="outline">Chat with Us</Button>
-                <Button variant="secondary">Contact Support</Button>
+                <Button
+                  variant="outline"
+                  className="border-[#D84315] text-[#D84315] hover:bg-orange-50"
+                >
+                  Chat with Us
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="bg-[#D84315] hover:bg-[#D84315]/90 text-white"
+                >
+                  Contact Support
+                </Button>
               </div>
             </div>
           </div>

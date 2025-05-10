@@ -5,6 +5,7 @@ import { api } from "@/lib/axios";
 import { cartEndpoints } from "@/lib/endpoints/cart";
 import { useCart } from "@/contexts/cart-context";
 import { toast } from "sonner";
+import { ProductCategory } from "@/types/product";
 
 interface CartItem {
   product: {
@@ -65,10 +66,11 @@ export function useCartActions() {
 
       // Transform API items to CartItems format with quantity
       const cartItems = data.items.map((item) => ({
+        _id: item.product._id,
         id: item.product._id,
         name: item.name,
         price: item.price,
-        category: "madhubani",
+        category: "madhubani" as ProductCategory,
         images: [item.image],
         inStock: item.product.inStock,
         productImage: item.image,
@@ -105,11 +107,12 @@ export function useCartActions() {
 
         if (addedItem) {
           addToCartContext({
-            id: addedItem.product._id, // Use product._id instead of productId
+            _id: addedItem.product._id,
+            id: addedItem.product._id,
             name: addedItem.name,
             price: addedItem.price,
-            category: { label: "Default", name: "default", value: "default" }, // Add default category if needed
-            images: [addedItem.image], // Convert single image to array
+            category: "madhubani" as ProductCategory,
+            images: [addedItem.image],
             inStock: addedItem.product.inStock,
             productImage: addedItem.image,
           });
