@@ -195,3 +195,55 @@ export function useProduct() {
     pagination: productState?.pagination,
   };
 }
+
+export function useCategoryProducts() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 12,
+    total: 0,
+  });
+
+  const fetchCategoryProducts = useCallback(
+    async (
+      category: string,
+      page: number = 1,
+      limit: number = 8,
+      sortBy: string = "newest"
+    ) => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await fetch(
+          `https://stage-api.biharbazaar.in/products?page=${page}&limit=${limit}&sortBy=${sortBy}&category=${category}`
+        );
+        const data = await response.json();
+        setProducts(data.products);
+        setPagination(
+          data.pagination || {
+            page,
+            limit,
+            total: data.products.length,
+          }
+        );
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch products"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  return {
+    products,
+    isLoading,
+    error,
+    pagination,
+    fetchCategoryProducts,
+  };
+}

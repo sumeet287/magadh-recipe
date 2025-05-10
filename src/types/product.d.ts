@@ -9,11 +9,11 @@ export type ProductCategory =
   | "lac";
 
 export interface Product {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   price: number;
-  category: any;
+  category: ProductCategory;
   slug: string;
   productImage: string;
   images: string[];
@@ -24,10 +24,12 @@ export interface Product {
     width: number;
     height: number;
     unit: "cm" | "inch";
+    _id?: string;
   };
   weight?: {
     value: number;
     unit: "g" | "kg";
+    _id?: string;
   };
   materials?: string[];
   tags?: string[];
@@ -35,6 +37,7 @@ export interface Product {
   createdAt?: string;
   updatedAt?: string;
   totalItems?: number;
+  __v?: number;
 }
 
 export interface ProductCategoryInfo {
