@@ -22,6 +22,7 @@ import {
   Package,
   Truck,
   ShoppingCart,
+  CreditCard,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/lib/ui/button/button";
@@ -30,6 +31,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useCartActions } from "@/hooks/useCartActions";
 import { useRouter } from "next/navigation";
+import { Typography } from "@/lib/ui/typography/typography";
+
 export function ClientProductPage({ id }: { id: string }) {
   const { addToCart, addToWishlist, wishlist, removeFromWishlist } = useCart();
   const {} = useCartActions();
@@ -68,10 +71,23 @@ export function ClientProductPage({ id }: { id: string }) {
   if (!product)
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Product not found</h1>
-        <p className="text-muted-foreground">
+        <Typography
+          variant="h1"
+          weight="bold"
+          align="center"
+          seoTitle="Product not found"
+          className="text-2xl font-bold mb-4"
+        >
+          Product not found
+        </Typography>
+        <Typography
+          variant="p"
+          color="secondary"
+          align="center"
+          className="text-muted-foreground"
+        >
           The product you&apos;re looking for doesn&apos;t exist.
-        </p>
+        </Typography>
       </div>
     );
 
@@ -131,7 +147,13 @@ export function ClientProductPage({ id }: { id: string }) {
     if (relatedProducts.length > 0) {
       return (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">You may also like</h2>
+          <Typography
+            variant="h2"
+            weight="bold"
+            className="text-2xl font-bold mb-6"
+          >
+            You may also like
+          </Typography>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((item) => (
               <Card key={item} className="overflow-hidden">
@@ -144,9 +166,13 @@ export function ClientProductPage({ id }: { id: string }) {
                   />
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-medium truncate">
+                  <Typography
+                    variant="h3"
+                    weight="medium"
+                    className="font-medium truncate"
+                  >
                     Handcrafted Bamboo Basket
-                  </h3>
+                  </Typography>
                   <div className="flex items-center justify-between mt-2">
                     <span className="font-bold">₹599</span>
                     <div className="flex items-center">
@@ -164,7 +190,9 @@ export function ClientProductPage({ id }: { id: string }) {
 
     return (
       <div className="col-span-full text-center py-8">
-        <p className="text-muted-foreground">No related products found</p>
+        <Typography variant="p" className="text-muted-foreground">
+          No related products found
+        </Typography>
       </div>
     );
   };
@@ -258,9 +286,14 @@ export function ClientProductPage({ id }: { id: string }) {
                 ))}
               </div>
 
-              <h1 className="text-3xl font-bold tracking-tight">
+              <Typography
+                variant="h1"
+                weight="bold"
+                className="font-bold tracking-tight text-bihar-red"
+                seoTitle={product.name}
+              >
                 {product.name}
-              </h1>
+              </Typography>
 
               {/* <div className="flex items-center gap-2 mt-2">
               <div className="flex">
@@ -334,28 +367,22 @@ export function ClientProductPage({ id }: { id: string }) {
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" variant="default">
-                  <Link href="/crafts">Explore All Crafts</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/artisans">Meet The Artisans</Link>
-                </Button>
-              </div>
-
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   variant="default"
                   onClick={handleAddToCart}
                   disabled={!product.inStock || quantity > maxQuantity}
+                  size="lg"
+                  preIcon={<ShoppingCart className="mr-2 h-4 w-4" />}
                 >
-                  <ShoppingCart className="mr-2 h-4 w-4" />
                   Add to Cart
                 </Button>
                 <Button
-                  variant="default"
+                  variant="outline"
                   onClick={handleBuyNow}
                   disabled={!product.inStock}
+                  size="lg"
+                  preIcon={<CreditCard className="mr-2 h-4 w-4" />}
                 >
                   Buy Now
                 </Button>

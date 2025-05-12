@@ -54,7 +54,7 @@ export function TestimonialCarousel() {
             <div className="md:col-span-2">
               <div className="relative aspect-square overflow-hidden rounded-full max-w-[200px] mx-auto">
                 <Image
-                  src={testimonials[currentIndex].image || "/placeholder.svg"}
+                  src={testimonials[currentIndex].image}
                   alt={testimonials[currentIndex].name}
                   fill
                   className="object-cover"
@@ -78,7 +78,7 @@ export function TestimonialCarousel() {
           </div>
         </CardContent>
       </Card>
-      <div className="flex justify-center mt-6 gap-2">
+      <div className="flex justify-center items-center gap-2 mt-6">
         <Button
           variant="outline"
           size="icon"
@@ -89,16 +89,17 @@ export function TestimonialCarousel() {
           <span className="sr-only">Previous testimonial</span>
         </Button>
         {testimonials.map((_, index) => (
-          <Button
+          <button
             key={index}
-            variant={index === currentIndex ? "default" : "outline"}
-            size="icon"
-            rounded="full"
-            className={index === currentIndex ? "bg-orange-600" : ""}
             onClick={() => setCurrentIndex(index)}
-          >
-            <span className="sr-only">Go to testimonial {index + 1}</span>
-          </Button>
+            className={`w-3 h-3 rounded-full mx-1 transition-all duration-200 focus:outline-none
+              ${
+                index === currentIndex
+                  ? "bg-orange-600"
+                  : "border-2 border-orange-600 bg-white"
+              }`}
+            aria-label={`Go to testimonial ${index + 1}`}
+          />
         ))}
         <Button
           variant="outline"

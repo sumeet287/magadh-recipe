@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Typography } from "@/lib/ui/typography/typography";
 
 interface PolicyLayoutProps {
   title: string;
@@ -20,11 +21,18 @@ const PolicyLayout = ({ title, lastUpdated, children }: PolicyLayoutProps) => {
         </Link>
 
         <div className="bg-white rounded-lg shadow-sm p-8 mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+          <Typography
+            variant="h1"
+            weight="bold"
+            seoTitle={title}
+            className="mb-2 text-gray-900"
+          >
+            {title}
+          </Typography>
           {lastUpdated && (
-            <p className="text-sm text-gray-500 mb-8">
+            <Typography variant="p" className="text-sm text-gray-500 mb-8">
               Last updated: {lastUpdated}
-            </p>
+            </Typography>
           )}
 
           <div className="prose prose-slate max-w-none">{children}</div>

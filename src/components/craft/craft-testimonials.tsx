@@ -1,3 +1,5 @@
+import { Typography } from "@/lib/ui/typography/typography";
+
 const testimonials = [
   {
     name: "Ramesh Kumar",
@@ -27,14 +29,25 @@ const CraftTestimonials = () => {
     <section className="py-16 bg-stone-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold font-playfair text-white mb-4">
+          <Typography
+            variant="h2"
+            weight="bold"
+            className="font-playfair text-white mb-4"
+            seoTitle="Voices from Bihar's Craft Community"
+            align="center"
+          >
             Voices from <span className="text-bihar-mustard">Bihar&apos;s</span>{" "}
             Craft Community
-          </h2>
-          <p className="text-stone-400 max-w-2xl mx-auto">
+          </Typography>
+          <Typography
+            variant="p"
+            weight="medium"
+            className="text-stone-400 max-w-2xl mx-auto"
+            align="center"
+          >
             Hear from the artisans and customers who form our growing community
             of craft enthusiasts.
-          </p>
+          </Typography>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -52,8 +65,12 @@ const CraftTestimonials = () => {
                   />
                 </div>
                 <div>
-                  <h4 className="text-white font-medium">{testimonial.name}</h4>
-                  <p className="text-stone-400 text-sm">{testimonial.role}</p>
+                  <Typography variant="h4" className="text-white font-medium">
+                    {testimonial.name}
+                  </Typography>
+                  <Typography variant="p" className="text-stone-400 text-sm">
+                    {testimonial.role}
+                  </Typography>
                 </div>
               </div>
 
@@ -61,9 +78,12 @@ const CraftTestimonials = () => {
                 <span className="text-4xl text-bihar-mustard absolute -top-4 -left-2 opacity-50">
                   &ldquo;
                 </span>
-                <p className="text-stone-300 relative z-10 pl-3">
+                <Typography
+                  variant="blockquote"
+                  className="text-stone-300 relative z-10 pl-3"
+                >
                   {testimonial.quote}
-                </p>
+                </Typography>
                 <span className="text-4xl text-bihar-mustard absolute -bottom-8 right-0 opacity-50">
                   &rdquo;
                 </span>

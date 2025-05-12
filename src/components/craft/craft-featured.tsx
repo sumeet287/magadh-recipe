@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Typography } from "@/lib/ui/typography/typography";
 
 interface CraftCategoryProps {
   title: string;
@@ -47,14 +48,24 @@ const CraftCategories = () => {
     <section className="py-16 bg-stone-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold font-playfair text-stone-800 mb-4">
+          <Typography
+            variant="h2"
+            weight="bold"
+            align="center"
+            className="text-bihar-red mb-4"
+          >
             Explore <span className="text-bihar-turquoise">Craft</span>{" "}
             Categories
-          </h2>
-          <p className="text-stone-600 max-w-2xl mx-auto">
+          </Typography>
+          <Typography
+            variant="p"
+            color="secondary"
+            align="center"
+            className="max-w-2xl mx-auto"
+          >
             Dive into Bihar&apos;s diverse craft traditions, each with its
             unique history, techniques, and cultural significance.
-          </p>
+          </Typography>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -72,11 +83,23 @@ const CraftCategories = () => {
                 />
               </div>
               <div className="md:w-2/3 p-6">
-                <h3 className="text-xl font-playfair font-semibold text-stone-800 mb-2 group-hover:text-bihar-red transition-colors">
+                <Typography
+                  variant="h3"
+                  weight="semibold"
+                  className="text-xl font-playfair text-stone-800 mb-2 group-hover:text-bihar-red transition-colors"
+                >
                   {category.title}
-                </h3>
-                <p className="text-stone-600 mb-4">{category.description}</p>
-                <span className="inline-flex items-center text-sm font-medium text-bihar-turquoise group-hover:translate-x-1 transition-transform duration-300">
+                </Typography>
+                <Typography variant="p" color="secondary" className="mb-4">
+                  {category.description}
+                </Typography>
+                <Typography
+                  variant="p"
+                  as="span"
+                  color="primary"
+                  weight={"semibold"}
+                  className="text-bihar-red inline-flex items-center   group-hover:translate-x-1 transition-transform duration-300"
+                >
                   Explore {category.title}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +115,7 @@ const CraftCategories = () => {
                       d="M9 5l7 7-7 7"
                     />
                   </svg>
-                </span>
+                </Typography>
               </div>
             </Link>
           ))}

@@ -1,23 +1,28 @@
 import { Button } from "@/lib/ui/button/button";
 import Link from "next/link";
+import { Typography } from "@/lib/ui/typography/typography";
 
 const HeroSection = () => {
   return (
     <section className="relative bg-gradient-to-r from-bihar-cream to-white craft-pattern">
       <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 space-y-6 mb-10 md:mb-0 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-playfair text-stone-800 leading-tight">
+          <Typography
+            variant="h1"
+            weight="bold"
+            className="font-playfair text-stone-800 leading-tight"
+          >
             <span className="text-orange-600">Bihar</span> ka{" "}
             <span className="text-teal-700">Craft</span> <br />
             <span className="text-yellow-500">Duniya</span> ke{" "}
-            <span className="text-orange-600">Haath</span>
-          </h1>
+            <span className="text-rose-600">Haath</span>
+          </Typography>
 
-          <p className="text-lg text-stone-600 max-w-lg">
-            Bihar ki rich cultural heritage aur traditional crafts ko duniya se
-            connect karne ka platform. Madhubani, Tikuli, Glass art aur bahut
-            saare authentic handicrafts ek hi jagah par.
-          </p>
+          <Typography variant="p" className="text-lg text-stone-600 max-w-lg">
+            Bihar ki samriddh virasat aur kala ko duniya tak pahunchane ka ek
+            vishwasniya platform. Madhubani, Tikuli, Glass Art aur anya haathon
+            se bane kalatmak products ek hi jagah yahin par.
+          </Typography>
 
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" variant="default">

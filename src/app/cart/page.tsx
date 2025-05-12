@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 import { useCartActions } from "@/hooks/useCartActions";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Typography } from "@/lib/ui/typography/typography";
 
 export default function CartPage() {
   const { cart } = useCart();
@@ -75,7 +76,14 @@ export default function CartPage() {
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
-        <h1 className="text-4xl font-bold text-[#D84315]">Your Cart</h1>
+        <Typography
+          variant="h1"
+          weight="bold"
+          seoTitle="Your Cart"
+          className="text-4xl text-[#D84315]"
+        >
+          Your Cart
+        </Typography>
       </div>
 
       {cart.length === 0 ? (
@@ -87,12 +95,16 @@ export default function CartPage() {
           <div className="flex justify-center mb-6">
             <ShoppingBag className="h-16 w-16 text-[#D84315]" />
           </div>
-          <h2 className="text-2xl font-semibold mb-4 text-[#D84315]">
+          <Typography
+            variant="h2"
+            weight="bold"
+            className="text-2xl font-semibold mb-4 text-[#D84315]"
+          >
             Your cart is empty
-          </h2>
-          <p className="text-muted-foreground mb-6">
+          </Typography>
+          <Typography variant="p" className="text-muted-foreground mb-6">
             Add some beautiful handcrafted items to your cart
-          </p>
+          </Typography>
           <Button asChild className="bg-[#D84315] hover:bg-[#D84315]/90">
             <Link href="/products">Continue Shopping</Link>
           </Button>
@@ -123,32 +135,53 @@ export default function CartPage() {
                       <div className="flex-1 flex flex-col">
                         <div className="flex justify-between">
                           <div>
-                            <h3 className="font-semibold text-lg text-[#D84315]">
+                            <Typography
+                              variant="h3"
+                              weight="semibold"
+                              className="text-lg text-[#D84315]"
+                            >
                               {item.name || "Unnamed Product"}
-                            </h3>
-                            <p className="text-muted-foreground text-sm">
+                            </Typography>
+                            <Typography
+                              variant="p"
+                              className="text-muted-foreground text-sm"
+                            >
                               {item.category || "Uncategorized"}
-                            </p>
-                            <p className="text-sm mt-1">
-                              <span className="font-medium text-[#D84315]">
+                            </Typography>
+                            <Typography variant="p" className="text-sm mt-1">
+                              <Typography
+                                variant="span"
+                                weight="medium"
+                                className="text-[#D84315]"
+                              >
                                 Artisan:
-                              </span>{" "}
+                              </Typography>{" "}
                               {item.artistName || "Unknown Artisan"}
-                            </p>
-                            <p className="text-sm mt-1">
-                              <span className="font-medium text-[#D84315]">
+                            </Typography>
+                            <Typography variant="p" className="text-sm mt-1">
+                              <Typography
+                                variant="span"
+                                weight="medium"
+                                className="text-[#D84315]"
+                              >
                                 Material:
-                              </span>{" "}
+                              </Typography>{" "}
                               {item.materials?.join(", ") || "Not specified"}
-                            </p>
+                            </Typography>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-[#D84315]">
+                            <Typography
+                              variant="p"
+                              className="font-semibold text-[#D84315]"
+                            >
                               ₹{item.price.toLocaleString("en-IN")}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
+                            </Typography>
+                            <Typography
+                              variant="p"
+                              className="text-sm text-muted-foreground"
+                            >
                               ₹{item.price.toLocaleString("en-IN")} each
-                            </p>
+                            </Typography>
                           </div>
                         </div>
                         <div className="flex items-center justify-between mt-auto pt-4">
@@ -193,7 +226,13 @@ export default function CartPage() {
                             ) : (
                               <Trash2 className="h-4 w-4" />
                             )}
-                            <span className="hidden sm:inline">Remove</span>
+                            <Typography
+                              variant="small"
+                              as="span"
+                              className="hidden sm:inline"
+                            >
+                              Remove
+                            </Typography>
                           </Button>
                         </div>
                       </div>
@@ -204,9 +243,13 @@ export default function CartPage() {
 
               {/* Related items - displayed once */}
               <div className="rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 p-6">
-                <h3 className="font-semibold mb-4 text-[#D84315]">
+                <Typography
+                  variant="h3"
+                  weight="bold"
+                  className="mb-4 text-[#D84315]"
+                >
                   You might also like
-                </h3>
+                </Typography>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {[1, 2, 3].map((item, index) => (
                     <div key={item} className="group cursor-pointer">
@@ -218,12 +261,19 @@ export default function CartPage() {
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
-                      <h4 className="text-sm font-medium truncate text-[#D84315]">
+                      <Typography
+                        variant="h4"
+                        weight="medium"
+                        className="text-sm font-medium truncate text-[#D84315]"
+                      >
                         Handcrafted Item {item}
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
+                      </Typography>
+                      <Typography
+                        variant="p"
+                        className="text-sm text-muted-foreground"
+                      >
                         ₹{599 + item * 50}
-                      </p>
+                      </Typography>
                     </div>
                   ))}
                 </div>
@@ -234,23 +284,49 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <div className="rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 sticky top-18">
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold mb-4 text-[#D84315]">
+                  <Typography
+                    variant="h2"
+                    weight="bold"
+                    className="text-xl font-semibold mb-4 text-[#D84315]"
+                  >
                     Order Summary
-                  </h2>
+                  </Typography>
                   <div className="space-y-4">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Subtotal</span>
-                      <span className="font-medium">
-                        ₹{total.toLocaleString("en-IN")}
-                      </span>
+                      <Typography
+                        variant="small"
+                        as="span"
+                        className="text-muted-foreground"
+                      >
+                        Subtotal
+                      </Typography>
+                      <Typography
+                        variant="small"
+                        as="span"
+                        className="font-medium"
+                      >
+                        ₹{total ? total.toLocaleString("en-IN") : 0}
+                      </Typography>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Shipping</span>
-                      <span className="font-medium">
+                      <Typography
+                        variant="small"
+                        as="span"
+                        className="text-muted-foreground"
+                      >
+                        Shipping
+                      </Typography>
+                      <Typography
+                        variant="small"
+                        as="span"
+                        className="font-medium"
+                      >
                         {shipping === 0
                           ? "Free"
-                          : `₹${shipping.toLocaleString("en-IN")}`}
-                      </span>
+                          : `₹${
+                              shipping ? shipping.toLocaleString("en-IN") : 0
+                            }`}
+                      </Typography>
                     </div>
 
                     {/* Coupon code */}
@@ -272,13 +348,20 @@ export default function CartPage() {
                     <Separator className="bg-orange-200" />
 
                     <div className="flex justify-between font-semibold text-lg text-[#D84315]">
-                      <span>Total</span>
-                      <span>₹{finalTotal.toLocaleString("en-IN")}</span>
+                      <Typography variant="small" as="span">
+                        Total
+                      </Typography>
+                      <Typography variant="small" as="span">
+                        ₹{finalTotal ? finalTotal.toLocaleString("en-IN") : 0}
+                      </Typography>
                     </div>
 
-                    <div className="text-xs text-muted-foreground">
+                    <Typography
+                      variant="p"
+                      className="text-xs text-muted-foreground"
+                    >
                       Taxes and discounts calculated at checkout
-                    </div>
+                    </Typography>
 
                     <Button
                       className="w-full bg-[#D84315] hover:bg-[#D84315]/90"
@@ -307,9 +390,12 @@ export default function CartPage() {
 
                     {/* Payment methods */}
                     <div className="pt-4">
-                      <div className="text-xs text-center text-muted-foreground mb-2">
+                      <Typography
+                        variant="p"
+                        className="text-xs text-center text-muted-foreground mb-2"
+                      >
                         Secure payment methods
-                      </div>
+                      </Typography>
                       <div className="flex justify-center gap-2">
                         {["Visa", "Mastercard", "PayPal", "UPI"].map(
                           (method) => (
@@ -333,12 +419,19 @@ export default function CartPage() {
           <div className="mt-12 rounded-lg border border-orange-100 shadow-sm bg-orange-50/50 p-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <h3 className="font-semibold text-[#D84315]">
+                <Typography
+                  variant="h3"
+                  weight="semibold"
+                  className="font-semibold text-[#D84315]"
+                >
                   Need help with your order?
-                </h3>
-                <p className="text-sm text-muted-foreground">
+                </Typography>
+                <Typography
+                  variant="p"
+                  className="text-sm text-muted-foreground"
+                >
                   Our customer support team is here to help
-                </p>
+                </Typography>
               </div>
               <div className="flex gap-4">
                 <Button

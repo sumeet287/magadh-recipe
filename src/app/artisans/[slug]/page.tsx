@@ -11,6 +11,7 @@ import { products } from "@/data/products";
 import type { Product } from "@/types/product";
 import type { Artisan } from "@/types/artisan";
 import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
+import { Typography } from "@/lib/ui/typography/typography";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -62,17 +63,33 @@ export default function ArtistProfilePage({ params }: Props) {
             </div>
           </div>
           <div className="w-full md:w-2/3">
-            <h1 className="text-4xl font-bold mb-4">{artist.name}</h1>
-            <p className="text-xl text-orange-600 dark:text-orange-400 mb-4">
+            <Typography
+              variant="h1"
+              weight="bold"
+              seoTitle={artist.name}
+              className="text-4xl font-bold mb-4"
+            >
+              {artist.name}
+            </Typography>
+            <Typography
+              variant="p"
+              className="text-xl text-orange-600 dark:text-orange-400 mb-4"
+            >
               {artist.craft}
-            </p>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
+            </Typography>
+            <Typography
+              variant="p"
+              className="text-slate-600 dark:text-slate-300 mb-6"
+            >
               {artist.description}
-            </p>
+            </Typography>
             <div className="space-y-2 mb-6">
-              <p className="text-slate-700 dark:text-slate-200">
+              <Typography
+                variant="p"
+                className="text-slate-700 dark:text-slate-200"
+              >
                 📍 {artist.location}
-              </p>
+              </Typography>
               <div className="flex flex-wrap gap-2">
                 {artist.awards.map((award: string, index: number) => (
                   <span
@@ -91,7 +108,13 @@ export default function ArtistProfilePage({ params }: Props) {
 
         {/* Artist's Products */}
         <div>
-          <h2 className="text-2xl font-bold mb-6">Featured Works</h2>
+          <Typography
+            variant="h2"
+            weight="bold"
+            className="text-2xl font-bold mb-6"
+          >
+            Featured Works
+          </Typography>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {isLoading
               ? Array(6)

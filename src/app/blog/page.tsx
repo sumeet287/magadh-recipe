@@ -6,6 +6,7 @@ import tikuliArt from "@/assets/art/tikuli_art.jpeg";
 import woodArt from "@/assets/art/wood_art.jpeg";
 import Subscribe from "@/components/subscribe/subscribe";
 import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
+import { Typography } from "@/lib/ui/typography/typography";
 
 export const metadata: Metadata = {
   title: "Blog | Bihar Bazaar",
@@ -60,17 +61,25 @@ export default function BlogPage() {
         <section className="relative py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
+              <Typography
+                variant="h1"
+                weight="bold"
+                className="text-4xl md:text-5xl text-slate-900 dark:text-white"
+                seoTitle="Stories from Bihar's Artisans"
+              >
                 Stories from
                 <span className="block text-orange-600 mt-2">
                   Bihar&apos;s Artisans
                 </span>
-              </h1>
-              <p className="text-lg text-slate-700 dark:text-slate-200">
+              </Typography>
+              <Typography
+                variant="p"
+                className="text-lg text-slate-700 dark:text-slate-200"
+              >
                 Explore the rich cultural heritage of Bihar through stories of
                 our artisans, traditional arts, and the evolution of
                 centuries-old crafts.
-              </p>
+              </Typography>
             </div>
           </div>
         </section>

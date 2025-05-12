@@ -4,6 +4,7 @@ import madhubaniArt from "@/assets/art/madhubani_art.jpg";
 import tikuliArt from "@/assets/art/tikuli_art.jpeg";
 import woodArt from "@/assets/art/wood_art.jpeg";
 import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
+import { Typography } from "@/lib/ui/typography/typography";
 
 const blogPosts = [
   {
@@ -98,7 +99,14 @@ export default async function BlogPostPage(props: { params: Params }) {
       </div>
       <main className="container mx-auto px-4 py-16">
         <article className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+          <Typography
+            variant="h1"
+            weight="bold"
+            seoTitle={post.title}
+            className="text-4xl font-bold mb-4"
+          >
+            {post.title}
+          </Typography>
           <div className="flex items-center gap-4 text-slate-600 dark:text-slate-300 mb-8">
             <span>{post.date}</span>
             <span>•</span>

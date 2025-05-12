@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { Button } from "@/lib/ui/button/button";
 import CraftCard, { CraftCardProps } from "./craft-card";
+import { Typography } from "@/lib/ui/typography/typography";
 
 const allCrafts: CraftCardProps[] = [
   {
@@ -109,14 +110,24 @@ const Crafts = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-playfair text-stone-800 mb-4">
+            <Typography
+              variant="h2"
+              weight="bold"
+              align="center"
+              className="text-bihar-red mb-4"
+            >
               Explore <span className="text-bihar-red">Bihar&apos;s</span>{" "}
               Handicrafts
-            </h2>
-            <p className="text-stone-600 max-w-2xl mx-auto">
+            </Typography>
+            <Typography
+              variant="p"
+              color="secondary"
+              align="center"
+              className="max-w-2xl mx-auto"
+            >
               Discover the finest collection of traditional crafts, each piece
               telling a story of cultural heritage and artisanal excellence.
-            </p>
+            </Typography>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
@@ -160,9 +171,9 @@ const Crafts = () => {
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-xl text-stone-600">
+              <Typography variant="p" className="text-xl text-stone-600">
                 No crafts found matching your search.
-              </p>
+              </Typography>
               <Button
                 variant="outline"
                 className="mt-4 border-bihar-red text-bihar-red hover:bg-bihar-red/10"

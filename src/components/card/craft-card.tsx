@@ -197,7 +197,7 @@ export function CraftCard({
           variant="default"
           size="lg"
           rounded="full"
-          preIcon={<ShoppingCart className="h-5 w-5" />}
+          preIcon={<ShoppingCart className="h-4 w-4" />}
           onClick={handleAddToCart}
         >
           Add to Cart
@@ -206,7 +206,7 @@ export function CraftCard({
           variant="outline"
           size="lg"
           rounded="full"
-          preIcon={<CreditCard className="h-5 w-5" />}
+          preIcon={<CreditCard className="h-4 w-4" />}
           onClick={handleBuyNow}
         >
           Buy Now

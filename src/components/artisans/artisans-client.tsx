@@ -11,6 +11,7 @@ import { artisans } from "@/components/artisans/artisans-data"; // Your static/d
 import { CraftType } from "@/types/artisan";
 import SitaDevi from "@/assets/artist/Smt_Sita_Devi.png";
 import Link from "next/link";
+import { Typography } from "@/lib/ui/typography/typography";
 
 export default function ArtisansPage() {
   const [search, setSearch] = useState("");
@@ -38,13 +39,21 @@ export default function ArtisansPage() {
         <div className="absolute inset-0 bg-[url('/artisans-hero.jpg')] bg-cover bg-center opacity-15" />
         <div className="container relative mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            <Typography
+              variant="h1"
+              weight="bold"
+              seoTitle="Master Artisans of Bihar"
+              className="text-4xl md:text-5xl lg:text-6xl tracking-tight"
+            >
               Master Artisans of Bihar
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            </Typography>
+            <Typography
+              variant="p"
+              className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto"
+            >
               Meet the skilled craftspeople who are preserving and innovating
               Bihar&apos;s rich artistic heritage
-            </p>
+            </Typography>
           </div>
         </div>
       </section>
@@ -116,22 +125,39 @@ export default function ArtisansPage() {
                     <Badge className="bg-orange-600">National Award</Badge>
                     <Badge className="bg-orange-600">Padma Shri</Badge>
                   </div>
-                  <h2 className="text-3xl font-bold">Smt. Sita Devi</h2>
-                  <p className="text-orange-600 font-medium">Madhubani Art</p>
+                  <Typography
+                    variant="h2"
+                    weight="bold"
+                    className="text-3xl font-bold"
+                  >
+                    Smt. Sita Devi
+                  </Typography>
+                  <Typography
+                    variant="p"
+                    className="text-orange-600 font-medium"
+                  >
+                    Madhubani Art
+                  </Typography>
                   <div className="flex items-center gap-1 text-gray-600 mt-1">
                     <MapPin className="h-4 w-4" />
                     <span>Madhubani, Bihar</span>
                   </div>
                 </div>
-                <p className="text-gray-700">
+                <Typography variant="p" className="text-gray-700">
                   One of the most well-known Madhubani artists from India, Smt.
                   Sita Devi is renowned for her intricate designs and vibrant
                   colors. Her work has been exhibited internationally and has
                   received numerous accolades for preserving this ancient art
                   form.
-                </p>
+                </Typography>
                 <div className="space-y-2">
-                  <h3 className="font-medium">Achievements:</h3>
+                  <Typography
+                    variant="h3"
+                    weight="medium"
+                    className="font-medium"
+                  >
+                    Achievements:
+                  </Typography>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
                     <li>Padma Shri Award recipient</li>
                     <li>Bihar Ratna Samman</li>
@@ -167,15 +193,23 @@ export default function ArtisansPage() {
       {/* Artisans Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8">
+          <Typography
+            variant="h2"
+            weight="bold"
+            className="text-2xl font-bold mb-8"
+          >
             Explore More Master Artisans
-          </h2>
+          </Typography>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredArtisans.length === 0 ? (
               <div className="text-center py-12">
-                <h3 className="text-xl font-medium text-slate-600 dark:text-slate-300">
+                <Typography
+                  variant="h3"
+                  weight="medium"
+                  className="text-xl font-medium text-slate-600 dark:text-slate-300"
+                >
                   No artisans found for this category
-                </h3>
+                </Typography>
               </div>
             ) : (
               filteredArtisans.map((artisan) => (
@@ -206,11 +240,17 @@ export default function ArtisansPage() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Artisan Stories</h2>
-            <p className="text-gray-600">
+            <Typography
+              variant="h2"
+              weight="bold"
+              className="text-3xl font-bold mb-4"
+            >
+              Artisan Stories
+            </Typography>
+            <Typography variant="p" className="text-gray-600">
               Discover the journeys, challenges, and triumphs of Bihar&apos;s
               master craftspeople
-            </p>
+            </Typography>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
@@ -223,13 +263,17 @@ export default function ArtisansPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-bold text-lg mb-2">
+                <Typography
+                  variant="h3"
+                  weight="bold"
+                  className="font-bold text-lg mb-2"
+                >
                   From Tradition to Innovation
-                </h3>
-                <p className="text-gray-600 mb-4">
+                </Typography>
+                <Typography variant="p" className="text-gray-600 mb-4">
                   How Madhubani artists are adapting ancient techniques for the
                   modern market while preserving cultural heritage.
-                </p>
+                </Typography>
                 <Button
                   variant="link"
                   className="text-orange-600 p-0 h-auto font-medium"
@@ -249,13 +293,17 @@ export default function ArtisansPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-bold text-lg mb-2">
+                <Typography
+                  variant="h3"
+                  weight="bold"
+                  className="font-bold text-lg mb-2"
+                >
                   The Women Behind Bihar&apos;s Craft Revival
-                </h3>
-                <p className="text-gray-600 mb-4">
+                </Typography>
+                <Typography variant="p" className="text-gray-600 mb-4">
                   How female artisans are leading the preservation and economic
                   revival of traditional crafts in rural Bihar.
-                </p>
+                </Typography>
                 <Button
                   variant="link"
                   className="text-orange-600 p-0 h-auto font-medium"
@@ -275,13 +323,17 @@ export default function ArtisansPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-bold text-lg mb-2">
+                <Typography
+                  variant="h3"
+                  weight="bold"
+                  className="font-bold text-lg mb-2"
+                >
                   Teaching the Next Generation
-                </h3>
-                <p className="text-gray-600 mb-4">
+                </Typography>
+                <Typography variant="p" className="text-gray-600 mb-4">
                   How master artisans are ensuring their knowledge and skills
                   are passed down to younger craftspeople.
-                </p>
+                </Typography>
                 <Button
                   variant="link"
                   className="text-orange-600 p-0 h-auto font-medium"
@@ -298,13 +350,17 @@ export default function ArtisansPage() {
       <section className="py-16 bg-orange-600 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl font-bold">
+            <Typography
+              variant="h2"
+              weight="bold"
+              className="text-3xl font-bold"
+            >
               Are You a Traditional Craft Artisan?
-            </h2>
-            <p className="text-orange-100 text-lg">
+            </Typography>
+            <Typography variant="p" className="text-orange-100 text-lg">
               Join our platform to showcase your work to a global audience and
               connect with art enthusiasts worldwide
-            </p>
+            </Typography>
             <Button className="bg-white text-orange-600 hover:bg-orange-100">
               Join as an Artisan
             </Button>

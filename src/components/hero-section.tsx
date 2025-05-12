@@ -21,6 +21,7 @@ import "./hero.css";
 import Link from "next/link";
 import TickerSlider from "./tickerslider/ticker-slider";
 import { motion } from "framer-motion";
+import { Typography } from "@/lib/ui/typography/typography";
 
 export function HeroSection() {
   return (
@@ -47,18 +48,32 @@ export function HeroSection() {
             {/* Left Side: Text Content */}
             <div className="space-y-8 animate-fadeInUp">
               <div>
-                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-orange-700">
+                <Typography
+                  variant="h1"
+                  weight="bold"
+                  color="primary"
+                  seoTitle="Bihar Bazaar"
+                  className="text-5xl md:text-7xl font-extrabold tracking-tighter"
+                >
                   Bihar Bazaar
-                </h1>
-                <p className="text-2xl md:text-3xl font-semibold text-orange-600 mt-4">
+                </Typography>
+                <Typography
+                  variant="p"
+                  color="primary"
+                  className="text-2xl md:text-3xl font-semibold mt-4"
+                >
                   Handicrafts ka Digital Marketplace
-                </p>
+                </Typography>
               </div>
-              <p className="text-gray-700 md:text-xl max-w-2xl leading-relaxed">
+              <Typography
+                variant="p"
+                color="secondary"
+                className="md:text-xl max-w-2xl leading-relaxed"
+              >
                 Bihar ki rich cultural heritage aur traditional crafts ko duniya
                 se connect karne ka platform. Madhubani, Tikuli, Glass art aur
                 bahut saare authentic handicrafts ek hi jagah par.
-              </p>
+              </Typography>
 
               <div className="flex flex-col sm:flex-row gap-6">
                 <Button size="lg" variant="default" asChild>
@@ -167,13 +182,24 @@ export function HeroSection() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-12">
-            <h2 className="text-4xl font-bold">
+            <Typography
+              variant="h2"
+              weight="bold"
+              color="primary"
+              align="center"
+              className="text-4xl font-bold"
+            >
               Explore Bihar&apos;s Rich Heritage
-            </h2>
-            <p className="text-gray-600 mt-2 max-w-2xl text-lg font-medium">
+            </Typography>
+            <Typography
+              variant="p"
+              color="secondary"
+              align="center"
+              className="mt-2 max-w-2xl text-lg font-medium"
+            >
               Discover the diverse range of traditional crafts that showcase the
               artistic excellence of Bihar&apos;s skilled artisans
-            </p>
+            </Typography>
           </div>
           <TickerSlider />
         </div>
@@ -182,11 +208,24 @@ export function HeroSection() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-12">
-            <h2 className="text-3xl font-bold">Featured Crafts</h2>
-            <p className="text-gray-600 mt-2 max-w-2xl">
+            <Typography
+              variant="h2"
+              weight="bold"
+              color="primary"
+              align="center"
+              className="text-3xl font-bold"
+            >
+              Featured Crafts
+            </Typography>
+            <Typography
+              variant="p"
+              color="secondary"
+              align="center"
+              className="mt-2 max-w-2xl"
+            >
               Handpicked selection of Bihar&apos;s finest handicrafts, each
               telling a unique story of tradition and craftsmanship
-            </p>
+            </Typography>
           </div>
           <Tabs defaultValue="popular" className="w-full">
             <div className="flex justify-center mb-8">
@@ -285,11 +324,24 @@ export function HeroSection() {
       <section className="py-16 bg-orange-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-12">
-            <h2 className="text-3xl font-bold">Meet Our Artisans</h2>
-            <p className="text-gray-600 mt-2 max-w-2xl">
+            <Typography
+              variant="h2"
+              weight="bold"
+              color="primary"
+              align="center"
+              className="text-3xl font-bold"
+            >
+              Meet Our Artisans
+            </Typography>
+            <Typography
+              variant="p"
+              color="secondary"
+              align="center"
+              className="mt-2 max-w-2xl"
+            >
               The skilled hands behind Bihar&apos;s beautiful handicrafts,
               preserving centuries-old traditions
-            </p>
+            </Typography>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <ArtisanCard
@@ -353,24 +405,31 @@ export function HeroSection() {
               </div>
             </div>
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold">Our Story</h2>
-              <p className="text-gray-600">
+              <Typography
+                variant="h2"
+                weight="bold"
+                color="primary"
+                className="text-3xl font-bold"
+              >
+                Our Story
+              </Typography>
+              <Typography variant="p" color="secondary">
                 Bihar Bazaar was born from a passion to preserve the rich
                 cultural heritage of Bihar and provide a platform for the
                 talented artisans to showcase their craftsmanship to the world.
-              </p>
-              <p className="text-gray-600">
+              </Typography>
+              <Typography variant="p" color="secondary">
                 For generations, Bihar&apos;s artisans have been creating
                 magnificent pieces of art that tell stories of our traditions,
                 beliefs, and way of life. However, many of these art forms were
                 at risk of being lost in the modern world.
-              </p>
-              <p className="text-gray-600">
+              </Typography>
+              <Typography variant="p" color="secondary">
                 We work directly with artisans from remote villages of Bihar,
                 ensuring fair compensation for their work and helping them
                 preserve their ancestral crafts while adapting to contemporary
                 tastes.
-              </p>
+              </Typography>
               <Button className="bg-orange-600 hover:bg-orange-700 cursor-pointer">
                 Read More About Us
               </Button>
@@ -382,11 +441,24 @@ export function HeroSection() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-12">
-            <h2 className="text-3xl font-bold">What Our Customers Say</h2>
-            <p className="text-gray-600 mt-2 max-w-2xl">
+            <Typography
+              variant="h2"
+              weight="bold"
+              color="primary"
+              align="center"
+              className="text-3xl font-bold"
+            >
+              What Our Customers Say
+            </Typography>
+            <Typography
+              variant="p"
+              color="secondary"
+              align="center"
+              className="mt-2 max-w-2xl"
+            >
               Hear from people who have experienced the beauty and quality of
               Bihar&apos;s traditional crafts
-            </p>
+            </Typography>
           </div>
           <TestimonialCarousel />
         </div>
