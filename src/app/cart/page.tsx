@@ -99,10 +99,16 @@ export default function CartPage() {
             variant="h2"
             weight="bold"
             className="text-2xl font-semibold mb-4 text-[#D84315]"
+            align="center"
           >
             Your cart is empty
           </Typography>
-          <Typography variant="p" className="text-muted-foreground mb-6">
+          <Typography
+            variant="p"
+            color="secondary"
+            className="text-muted-foreground mb-6"
+            align="center"
+          >
             Add some beautiful handcrafted items to your cart
           </Typography>
           <Button asChild className="bg-[#D84315] hover:bg-[#D84315]/90">
