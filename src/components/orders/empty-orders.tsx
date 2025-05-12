@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ShoppingBag, Package, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 
 interface EmptyOrdersProps {
   hasSearchQuery: boolean;

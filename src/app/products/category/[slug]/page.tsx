@@ -8,7 +8,7 @@ import { ProductFilters } from "@/components/products/product-filters";
 import { StockFilter } from "@/utils/products.utils";
 import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 import { useCategoryProducts } from "@/hooks/useProduct";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { useRouter } from "next/navigation";
 
 type ClientProductsPageProps = {

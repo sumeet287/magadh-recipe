@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/contexts/cart-context";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";

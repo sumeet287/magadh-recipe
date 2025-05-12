@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { ArrowLeft, Loader2, UserIcon } from "lucide-react";
 
 // Enhanced name validation
@@ -98,13 +98,15 @@ export function NameForm({ onSubmit, onBack }: NameFormProps) {
         <div className="flex flex-col space-y-2">
           <Button
             type="submit"
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-6"
+            variant="default"
+            fullWidth
+            className="py-6"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
+                Saving...
               </>
             ) : (
               "Continue"

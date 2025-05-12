@@ -7,7 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import SitaDevi from "@/assets/artist/Smt_Sita_Devi.png";
 import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
 import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
@@ -52,14 +52,10 @@ export function ArtisanDetailCard({
         <p className="text-gray-600 text-sm">{description}</p>
       </CardContent>
       <CardFooter className="p-5 pt-0 flex gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          className="border-orange-600 text-orange-600 hover:bg-orange-50 flex-1"
-        >
+        <Button variant="outline" size="sm" fullWidth>
           View Profile
         </Button>
-        <Button size="sm" className="bg-orange-600 hover:bg-orange-700 flex-1">
+        <Button variant="default" size="sm" fullWidth>
           See Crafts
         </Button>
       </CardFooter>

@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Heart } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { toast } from "sonner";

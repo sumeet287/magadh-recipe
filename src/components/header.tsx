@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ShoppingCart, Heart, Search, Menu } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { useAuth } from "@/contexts/auth-context";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Badge } from "@/components/ui/badge";
 import { ProfileSection } from "./auth/profile-section";
 import { useEffect, useState } from "react";
@@ -104,8 +104,8 @@ export function Header() {
                 {!isAuthenticated && (
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="mt-4 w-full text-amber-600 bg-white border-2 border-amber-600 hover:bg-amber-600 hover:text-white transition-colors">
-                        Login
+                      <Button variant="outline" fullWidth className="mt-4">
+                        Sign In
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-sm p-0 bg-transparent shadow-none">
@@ -216,7 +216,9 @@ export function Header() {
             ) : (
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline">Login</Button>
+                  <Button variant="outline" fullWidth>
+                    Sign In
+                  </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-sm p-0 bg-transparent shadow-none">
                   <DialogTitle className="sr-only">Login</DialogTitle>

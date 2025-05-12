@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 
 interface FeaturedCollectionProps {
   title: string;
@@ -28,9 +28,11 @@ export function FeaturedCollection({
               {description}
             </p>
           </div>
-          <Button className="bg-white text-orange-600 hover:bg-orange-100 font-semibold cursor-pointer">
+          <Button
+            variant="secondary"
+            postIcon={<ArrowRight className="h-4 w-4" />}
+          >
             Explore Collection
-            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>

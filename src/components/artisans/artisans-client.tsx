@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { MapPin, Search } from "lucide-react";
 import { ArtisanDetailCard } from "@/components/card/artisian-detail-card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";

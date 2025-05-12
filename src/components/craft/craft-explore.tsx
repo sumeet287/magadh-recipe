@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import CraftCard, { CraftCardProps } from "./craft-card";
 
 const allCrafts: CraftCardProps[] = [

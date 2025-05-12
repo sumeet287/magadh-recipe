@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Heart, ShoppingCart, CreditCard, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import {
   Card,
   CardContent,
@@ -194,18 +194,21 @@ export function CraftCard({
       </CardContent>
       <CardFooter className="p-4 pt-0 grid grid-cols-2 gap-2">
         <Button
-          className="w-full gap-1 bg-orange-600 hover:bg-orange-700 cursor-pointer text-xs sm:text-sm"
+          variant="default"
+          size="lg"
+          rounded="full"
+          preIcon={<ShoppingCart className="h-5 w-5" />}
           onClick={handleAddToCart}
         >
-          <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
           Add to Cart
         </Button>
         <Button
           variant="outline"
-          className="w-full gap-1 border-orange-600 text-orange-600 hover:bg-orange-50 cursor-pointer text-xs sm:text-sm"
+          size="lg"
+          rounded="full"
+          preIcon={<CreditCard className="h-5 w-5" />}
           onClick={handleBuyNow}
         >
-          <CreditCard className="h-3 w-3 sm:h-4 sm:w-4" />
           Buy Now
         </Button>
       </CardFooter>

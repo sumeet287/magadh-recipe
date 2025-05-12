@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import QRCode from "qrcode";

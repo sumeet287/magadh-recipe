@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Truck, PackageCheck, Package, ShieldCheck } from "lucide-react";
 import React from "react";
 

@@ -3,7 +3,7 @@
 import { useCart } from "@/contexts/cart-context";
 import { ProductCard } from "@/components/products/product-card";
 import { ProductCardSkeleton } from "@/components/products/product-card-skeleton";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Heart, Share2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";

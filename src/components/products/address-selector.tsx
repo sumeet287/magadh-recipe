@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Label } from "@/components/ui/label";
 import { MapPin, Plus } from "lucide-react";
 import { AddressFormData } from "./address-dialog";

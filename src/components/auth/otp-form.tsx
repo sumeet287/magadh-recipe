@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -209,7 +209,9 @@ export function OtpForm({ phoneNumber, onBack }: OtpFormProps) {
           type="button"
           onClick={() => handleVerify(otp.join(""))}
           disabled={otp.includes("") || isLoading}
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white py-6"
+          variant="default"
+          fullWidth
+          className="py-6"
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isLoading ? "Verifying..." : "Verify"}

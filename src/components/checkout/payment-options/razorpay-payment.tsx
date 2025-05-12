@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { paymentApi } from "@/lib/endpoints/payment";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -166,16 +166,9 @@ export function RazorpayPayment({
         className="w-full"
         size="sm"
         onClick={handlePayment}
-        disabled={isProcessing}
+        loading={isProcessing}
       >
-        {isProcessing ? (
-          <>
-            <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-            Processing...
-          </>
-        ) : (
-          "Pay with Razorpay"
-        )}
+        Pay with Razorpay
       </Button>
     </div>
   );

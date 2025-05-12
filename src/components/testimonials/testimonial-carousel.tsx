@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Card, CardContent } from "@/components/ui/card";
 import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
 import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";
@@ -82,7 +82,7 @@ export function TestimonialCarousel() {
         <Button
           variant="outline"
           size="icon"
-          className="rounded-full"
+          rounded="full"
           onClick={prevTestimonial}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -93,9 +93,8 @@ export function TestimonialCarousel() {
             key={index}
             variant={index === currentIndex ? "default" : "outline"}
             size="icon"
-            className={`h-3 w-3 rounded-full p-0 ${
-              index === currentIndex ? "bg-orange-600" : "border-orange-600"
-            }`}
+            rounded="full"
+            className={index === currentIndex ? "bg-orange-600" : ""}
             onClick={() => setCurrentIndex(index)}
           >
             <span className="sr-only">Go to testimonial {index + 1}</span>
@@ -104,7 +103,7 @@ export function TestimonialCarousel() {
         <Button
           variant="outline"
           size="icon"
-          className="rounded-full"
+          rounded="full"
           onClick={nextTestimonial}
         >
           <ChevronRight className="h-4 w-4" />

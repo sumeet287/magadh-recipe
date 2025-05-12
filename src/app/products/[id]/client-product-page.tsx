@@ -24,7 +24,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Image from "next/image";
@@ -334,9 +334,18 @@ export function ClientProductPage({ id }: { id: string }) {
                 </Button>
               </div>
 
+              <div className="flex flex-wrap gap-4">
+                <Button asChild size="lg" variant="default">
+                  <Link href="/crafts">Explore All Crafts</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/artisans">Meet The Artisans</Link>
+                </Button>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <Button
-                  className="bg-amber-600 hover:bg-amber-700 h-10 cursor-pointer"
+                  variant="default"
                   onClick={handleAddToCart}
                   disabled={!product.inStock || quantity > maxQuantity}
                 >
@@ -344,18 +353,19 @@ export function ClientProductPage({ id }: { id: string }) {
                   Add to Cart
                 </Button>
                 <Button
-                  className="bg-green-600 hover:bg-green-700 h-10 cursor-pointer"
+                  variant="default"
                   onClick={handleBuyNow}
                   disabled={!product.inStock}
                 >
                   Buy Now
                 </Button>
-                <div className="col-span-2 flex items-center justify-start text-sm text-muted-foreground">
-                  <span className="flex items-center">
-                    <Package className="mr-1 h-4 w-4" />
-                    In stock
-                  </span>
-                </div>
+              </div>
+
+              <div className="col-span-2 flex items-center justify-start text-sm text-muted-foreground">
+                <span className="flex items-center">
+                  <Package className="mr-1 h-4 w-4" />
+                  In stock
+                </span>
               </div>
             </div>
 

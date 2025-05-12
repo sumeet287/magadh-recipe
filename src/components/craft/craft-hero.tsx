@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import Link from "next/link";
 
 const HeroSection = () => {
@@ -20,19 +20,10 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-orange-600 hover:bg-orange-700"
-            >
+            <Button asChild size="lg" variant="default">
               <Link href="/crafts">Explore All Crafts</Link>
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-orange-600 text-orange-600 hover:bg-orange-50"
-            >
+            <Button asChild size="lg" variant="outline">
               <Link href="/artisans">Meet The Artisans</Link>
             </Button>
           </div>

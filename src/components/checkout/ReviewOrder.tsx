@@ -5,7 +5,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { ChevronLeft, ShoppingBag, Package } from "lucide-react";
 import React from "react";
 import type { Address } from "@/lib/endpoints/addresses";

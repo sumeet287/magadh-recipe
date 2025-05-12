@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -20,6 +20,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { categoryContent } from "@/config/category-content";
+import { Loader2 } from "lucide-react";
 
 interface CategoryContentProps {
   category: (typeof categoryContent)[keyof typeof categoryContent];
@@ -34,6 +35,8 @@ const CategoryContentCheck: FC<CategoryContentProps> = ({
 }) => {
   const [mounted, setMounted] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -59,6 +62,14 @@ const CategoryContentCheck: FC<CategoryContentProps> = ({
       </div>
     );
   }
+
+  const handleLoadMore = async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    // Implement the logic to load more items here
+    setIsLoading(false);
+    setHasMore(false);
+  };
 
   return (
     <main className="min-h-screen">
@@ -226,6 +237,21 @@ const CategoryContentCheck: FC<CategoryContentProps> = ({
               Shop Now
             </Button>
           </Link>
+          <Button
+            variant="default"
+            size="lg"
+            onClick={handleLoadMore}
+            disabled={isLoading || !hasMore}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Load More"
+            )}
+          </Button>
         </div>
       </section>
     </main>

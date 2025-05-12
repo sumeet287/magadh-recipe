@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { ArrowRight } from "lucide-react";
 import madhubaniArt from "@/assets/art/madhubani_art.jpg";
@@ -61,10 +61,7 @@ export function HeroSection() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6">
-                <Button
-                  size="lg"
-                  className="bg-orange-600 hover:bg-orange-500 text-white text-lg px-8 py-4 cursor-pointer"
-                >
+                <Button size="lg" variant="default" asChild>
                   <Link href="/products">Shop Now</Link>
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>

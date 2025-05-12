@@ -5,7 +5,7 @@ import type React from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import {
   IndianRupee,
   MapPin,
@@ -202,9 +202,9 @@ export function OrderCard({
                   order.paymentDetails.status !== "completed") && (
                   <Button
                     size="sm"
+                    variant="default"
                     onClick={handlePayNow}
                     disabled={isLoading || isProcessing}
-                    className="bg-amber-600 hover:bg-amber-700 text-white"
                   >
                     {isProcessing ? (
                       <>

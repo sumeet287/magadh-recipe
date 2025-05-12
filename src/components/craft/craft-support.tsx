@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/lib/ui/button/button";
 
 const CraftSupport = () => {
   return (
@@ -12,10 +12,7 @@ const CraftSupport = () => {
           Every purchase helps sustain traditional craftsmanship and supports
           the livelihood of skilled artisans.
         </p>
-        <Button
-          size="lg"
-          className="bg-white text-orange-600 hover:bg-white/90"
-        >
+        <Button size="lg" variant="secondary">
           Connect With Artisans
         </Button>
       </div>

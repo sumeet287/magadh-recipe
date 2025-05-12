@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 interface ArtisanCardProps {

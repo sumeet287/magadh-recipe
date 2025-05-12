@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Heart, Share2, Facebook, Twitter, MessageCircle } from "lucide-react";
 import {
   Sheet,

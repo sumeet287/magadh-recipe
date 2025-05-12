@@ -19,61 +19,59 @@ const config: Config = {
       },
     },
     extend: {
-      fontFamily: {
-        sans: [
-          "Inter",
-          "Poppins",
-          "Montserrat",
-          "var(--font-sans)",
-          ...defaultTheme.fontFamily.sans,
-        ],
-        mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
-      },
       colors: {
-        brand: {
-          DEFAULT: "#ff6f1f",
-          dark: "#e65100",
-          light: "#fff4e6",
-          accent: "#5c3d2e",
-          muted: "#a08d7c",
-          border: "#ffe0c2",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "#E84A1C", // Bihar Bazaar primary orange
+          foreground: "#FFFFFF",
         },
-        background: "oklch(var(--background) / <alpha-value>)",
-        foreground: "oklch(var(--foreground) / <alpha-value>)",
-        card: "oklch(var(--card) / <alpha-value>)",
-        "card-foreground": "oklch(var(--card-foreground) / <alpha-value>)",
-        popover: "oklch(var(--popover) / <alpha-value>)",
-        "popover-foreground":
-          "oklch(var(--popover-foreground) / <alpha-value>)",
-        primary: "oklch(var(--primary) / <alpha-value>)",
-        "primary-foreground":
-          "oklch(var(--primary-foreground) / <alpha-value>)",
-        secondary: "oklch(var(--secondary) / <alpha-value>)",
-        "secondary-foreground":
-          "oklch(var(--secondary-foreground) / <alpha-value>)",
-        muted: "oklch(var(--muted) / <alpha-value>)",
-        "muted-foreground": "oklch(var(--muted-foreground) / <alpha-value>)",
-        accent: "oklch(var(--accent) / <alpha-value>)",
-        "accent-foreground": "oklch(var(--accent-foreground) / <alpha-value>)",
-        destructive: "oklch(var(--destructive) / <alpha-value>)",
-        border: "oklch(var(--border) / <alpha-value>)",
-        input: "oklch(var(--input) / <alpha-value>)",
-        ring: "oklch(var(--ring) / <alpha-value>)",
+        secondary: {
+          DEFAULT: "#F5F5F5", // Light gray for secondary buttons
+          foreground: "#333333",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
       borderRadius: {
-        sm: "var(--radius-sm)",
-        md: "var(--radius-md)",
-        lg: "var(--radius-lg)",
-        xl: "var(--radius-xl)",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        shimmer: {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(100%)" },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
-        shimmer: "shimmer 2s infinite",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

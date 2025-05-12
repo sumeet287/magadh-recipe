@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/ui/button/button";
 import { Copy, QrCode } from "lucide-react";
 import Image from "next/image";
 
