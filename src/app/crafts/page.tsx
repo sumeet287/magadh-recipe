@@ -6,9 +6,9 @@ import CraftTestimonials from "@/components/craft/craft-testimonials";
 import CraftSupport from "@/components/craft/craft-support";
 import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 export const metadata: Metadata = {
-  title: "Crafts of Bihar | Bihar Bazaar",
+  title: "Pickles of Bihar | Magadh Recipe",
   description:
-    "Explore the rich handicrafts of Bihar - Madhubani, Tikuli, Wood Craft and more",
+    "Explore the finest handmade pickles from Bihar - pure, traditional, and full of authentic flavors.",
 };
 
 export default function CraftsPage() {
@@ -17,6 +17,7 @@ export default function CraftsPage() {
       <div className="container mx-auto px-4 py-4">
         <SiteBreadcrumb />
       </div>
+      {/* Hero, Crafts, Categories, Testimonials, Support - update their content to reflect pickles */}
       <CraftHero />
       <Crafts />
       <CraftCategories />

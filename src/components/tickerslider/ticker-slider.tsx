@@ -1,61 +1,61 @@
 import { useEffect, useRef, useState } from "react";
 import TickerCard from "../tickercard/ticker-card";
 
-interface Craft {
+interface Pickle {
   id: number;
   title: string;
   productCount: number;
   imageUrl: string;
 }
 
-const crafts: Craft[] = [
+const pickles: Pickle[] = [
   {
     id: 1,
-    title: "Madhubani Art",
-    productCount: 42,
+    title: "Aam ka Achar (Mango Pickle)",
+    productCount: 12,
     imageUrl: "https://picsum.photos/300?random=5&auto=format&fit=crop",
   },
   {
     id: 2,
-    title: "Tikuli Art",
-    productCount: 28,
+    title: "Nimbu ka Achar (Lemon Pickle)",
+    productCount: 8,
     imageUrl: "https://picsum.photos/300?random=8&auto=format&fit=crop",
   },
   {
     id: 3,
-    title: "Sujini Embroidery",
-    productCount: 35,
+    title: "Mirch ka Bharwa Achar (Stuffed Chilli Pickle)",
+    productCount: 10,
     imageUrl:
       "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: 4,
-    title: "Bamboo Craft",
-    productCount: 19,
+    title: "Mix Achar (Mixed Pickle)",
+    productCount: 15,
     imageUrl: "https://picsum.photos/300?random=1&auto=format&fit=crop",
   },
   {
     id: 5,
-    title: "Sikki Craft",
-    productCount: 24,
+    title: "Kathal ka Achar (Jackfruit Pickle)",
+    productCount: 7,
     imageUrl: "https://picsum.photos/300?random=2&auto=format&fit=crop",
   },
   {
     id: 6,
-    title: "Pottery",
-    productCount: 31,
+    title: "Adrak ka Achar (Ginger Pickle)",
+    productCount: 6,
     imageUrl: "https://picsum.photos/300?random=3&auto=format&fit=crop",
   },
   {
     id: 7,
-    title: "Wood Carving",
-    productCount: 17,
+    title: "Lal Mirch ka Achar (Red Chilli Pickle)",
+    productCount: 9,
     imageUrl: "https://picsum.photos/300?random=9&auto=format&fit=crop",
   },
   {
     id: 8,
-    title: "Metal Craft",
-    productCount: 22,
+    title: "Gajar ka Achar (Carrot Pickle)",
+    productCount: 5,
     imageUrl: "https://picsum.photos/300?random=10&auto=format&fit=crop",
   },
 ];
@@ -69,7 +69,7 @@ const TickerSlider = () => {
   }, []);
 
   // Duplicate items to create a seamless scroll effect
-  const duplicatedCrafts = [...crafts, ...crafts];
+  const duplicatedPickles = [...pickles, ...pickles];
 
   return (
     <div
@@ -78,14 +78,14 @@ const TickerSlider = () => {
     >
       <div
         className={`flex ${isVisible ? "animate-ticker" : ""}`}
-        style={{ width: `${crafts.length * 300}px` }}
+        style={{ width: `${pickles.length * 300}px` }}
       >
-        {duplicatedCrafts.map((craft, index) => (
+        {duplicatedPickles.map((pickle, index) => (
           <TickerCard
-            key={`${craft.id}-${index}`}
-            title={craft.title}
-            productCount={craft.productCount}
-            imageUrl={craft.imageUrl}
+            key={`${pickle.id}-${index}`}
+            title={pickle.title}
+            productCount={pickle.productCount}
+            imageUrl={pickle.imageUrl}
           />
         ))}
       </div>

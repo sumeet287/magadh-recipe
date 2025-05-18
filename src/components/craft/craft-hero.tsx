@@ -12,24 +12,20 @@ const HeroSection = () => {
             weight="bold"
             className="font-playfair text-stone-800 leading-tight"
           >
-            <span className="text-orange-600">Bihar</span> ka{" "}
-            <span className="text-teal-700">Craft</span> <br />
-            <span className="text-yellow-500">Duniya</span> ke{" "}
-            <span className="text-rose-600">Haath</span>
+            <span className="text-orange-600">Magadh Recipe</span> ke <span className="text-teal-700">Pickles</span> <br />
+            <span className="text-yellow-500">Bihar</span> ka <span className="text-rose-600">Swad</span>
           </Typography>
 
           <Typography variant="p" className="text-lg text-stone-600 max-w-lg">
-            Bihar ki samriddh virasat aur kala ko duniya tak pahunchane ka ek
-            vishwasniya platform. Madhubani, Tikuli, Glass Art aur anya haathon
-            se bane kalatmak products ek hi jagah yahin par.
+            Bihar ki pure handmade pickles ko duniya tak pahunchane ka ek vishwasniya platform. Mango, Lemon, Mixed, aur bahut saare authentic pickles ek hi jagah par.
           </Typography>
 
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" variant="default">
-              <Link href="/crafts">Explore All Crafts</Link>
+              <Link href="/crafts">Explore All Pickles</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="/artisans">Meet The Artisans</Link>
+              <Link href="/artisans">Meet The Pickle Makers</Link>
             </Button>
           </div>
         </div>
@@ -37,15 +33,15 @@ const HeroSection = () => {
         <div className="hidden sm:block md:w-1/2 relative animate-scale-in">
           <div className="rounded-lg overflow-hidden shadow-xl border-8 border-white rotate-3 transform hover:rotate-0 transition-transform duration-300">
             <img
-              src="https://images.unsplash.com/photo-1595828204607-96a8a3432d2a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-              alt="Bihar Handicrafts"
+              src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+              alt="Magadh Recipe Pickles"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="absolute -bottom-6 -left-6 rounded-lg overflow-hidden shadow-xl border-8 border-white -rotate-6 transform hover:rotate-0 transition-transform duration-300">
             <img
-              src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-              alt="Bihar Handicrafts"
+              src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80"
+              alt="Magadh Recipe Pickles"
               className="w-72 h-48 object-cover"
             />
           </div>

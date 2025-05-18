@@ -4,9 +4,9 @@ import Image from "next/image";
 import { Button } from "@/lib/ui/button/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { ArrowRight } from "lucide-react";
-import madhubaniArt from "@/assets/art/madhubani_art.jpg";
-import tikuliArt from "@/assets/art/tikuli_art.jpeg";
-import woodArt from "@/assets/art/wood_art.jpeg";
+import magadhWomen from "@/assets/art/Magadh_Women.png";
+import magadhJar from "@/assets/art/Magadh_Jar.png";
+import magadhAchar from "@/assets/art/Magadh_Achar.png";
 import SitaDevi from "@/assets/artist/Smt_Sita_Devi.png";
 import DulariDevi from "@/assets/artist/Smt_Dulari_Devi.jpg";
 import KalpanaDevi from "@/assets/artist/Smt_Kalpana_Devi.png";
@@ -32,7 +32,7 @@ export function HeroSection() {
       className="flex-1"
     >
       {/* Hero Section */}
-      <section className="relative overflow-hidden  flex items-center bg-orange-50">
+      <section className="relative overflow-hidden flex items-center bg-orange-50">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -52,17 +52,17 @@ export function HeroSection() {
                   variant="h1"
                   weight="bold"
                   color="primary"
-                  seoTitle="Bihar Bazaar"
+                  seoTitle="Magadh Recipe"
                   className="text-5xl md:text-7xl font-extrabold tracking-tighter"
                 >
-                  Bihar Bazaar
+                  Magadh Recipe
                 </Typography>
                 <Typography
                   variant="p"
                   color="primary"
                   className="text-2xl md:text-3xl font-semibold mt-4"
                 >
-                  Handicrafts ka Digital Marketplace
+                  Bihar ke Pure Handmade Pickles
                 </Typography>
               </div>
               <Typography
@@ -70,70 +70,68 @@ export function HeroSection() {
                 color="secondary"
                 className="md:text-xl max-w-2xl leading-relaxed"
               >
-                Bihar ki rich cultural heritage aur traditional crafts ko duniya
-                se connect karne ka platform. Madhubani, Tikuli, Glass art aur
-                bahut saare authentic handicrafts ek hi jagah par.
+                Bihar ki rich pickle heritage aur traditional recipes ko duniya
+                se connect karne ka platform. Mango, Lemon, Mixed aur bahut
+                saare authentic pickles ek hi jagah par.
               </Typography>
 
-              <div className="flex flex-col sm:flex-row gap-6">
-                <Button size="lg" variant="default" asChild>
-                  <Link href="/products">Shop Now</Link>
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-2 border-orange-600 text-orange-600 hover:bg-white hover:text-orange-700 text-lg px-8 py-4 cursor-pointer"
-                >
-                  <Link href="/crafts">Explore Crafts</Link>
-                </Button>
-              </div>
+              <div className="flex flex-col sm:flex-row gap-6"></div>
             </div>
 
             {/* Right Side: Floating Image Stack */}
-            <div className="relative w-[400px] h-[400px] hidden md:block group cursor-pointer">
-              <div
-                className="
-                absolute left-0 top-12 w-[400px] z-10 
-                rotate-[-10deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
-                transition-all duration-500
-                group-hover:rotate-[-18deg] group-hover:-translate-x-16 group-hover:-translate-y-8
-              "
-              >
-                <Image
-                  src={madhubaniArt}
-                  alt="Madhubani Art"
-                  width={400}
-                  height={400}
-                />
-              </div>
-              <div
-                className="
-                absolute left-28 top-0 w-[400px] z-20 
-                rotate-[8deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
-                transition-all duration-500
-                group-hover:rotate-[0deg] group-hover:translate-x-0 group-hover:-translate-y-12
-              "
-              >
-                <Image
-                  src={tikuliArt}
-                  alt="Tikuli Art"
-                  width={400}
-                  height={400}
-                />
-              </div>
+       <div className="relative w-[400px] h-[400px] hidden md:block group cursor-pointer">
+  {/* First (backmost) image */}
+  <div
+    className="
+      absolute left-16 top-40 w-[260px] h-[340px] z-0 
+      rotate-[2deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
+      transition-all duration-500
+      group-hover:rotate-[12deg] group-hover:translate-x-16 group-hover:translate-y-8
+    "
+  >
+    <Image
+      src={magadhAchar}
+      alt="Mixed Pickle"
+      fill
+      className="object-cover"
+    />
+  </div>
 
-              <div
-                className="
-                absolute left-16 top-40 w-[400px] z-0 
-                rotate-[2deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
-                transition-all duration-500
-                group-hover:rotate-[12deg] group-hover:translate-x-16 group-hover:translate-y-8
-              "
-              >
-                <Image src={woodArt} alt="Wood Art" width={400} height={400} />
-              </div>
-            </div>
+  {/* Second (middle) image */}
+  <div
+    className="
+      absolute left-0 top-12 w-[260px] h-[340px] z-10 
+      rotate-[-10deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
+      transition-all duration-500
+      group-hover:rotate-[-18deg] group-hover:-translate-x-16 group-hover:-translate-y-8
+    "
+  >
+    <Image
+      src={magadhWomen}
+      alt="Mango Pickle"
+      fill
+      className="object-cover"
+    />
+  </div>
+
+  {/* Third (topmost) image */}
+  <div
+    className="
+      absolute left-28 top-0 w-[260px] h-[340px] z-20 
+      rotate-[8deg] shadow-2xl border-4 border-white rounded-xl overflow-hidden 
+      transition-all duration-500
+      group-hover:rotate-[0deg] group-hover:translate-x-0 group-hover:-translate-y-12
+    "
+  >
+    <Image
+      src={magadhJar}
+      alt="Lemon Pickle"
+      fill
+      className="object-cover"
+    />
+  </div>
+</div>
+
           </div>
         </div>
       </section>
@@ -144,10 +142,10 @@ export function HeroSection() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="space-y-2">
               <p className="text-3xl md:text-4xl font-bold text-orange-600">
-                1000+
+                5000+
               </p>
               <p className="text-sm md:text-base text-gray-600">
-                Artisans Supported
+                Jars Delivered
               </p>
             </div>
             <div className="space-y-2">
@@ -155,23 +153,23 @@ export function HeroSection() {
                 50+
               </p>
               <p className="text-sm md:text-base text-gray-600">
-                Years of Heritage
+                Years of Recipe Heritage
               </p>
             </div>
             <div className="space-y-2">
               <p className="text-3xl md:text-4xl font-bold text-orange-600">
-                100+
+                20+
               </p>
               <p className="text-sm md:text-base text-gray-600">
-                Craft Varieties
+                Pickle Varieties
               </p>
             </div>
             <div className="space-y-2">
               <p className="text-3xl md:text-4xl font-bold text-orange-600">
-                5000+
+                1000+
               </p>
               <p className="text-sm md:text-base text-gray-600">
-                Products Delivered
+                Happy Customers
               </p>
             </div>
           </div>
@@ -189,7 +187,7 @@ export function HeroSection() {
               align="center"
               className="text-4xl font-bold"
             >
-              Explore Bihar&apos;s Rich Heritage
+              Explore Bihar's Pickle Heritage
             </Typography>
             <Typography
               variant="p"
@@ -197,8 +195,8 @@ export function HeroSection() {
               align="center"
               className="mt-2 max-w-2xl text-lg font-medium"
             >
-              Discover the diverse range of traditional crafts that showcase the
-              artistic excellence of Bihar&apos;s skilled artisans
+              Discover the diverse range of traditional pickles that showcase the
+              authentic taste of Bihar's kitchens.
             </Typography>
           </div>
           <TickerSlider />
@@ -215,7 +213,7 @@ export function HeroSection() {
               align="center"
               className="text-3xl font-bold"
             >
-              Featured Crafts
+              Featured Pickles
             </Typography>
             <Typography
               variant="p"
@@ -223,8 +221,7 @@ export function HeroSection() {
               align="center"
               className="mt-2 max-w-2xl"
             >
-              Handpicked selection of Bihar&apos;s finest handicrafts, each
-              telling a unique story of tradition and craftsmanship
+              Handpicked selection of Bihar's finest pickles, each jar telling a unique story of tradition and taste.
             </Typography>
           </div>
           <Tabs defaultValue="popular" className="w-full">
@@ -254,35 +251,35 @@ export function HeroSection() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <CraftCard
                   id="1"
-                  title="Madhubani Painting - Krishna Leela"
-                  originalPrice={2500}
+                  title="Aam ka Achar (Mango Pickle)"
+                  originalPrice={350}
                   image={SitaDevi.src}
-                  artist="Rekha Devi"
-                  category="Madhubani Art"
+                  artist="Savitri Devi"
+                  category="Mango Pickle"
                 />
                 <CraftCard
                   id="2"
-                  title="Handcrafted Bamboo Basket"
-                  originalPrice={850}
+                  title="Nimbu ka Achar (Lemon Pickle)"
+                  originalPrice={300}
                   image={DulariDevi.src}
-                  artist="Mohan Kumar"
-                  category="Bamboo Craft"
+                  artist="Meena Kumari"
+                  category="Lemon Pickle"
                 />
                 <CraftCard
                   id="3"
-                  title="Tikuli Art Wall Hanging"
-                  originalPrice={1800}
+                  title="Mix Achar (Mixed Pickle)"
+                  originalPrice={400}
                   image={KalpanaDevi.src}
-                  artist="Sunita Kumari"
-                  category="Tikuli Art"
+                  artist="Sunita Devi"
+                  category="Mixed Pickle"
                 />
                 <CraftCard
                   id="4"
-                  title="Sujini Embroidered Cushion Cover"
-                  originalPrice={950}
+                  title="Mirch ka Bharwa Achar (Stuffed Chilli Pickle)"
+                  originalPrice={450}
                   image={ManishaJha.src}
                   artist="Geeta Devi"
-                  category="Sujini Embroidery"
+                  category="Chilli Pickle"
                 />
               </div>
               <div className="flex justify-center">
@@ -290,21 +287,21 @@ export function HeroSection() {
                   variant="outline"
                   className="border-2 border-orange-600 text-amber-600 hover:bg-white  hover:text-orange-700 px-8 py-4 cursor-pointer"
                 >
-                  View All Products
+                  View All Pickles
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </TabsContent>
             <TabsContent value="new" className="space-y-8 animate-fade-in">
-              {/* Similar grid of products for new arrivals */}
+              {/* New arrival pickles would go here */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {/* New arrival products would go here */}
+                {/* New arrival pickles would go here */}
               </div>
             </TabsContent>
             <TabsContent value="trending" className="space-y-8 animate-fade-in">
-              {/* Similar grid of products for trending items */}
+              {/* Trending pickles would go here */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {/* Trending products would go here */}
+                {/* Trending pickles would go here */}
               </div>
             </TabsContent>
           </Tabs>
@@ -314,9 +311,9 @@ export function HeroSection() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <FeaturedCollection
-            title="Festival Collection"
-            description="Celebrate the vibrant festivals of Bihar with our specially curated collection of traditional crafts"
-            image={madhubaniArt.src}
+            title="Seasonal Pickle Collection"
+            description="Celebrate the flavors of Bihar with our specially curated collection of traditional seasonal pickles."
+            image={magadhWomen.src}
           />
         </div>
       </section>
@@ -331,7 +328,7 @@ export function HeroSection() {
               align="center"
               className="text-3xl font-bold"
             >
-              Meet Our Artisans
+              Meet Our Pickle Makers
             </Typography>
             <Typography
               variant="p"
@@ -339,35 +336,34 @@ export function HeroSection() {
               align="center"
               className="mt-2 max-w-2xl"
             >
-              The skilled hands behind Bihar&apos;s beautiful handicrafts,
-              preserving centuries-old traditions
+              The skilled hands behind Bihar's delicious pickles, preserving generations-old recipes.
             </Typography>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <ArtisanCard
-              name="Rekha Devi"
-              craft="Madhubani Artist"
+              name="Savitri Devi"
+              craft="Mango Pickle Specialist"
               image={SitaDevi.src}
-              location="Madhubani, Bihar"
+              location="Gaya, Bihar"
               experience={25}
             />
             <ArtisanCard
-              name="Ramesh Kumar"
-              craft="Wood Carving Expert"
+              name="Meena Kumari"
+              craft="Lemon Pickle Expert"
               image={DulariDevi.src}
               location="Patna, Bihar"
               experience={30}
             />
             <ArtisanCard
-              name="Sunita Kumari"
-              craft="Tikuli Artist"
+              name="Sunita Devi"
+              craft="Mixed Pickle Maker"
               image={KalpanaDevi.src}
-              location="Patna, Bihar"
+              location="Nalanda, Bihar"
               experience={15}
             />
             <ArtisanCard
-              name="Mohan Singh"
-              craft="Bamboo Craftsman"
+              name="Geeta Devi"
+              craft="Chilli Pickle Artisan"
               image={ManishaJha.src}
               location="Bhagalpur, Bihar"
               experience={20}
@@ -378,7 +374,7 @@ export function HeroSection() {
               variant="outline"
               className="border-orange-600 text-orange-600 hover:bg-orange-50 cursor-pointer"
             >
-              Meet All Artisans
+              Meet All Pickle Makers
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -390,17 +386,15 @@ export function HeroSection() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <Image
-                src={madhubaniArt.src}
-                alt="Bihar's Craft Heritage"
+                src={magadhWomen.src}
+                alt="Bihar's Pickle Heritage"
                 width={600}
                 height={400}
                 className="rounded-lg shadow-lg"
               />
               <div className="absolute -bottom-6 -right-6 bg-orange-600 text-white p-6 rounded-lg shadow-lg max-w-xs hidden md:block">
                 <p className="text-lg font-medium">
-                  Our mission is to preserve and promote Bihar&apos;s rich
-                  cultural heritage while providing sustainable livelihoods to
-                  our artisans.
+                  Our mission is to preserve and promote Bihar's rich pickle heritage while providing sustainable livelihoods to our pickle makers.
                 </p>
               </div>
             </div>
@@ -414,20 +408,20 @@ export function HeroSection() {
                 Our Story
               </Typography>
               <Typography variant="p" color="secondary">
-                Bihar Bazaar was born from a passion to preserve the rich
-                cultural heritage of Bihar and provide a platform for the
-                talented artisans to showcase their craftsmanship to the world.
+                Magadh Recipe was born from a passion to preserve the rich
+                pickle heritage of Bihar and provide a platform for the
+                talented pickle makers to showcase their recipes to the world.
               </Typography>
               <Typography variant="p" color="secondary">
-                For generations, Bihar&apos;s artisans have been creating
-                magnificent pieces of art that tell stories of our traditions,
-                beliefs, and way of life. However, many of these art forms were
+                For generations, Bihar's families have been creating
+                mouthwatering pickles that tell stories of our traditions,
+                flavors, and way of life. However, many of these recipes were
                 at risk of being lost in the modern world.
               </Typography>
               <Typography variant="p" color="secondary">
-                We work directly with artisans from remote villages of Bihar,
+                We work directly with pickle makers from remote villages of Bihar,
                 ensuring fair compensation for their work and helping them
-                preserve their ancestral crafts while adapting to contemporary
+                preserve their ancestral recipes while adapting to contemporary
                 tastes.
               </Typography>
               <Button className="bg-orange-600 hover:bg-orange-700 cursor-pointer">
@@ -456,8 +450,7 @@ export function HeroSection() {
               align="center"
               className="mt-2 max-w-2xl"
             >
-              Hear from people who have experienced the beauty and quality of
-              Bihar&apos;s traditional crafts
+              Hear from people who have experienced the authentic taste and quality of Bihar's traditional pickles.
             </Typography>
           </div>
           <TestimonialCarousel />

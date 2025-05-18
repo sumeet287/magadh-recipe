@@ -9,7 +9,11 @@ export type CraftType =
   | "bamboo"
   | "sujani"
   | "sikki"
-  | "lac";
+  | "lac"
+  | "mango"
+  | "lemon"
+  | "mixed"
+  | "chili";
 
 export interface Artisan {
   id: string;

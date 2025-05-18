@@ -25,6 +25,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import MagadhLogo from "@/assets/art/Magadh_Logo.png";
 
 export function Header() {
   const { cart, wishlist } = useCart();
@@ -57,16 +58,16 @@ export function Header() {
                   <Search className="absolute left-2.5 h-4 w-4 text-gray-500" />
                   <Input
                     type="search"
-                    placeholder="Search crafts..."
+                    placeholder="Search pickles..."
                     className="w-full pl-8 rounded-full bg-gray-100 focus-visible:ring-orange-600"
                   />
                 </div> */}
                 <SheetClose asChild>
                   <Link
-                    href="/crafts"
+                    href="/products"
                     className="py-2 text-base font-medium hover:text-orange-600 transition-colors"
                   >
-                    Categories
+                    Pickle Varieties
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -74,7 +75,7 @@ export function Header() {
                     href="/artisans"
                     className="py-2 text-base font-medium hover:text-orange-600 transition-colors"
                   >
-                    Artisans
+                    Pickle Makers
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -82,7 +83,7 @@ export function Header() {
                     href="/products"
                     className="py-2 text-base font-medium hover:text-orange-600 transition-colors"
                   >
-                    All Products
+                    All Pickles
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -120,35 +121,35 @@ export function Header() {
 
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/Bihar_Bazaar.png"
-              alt="Bihar Bazaar Logo"
+              src={MagadhLogo}
+              alt="Magadh Recipe Logo"
               width={40}
               height={40}
-              className="h-8 w-8 md:h-10 md:w-10"
+              className="h-8 w-8 md:h-10 md:w-10 rounded-lg"
             />
             <span className="text-lg md:text-xl font-bold text-orange-600">
-              Bihar Bazaar
+              Magadh Recipe
             </span>
           </Link>
         </div>
         <nav className="hidden md:flex items-center gap-6">
           <Link
-            href="/crafts"
+            href="/products"
             className="text-sm font-medium hover:text-orange-600 transition-colors"
           >
-            Categories
+            Pickle Varieties
           </Link>
           <Link
             href="/artisans"
             className="text-sm font-medium hover:text-orange-600 transition-colors"
           >
-            Artisans
+            Pickle Makers
           </Link>
           <Link
             href="/products"
             className="text-sm font-medium hover:text-orange-600 transition-colors"
           >
-            All Products
+            All Pickles
           </Link>
           <Link
             href="/about"
@@ -179,7 +180,7 @@ export function Header() {
             <Search className="absolute left-2.5 h-4 w-4 text-gray-500" />
             <Input
               type="search"
-              placeholder="Search crafts..."
+              placeholder="Search pickles..."
               className="w-[200px] pl-8 rounded-full bg-gray-100 focus-visible:ring-orange-600"
             />
           </div>
@@ -237,7 +238,7 @@ export function Header() {
             <Search className="absolute left-2.5 h-4 w-4 text-gray-500" />
             <Input
               type="search"
-              placeholder="Search crafts..."
+              placeholder="Search pickles..."
               className="w-full pl-8 rounded-full bg-gray-100 focus-visible:ring-orange-600"
               autoFocus
             />

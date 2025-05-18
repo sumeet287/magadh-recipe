@@ -7,88 +7,48 @@ import { Typography } from "@/lib/ui/typography/typography";
 
 const allCrafts: CraftCardProps[] = [
   {
-    id: "madhubani-1",
-    title: "Traditional Madhubani Painting - Krishna & Radha",
+    id: "mango-pickle-1",
+    title: "Traditional Mango Pickle - Aam ka Achar",
     image:
-      "https://images.unsplash.com/photo-1582562124811-c09040d0a901?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
     description:
-      "Hand-painted authentic Madhubani painting depicting Krishna and Radha, made by master artisans of Bihar.",
-    price: "₹3,500",
-    category: "Madhubani",
+      "Handmade mango pickle using age-old Magadh Recipe, bursting with authentic Bihari flavors.",
+    price: "₹350",
+    category: "Mango",
   },
   {
-    id: "madhubani-2",
-    title: "Madhubani Wall Art - Tree of Life",
+    id: "lemon-pickle-1",
+    title: "Lemon Pickle - Nimbu ka Achar",
     image:
-      "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
     description:
-      "Beautiful Tree of Life Madhubani painting on handmade paper, showcasing the rich cultural heritage of Bihar.",
-    price: "₹2,800",
-    category: "Madhubani",
+      "Tangy and spicy lemon pickle, sun-cured and handmade in Bihar.",
+    price: "₹250",
+    category: "Lemon",
   },
   {
-    id: "tikuli-1",
-    title: "Handcrafted Tikuli Art Wall Piece",
+    id: "mixed-pickle-1",
+    title: "Mixed Vegetable Pickle",
     image:
-      "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80",
     description:
-      "Beautifully detailed Tikuli art piece that showcases the intricate craftsmanship of Bihar's artisans.",
-    price: "₹2,200",
-    category: "Tikuli",
+      "A medley of seasonal vegetables pickled with traditional Bihari spices.",
+    price: "₹300",
+    category: "Mixed",
   },
   {
-    id: "tikuli-2",
-    title: "Tikuli Art Jewelry Box",
+    id: "chili-pickle-1",
+    title: "Green Chili Pickle - Hari Mirch ka Achar",
     image:
-      "https://images.unsplash.com/photo-1582562124811-c09040d0a901?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
     description:
-      "Handcrafted wooden jewelry box adorned with traditional Tikuli art, perfect for storing precious items.",
-    price: "₹1,950",
-    category: "Tikuli",
-  },
-  {
-    id: "glass-1",
-    title: "Bihar Glass Art Decorative Bowl",
-    image:
-      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    description:
-      "Glass art bowl with traditional Bihari motifs, perfect for home decor or as a special gift.",
-    price: "₹1,800",
-    category: "Glass Art",
-  },
-  {
-    id: "glass-2",
-    title: "Colorful Glass Wind Chimes",
-    image:
-      "https://images.unsplash.com/photo-1596395463910-4a5372e61f2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    description:
-      "Handmade colorful glass wind chimes that create melodious sounds and add a touch of Bihar to your home.",
-    price: "₹1,200",
-    category: "Glass Art",
-  },
-  {
-    id: "bamboo-1",
-    title: "Eco-friendly Bamboo Home Decor Set",
-    image:
-      "https://images.unsplash.com/photo-1596395463910-4a5372e61f2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    description:
-      "Sustainable bamboo craft set including basket, table mats, and decorative items, handmade in Bihar.",
-    price: "₹1,200",
-    category: "Bamboo",
-  },
-  {
-    id: "bamboo-2",
-    title: "Bamboo Kitchen Utilities",
-    image:
-      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    description:
-      "Set of bamboo kitchen utilities including spatulas, serving spoons, and cutting boards from rural Bihar.",
-    price: "₹950",
-    category: "Bamboo",
+      "Spicy green chili pickle, a Magadh Recipe specialty.",
+    price: "₹200",
+    category: "Chili",
   },
 ];
 
-const categories = ["All", "Madhubani", "Tikuli", "Glass Art", "Bamboo"];
+const categories = ["All", "Mango", "Lemon", "Mixed", "Chili"];
 
 const Crafts = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -117,7 +77,7 @@ const Crafts = () => {
               className="text-bihar-red mb-4"
             >
               Explore <span className="text-bihar-red">Bihar&apos;s</span>{" "}
-              Handicrafts
+              Handmade Pickles
             </Typography>
             <Typography
               variant="p"
@@ -125,7 +85,7 @@ const Crafts = () => {
               align="center"
               className="max-w-2xl mx-auto"
             >
-              Discover the finest collection of traditional crafts, each piece
+              Discover the finest collection of traditional pickles, each jar
               telling a story of cultural heritage and artisanal excellence.
             </Typography>
           </div>
@@ -134,7 +94,7 @@ const Crafts = () => {
             <div className="relative w-full md:w-1/3 mb-4 md:mb-0">
               <input
                 type="text"
-                placeholder="Search crafts..."
+                placeholder="Search pickles..."
                 className="w-full py-2 pl-10 pr-4 border border-stone-300 rounded-md focus:outline-none focus:ring-2 focus:ring-bihar-red focus:border-transparent"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -172,7 +132,7 @@ const Crafts = () => {
           ) : (
             <div className="text-center py-16">
               <Typography variant="p" className="text-xl text-stone-600">
-                No crafts found matching your search.
+                No pickles found matching your search.
               </Typography>
               <Button
                 variant="outline"

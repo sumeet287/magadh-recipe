@@ -3,24 +3,24 @@ import { Typography } from "@/lib/ui/typography/typography";
 const testimonials = [
   {
     name: "Ramesh Kumar",
-    role: "Master Madhubani Artist",
+    role: "Pickle Enthusiast",
     image: "https://i.pravatar.cc/150?img=11",
     quote:
-      "Bihar Bazaar ne humari kala ko duniya ke saamne laane mein madad ki hai. Ab hum directly customers se connect kar paate hain.",
+      "Magadh Recipe ke pickles ne ghar ki yaad dila di! Bilkul waise hi swad, jaise maa banati thi.",
   },
   {
     name: "Sunita Devi",
-    role: "Tikuli Art Expert",
+    role: "Homemade Pickle Maker",
     image: "https://i.pravatar.cc/150?img=5",
     quote:
-      "Digital platform par hamari puraani kala ko naya jeevan mila hai. Bahut se logon tak humari kahani pahunch rahi hai.",
+      "Apne pickles ko Magadh Recipe par bech kar mujhe naye customers mile. Pure aur handmade pickles ki demand badh gayi hai!",
   },
   {
     name: "Amit Singh",
-    role: "Art Collector",
+    role: "Food Blogger",
     image: "https://i.pravatar.cc/150?img=12",
     quote:
-      "Bihar Bazaar ne authentic crafts ko affordable prices par accessible banaya hai. Quality and authenticity dono hi excellent hai.",
+      "Yahan ke pickles mein asli Bihar ka swad hai. Quality aur authenticity dono hi lajawab hai!",
   },
 ];
 
@@ -33,11 +33,10 @@ const CraftTestimonials = () => {
             variant="h2"
             weight="bold"
             className="font-playfair text-white mb-4"
-            seoTitle="Voices from Bihar's Craft Community"
+            seoTitle="Voices from Magadh Recipe Community"
             align="center"
           >
-            Voices from <span className="text-bihar-mustard">Bihar&apos;s</span>{" "}
-            Craft Community
+            Voices from <span className="text-bihar-mustard">Magadh Recipe</span> Community
           </Typography>
           <Typography
             variant="p"
@@ -45,8 +44,7 @@ const CraftTestimonials = () => {
             className="text-stone-400 max-w-2xl mx-auto"
             align="center"
           >
-            Hear from the artisans and customers who form our growing community
-            of craft enthusiasts.
+            Hear from the pickle makers and customers who form our growing community of Magadh Recipe lovers.
           </Typography>
         </div>
 

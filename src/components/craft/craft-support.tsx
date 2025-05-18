@@ -12,7 +12,7 @@ const CraftSupport = () => {
           align="center"
           className="text-white drop-shadow mb-4"
         >
-          Support Local Artisans, Preserve Bihar&apos;s Heritage
+          Support Local Pickle Makers, Preserve Bihar&apos;s Taste
         </Typography>
         <Typography
           variant="p"
@@ -20,15 +20,14 @@ const CraftSupport = () => {
           align="center"
           className="text-white/80 font-medium max-w-2xl mx-auto mb-6"
         >
-          Every purchase helps sustain traditional craftsmanship and supports
-          the livelihood of skilled artisans.
+          Every purchase helps sustain traditional pickle making and supports the livelihood of skilled pickle makers from Bihar.
         </Typography>
         <Button
           size="lg"
           variant="outline"
           className="border-white text-white hover:bg-white hover:text-orange-600 transition"
         >
-          Connect With Artisans
+          Connect With Pickle Makers
         </Button>
       </div>
     </section>

@@ -10,36 +10,36 @@ interface CraftCategoryProps {
 
 const categories: CraftCategoryProps[] = [
   {
-    title: "Madhubani Art",
+    title: "Mango Pickle",
     image:
-      "https://images.unsplash.com/photo-1582562124811-c09040d0a901?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
     description:
-      "Vibrant traditional paintings depicting daily life, mythology and nature with intricate patterns.",
-    link: "/crafts/madhubani",
+      "Handmade mango pickle using age-old Magadh Recipe, bursting with authentic Bihari flavors.",
+    link: "/crafts/mango",
   },
   {
-    title: "Tikuli Art",
+    title: "Lemon Pickle",
     image:
-      "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
     description:
-      "Ancient ornament-making craftsmanship transformed into beautiful paintings and decorative items.",
-    link: "/crafts/tikuli",
+      "Tangy and spicy lemon pickle, sun-cured and handmade in Bihar.",
+    link: "/crafts/lemon",
   },
   {
-    title: "Glass Art",
+    title: "Mixed Vegetable Pickle",
     image:
-      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80",
     description:
-      "Delicate and colorful glasswork reflecting Bihar's rich artistic tradition and innovation.",
-    link: "/crafts/glass",
+      "A medley of seasonal vegetables pickled with traditional Bihari spices.",
+    link: "/crafts/mixed",
   },
   {
-    title: "Bamboo Craft",
+    title: "Green Chili Pickle",
     image:
-      "https://images.unsplash.com/photo-1596395463910-4a5372e61f2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80",
     description:
-      "Sustainable and eco-friendly products showcasing the versatility of bamboo and skilled craftsmanship.",
-    link: "/crafts/bamboo",
+      "Spicy green chili pickle, a Magadh Recipe specialty.",
+    link: "/crafts/chili",
   },
 ];
 
@@ -54,7 +54,7 @@ const CraftCategories = () => {
             align="center"
             className="text-bihar-red mb-4"
           >
-            Explore <span className="text-bihar-turquoise">Craft</span>{" "}
+            Explore <span className="text-bihar-turquoise">Pickle</span>{" "}
             Categories
           </Typography>
           <Typography
@@ -63,7 +63,7 @@ const CraftCategories = () => {
             align="center"
             className="max-w-2xl mx-auto"
           >
-            Dive into Bihar&apos;s diverse craft traditions, each with its
+            Dive into Bihar&apos;s diverse pickle traditions, each with its
             unique history, techniques, and cultural significance.
           </Typography>
         </div>

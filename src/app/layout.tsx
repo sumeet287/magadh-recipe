@@ -6,22 +6,22 @@ import ClientRoot from "@/components/ClientRoot";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Bihar Bazaar - Handcrafted Treasures from Bihar",
+  title: "Magadh Recipe - Pure Handmade Pickles from Bihar",
   description:
-    "Discover authentic handcrafted products from Bihar's skilled artisans",
+    "Discover authentic handmade pickles from Bihar's traditional kitchens. Taste the heritage with Magadh Recipe!",
   keywords:
-    "Bihar handicrafts, Madhubani art, Tikuli art, Wood craft, Bihar artisans, Indian handicrafts, traditional art",
-  authors: [{ name: "Bihar Bazaar" }],
+    "Bihar pickles, Magadh Recipe, handmade pickles, traditional achar, Indian pickles, authentic taste, homemade achar, Bihari pickles, mango pickle, lemon pickle, chilli pickle, mixed pickle",
+  authors: [{ name: "Magadh Recipe" }],
   openGraph: {
-    title: "Bihar Bazaar | Authentic Bihari Handicrafts Marketplace",
+    title: "Magadh Recipe | Authentic Bihari Pickles Marketplace",
     description:
-      "Discover authentic Bihari handicrafts - Madhubani, Tikuli, Wood Craft, and more.",
+      "Discover authentic Bihari pickles - Mango, Lemon, Mixed, Chilli, and more. Pure handmade taste from Bihar.",
     images: [
       {
         url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "Bihar Bazaar - Handicrafts Marketplace",
+        alt: "Magadh Recipe - Pickles Marketplace",
       },
     ],
     locale: "en_US",

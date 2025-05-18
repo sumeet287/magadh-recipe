@@ -15,21 +15,21 @@ const testimonials = [
     name: "Priya Sharma",
     location: "Delhi",
     image: DulariDevi.src,
-    text: "The Madhubani painting I purchased is absolutely stunning. The attention to detail and vibrant colors bring so much life to my living room. I'm proud to display such authentic Bihar art in my home.",
+    text: "The Mango Pickle from Magadh Recipe reminded me of my childhood in Bihar. The taste is so authentic and fresh! My family finished the jar in no time. Highly recommended for anyone missing homemade pickles.",
   },
   {
     id: 2,
     name: "Rahul Verma",
     location: "Mumbai",
     image: KalpanaDevi.src,
-    text: "I bought several pieces of Tikuli art as gifts for my family, and they were all amazed by the craftsmanship. The packaging was excellent, and the items arrived in perfect condition. Will definitely shop again!",
+    text: "I ordered the Lemon and Mixed Pickle varieties. Both were packed with flavors and arrived in perfect condition. It's great to see Bihar's traditional recipes being delivered across India!",
   },
   {
     id: 3,
     name: "Anita Patel",
     location: "Bangalore",
     image: ManishaJha.src,
-    text: "The Sujini embroidered bedcover I purchased is not just beautiful but also tells a story. I appreciate how Bihar Bazaar connects us directly with the artisans and helps preserve these traditional art forms.",
+    text: "The stuffed chilli pickle is a must-try! I love how Magadh Recipe supports local women pickle makers and brings the real taste of Bihar to our homes.",
   },
 ];
 

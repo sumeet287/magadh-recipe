@@ -8,61 +8,51 @@ import { Typography } from "@/lib/ui/typography/typography";
 
 const blogPosts = [
   {
-    slug: "ancient-art-of-madhubani-painting",
-    title: "The Ancient Art of Madhubani Painting",
+    slug: "mango-pickle-tradition-bihar",
+    title: "The Tradition of Mango Pickle in Bihar",
     excerpt:
-      "Discover the rich history and cultural significance of Madhubani painting, a traditional art form that has been passed down through generations in Bihar.",
+      "Discover the rich history and cultural significance of mango pickle, a staple in every Bihari household.",
     content: `
-      Madhubani painting, also known as Mithila painting, is a style of Indian painting that originated in the Mithila region of Bihar. This ancient art form has been practiced for centuries, passed down through generations of skilled artisans.
+      Mango pickle, or aam ka achar, is an integral part of Bihar's culinary heritage. Handmade using traditional Magadh Recipe methods, it is cherished for its tangy, spicy flavors and long shelf life.
 
-      The paintings are characterized by their distinctive geometric patterns, nature-inspired motifs, and the use of natural dyes and pigments. Traditional Madhubani paintings often depict scenes from Hindu epics, mythological stories, and important life events like weddings.
+      The process involves sun-curing raw mangoes and mixing them with a blend of spices unique to the region. Each family has its own secret recipe, passed down through generations.
 
-      What makes Madhubani painting truly special is its deep connection to the cultural identity of Bihar. Each painting tells a story, not just through its subject matter, but through the techniques and traditions that have been preserved over time.
-
-      Today, Madhubani artists are innovating while staying true to their roots. They're exploring new themes and materials while maintaining the distinctive style that makes this art form unique. Through their work, they're ensuring that this beautiful tradition continues to thrive in the modern world.
+      Today, Bihari mango pickle is enjoyed across India and abroad, symbolizing the taste of home for many.
     `,
-    image: madhubaniArt,
-    author: "Priya Kumar",
+    image: madhubaniArt, // Replace with pickle image if available
+    author: "Sunita Devi",
     date: "April 15, 2025",
     readTime: "5 min read",
-    category: "Art & Culture",
+    category: "Pickle Heritage",
   },
   {
-    slug: "tikuli-art-bihars-hidden-gem",
-    title: "Tikuli Art: Bihar's Hidden Gem",
+    slug: "lemon-pickle-bihar-flavors",
+    title: "Lemon Pickle: Bihar's Tangy Treasure",
     excerpt:
-      "Learn about the intricate craft of Tikuli art, once worn by Bihari women as a symbol of marriage, now transformed into beautiful decorative pieces.",
+      "Learn about the art of making lemon pickle in Bihar, a tangy delight that brightens every meal.",
     content: `
-      Tikuli art, a lesser-known but equally fascinating craft from Bihar, has a rich history dating back several centuries. Originally, Tikuli was a small dot worn by married women on their foreheads, but it has evolved into a sophisticated art form.
+      Lemon pickle, or nimbu ka achar, is a favorite in Bihar for its zesty flavor and digestive benefits. The pickles are sun-cured and spiced with a blend of mustard, fenugreek, and chili.
 
-      The craft involves creating intricate paintings on small, circular metal plates. Artists use fine brushes to paint detailed designs, often incorporating traditional motifs, religious symbols, and nature-inspired patterns.
-
-      What's remarkable about Tikuli art is its journey from a simple marriage symbol to a celebrated craft form. Today, artists create everything from wall decorations to jewelry using these techniques, helping preserve this unique aspect of Bihar's cultural heritage.
-
-      The revival of Tikuli art has provided economic opportunities for many artisans, particularly women, who are at the forefront of keeping this tradition alive. Their work showcases the potential for traditional crafts to adapt and thrive in contemporary markets.
+      The tradition of making lemon pickle is a family affair, with recipes and techniques handed down through generations. Magadh Recipe brings this authentic taste to your table.
     `,
-    image: tikuliArt,
-    author: "Rajesh Singh",
+    image: tikuliArt, // Replace with pickle image if available
+    author: "Rekha Kumari",
     date: "April 12, 2025",
     readTime: "4 min read",
-    category: "Traditional Crafts",
+    category: "Traditional Pickles",
   },
   {
-    slug: "master-woodcarvers-of-bihar",
-    title: "The Master Woodcarvers of Bihar",
+    slug: "mixed-pickle-bihar-story",
+    title: "Mixed Pickle: A Medley of Bihar's Flavors",
     excerpt:
-      "Meet the skilled artisans keeping the ancient tradition of wood carving alive in Bihar, creating masterpieces that tell stories of our heritage.",
+      "Meet the artisans who create Bihar's famous mixed pickles, blending seasonal vegetables with traditional spices.",
     content: `
-      Wood carving in Bihar is more than just a craft - it's a legacy that has been shaped by generations of skilled artisans. These master craftsmen transform simple blocks of wood into intricate works of art that tell stories of our cultural heritage.
+      Mixed vegetable pickle is a celebration of Bihar's agricultural bounty. Artisans select the freshest produce and pickle them using the Magadh Recipe, ensuring a burst of flavors in every bite.
 
-      The tradition of wood carving in Bihar dates back centuries, with artisans creating everything from elaborate temple doors to delicate decorative pieces. Each piece showcases the remarkable skill and patience required to bring these designs to life.
-
-      What sets Bihar's wood carving apart is the unique blend of influences from various historical periods. You can see elements of Buddhist, Islamic, and Hindu art seamlessly integrated into the designs, reflecting Bihar's rich multicultural heritage.
-
-      Today's woodcarvers are facing new challenges and opportunities. While traditional markets may be changing, there's growing appreciation for handcrafted wooden items among urban consumers. These artisans are adapting their skills to create pieces that appeal to contemporary tastes while maintaining their traditional techniques.
+      The result is a tangy, spicy, and crunchy delight that pairs perfectly with any meal.
     `,
-    image: woodArt,
-    author: "Amit Verma",
+    image: woodArt, // Replace with pickle image if available
+    author: "Asha Singh",
     date: "April 10, 2025",
     readTime: "6 min read",
     category: "Artisan Stories",
