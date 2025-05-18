@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import MagadhLogo from "@/assets/art/Magadh_Logo.png";
 
 export function Footer() {
   return (
@@ -10,19 +11,18 @@ export function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Image
-                src="/Bihar_Bazaar.png"
-                alt="Bihar Bazaar Logo"
+                src={MagadhLogo}
+                alt="Magadh Recipe Logo"
                 width={40}
                 height={40}
                 className="h-10 w-10"
               />
               <span className="text-xl font-bold text-orange-600">
-                Bihar Bazaar
+                Magadh Recipe
               </span>
             </Link>
             <p className="mb-4">
-              Bihar&apos;s premier marketplace for authentic handicrafts,
-              connecting artisans with art lovers worldwide.
+              Bihar's premier destination for authentic handmade pickles. Bringing the taste of tradition from local women pickle makers to your table.
             </p>
             <div className="flex gap-4">
               <Link
@@ -71,15 +71,15 @@ export function Footer() {
                   href="/products"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Shop All
+                  Shop All Pickles
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Categories
+                  Pickle Varieties
                 </Link>
               </li>
               <li>
@@ -87,7 +87,7 @@ export function Footer() {
                   href="/artisans"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Artisans
+                  Pickle Makers
                 </Link>
               </li>
               <li>
@@ -109,54 +109,54 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="font-bold text-white mb-4">Categories</h3>
+            <h3 className="font-bold text-white mb-4">Pickle Varieties</h3>
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products/category/mango-pickle"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Madhubani Art
+                  Mango Pickle
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products/category/lemon-pickle"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Tikuli Art
+                  Lemon Pickle
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products/category/mixed-pickle"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Sujini Embroidery
+                  Mixed Pickle
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products/category/chilli-pickle"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Bamboo Craft
+                  Chilli Pickle
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products/category/jackfruit-pickle"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Sikki Craft
+                  Jackfruit Pickle
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/crafts"
+                  href="/products/category/ginger-pickle"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  Wood Carving
+                  Ginger Pickle
                 </Link>
               </li>
             </ul>
@@ -164,7 +164,7 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-white mb-4">Contact Us</h3>
             <address className="not-italic space-y-2">
-              <p>123 Craft Street, Patna</p>
+              <p>123 Pickle Street, Patna</p>
               <p>Bihar, India 800001</p>
               <p className="mt-4">
                 <a
@@ -176,10 +176,10 @@ export function Footer() {
               </p>
               <p>
                 <a
-                  href="mailto:info@biharbazaar.com"
+                  href="mailto:info@magadhrecipe.com"
                   className="hover:text-orange-600 transition-colors"
                 >
-                  info@biharbazaar.com
+                  info@magadhrecipe.com
                 </a>
               </p>
             </address>
@@ -187,7 +187,7 @@ export function Footer() {
         </div>
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm">
           <p>
-            &copy; {new Date().getFullYear()} Bihar Bazaar. All rights reserved.
+            &copy; {new Date().getFullYear()} Magadh Recipe. All rights reserved.
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <Link
